@@ -9,21 +9,20 @@ import jakarta.persistence.*
 @Table(name = "students")
 data class StudentEntity(
     @Column(length = TextLength.SHORT)
-    var nickname: String,
-
-
-    @ManyToMany(mappedBy = "students")
-    var partys: MutableList<PartyEntity>,
+    val nickname: String,
 
     @ManyToOne
-    var university: UniversityEntity,
+    val university: UniversityEntity,
+
+    @ManyToMany(mappedBy = "students")
+    val partys: List<PartyEntity>,
 
     @OneToMany(mappedBy = "student")
-    var results: MutableList<ResultEntity>,
+    val results: List<ResultEntity>,
 
 
     ) : DatabaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var chatId: Long = 0
+    val chatId: Long = 0
 }

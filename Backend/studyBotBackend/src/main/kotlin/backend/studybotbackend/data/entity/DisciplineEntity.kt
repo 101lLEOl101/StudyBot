@@ -8,16 +8,16 @@ import jakarta.persistence.*
 @Table(name = "disciplines")
 data class DisciplineEntity(
     @Column(length = TextLength.SHORT)
-    var disciplineName: String,
+    val disciplineName: String,
 
     @OneToMany(mappedBy = "discipline")
-    var tests: MutableList<TestEntity>,
+    val tests: List<TestEntity>,
 
     @ManyToMany(mappedBy = "disciplines")
-    var partys: MutableList<PartyEntity>,
+    val partys: List<PartyEntity>,
 
     ) : DatabaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var disciplineId: Long = 0
+    val disciplineId: Long = 0
 }

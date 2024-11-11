@@ -11,26 +11,33 @@ import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "tests")
 data class TestEntity(
 
+    @Column(nullable = false)
+    val createTime: LocalDateTime,
+
+    @Column(nullable = false)
+    val expiresTime: LocalDateTime,
+
     @ManyToOne
-    var discipline: DisciplineEntity,
+    val discipline: DisciplineEntity,
 
     @Column(length = TextLength.SHORT)
-    var testName: String,
+    val testName: String,
 
     @ManyToMany
-    var questions: MutableList<QuestionEntity>,
+    val questions: List<QuestionEntity>,
 
     @OneToMany(mappedBy = "test")
-    var results: MutableList<ResultEntity>,
+    val results: List<ResultEntity>,
 
     ) : DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var testId: Long = 0
+    val testId: Long = 0
 }

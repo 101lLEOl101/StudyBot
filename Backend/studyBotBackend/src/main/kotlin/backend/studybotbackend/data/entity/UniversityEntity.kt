@@ -9,13 +9,13 @@ import jakarta.persistence.*
 data class UniversityEntity(
 
     @Column(length = TextLength.SHORT)
-    var universityName: String,
+    val universityName: String,
 
     @OneToMany(mappedBy = "university")
-    var students: MutableList<StudentEntity>
+    val students: List<StudentEntity>
 ) : DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var universityId: Long = 0
+    val universityId: Long = 0
 }

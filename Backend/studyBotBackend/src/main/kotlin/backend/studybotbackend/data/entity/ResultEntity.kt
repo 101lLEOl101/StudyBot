@@ -2,22 +2,29 @@ package backend.studybotbackend.data.entity
 
 import backend.studybotbackend.data.model.DatabaseEntity
 import jakarta.persistence.*
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "results")
 data class ResultEntity(
-    @ManyToOne
-    var student: StudentEntity,
+    @Column
+    val startTime: LocalDateTime,
+
+    @Column
+    val finishTime: LocalDateTime,
 
     @ManyToOne
-    var test: TestEntity,
+    val student: StudentEntity,
 
     @ManyToOne
-    var question: QuestionEntity,
+    val test: TestEntity,
+
+    @ManyToMany
+    val questions: List<QuestionEntity>,
 
 
     ) : DatabaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var resultId: Long = 0
+    val resultId: Long = 0
 }

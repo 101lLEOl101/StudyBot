@@ -1,0 +1,24 @@
+package backend.studybotbackend.data.repository
+
+import backend.studybotbackend.core.util.State
+import backend.studybotbackend.data.dao.AnswerDao
+import backend.studybotbackend.data.util.AnswerDomainConverter
+import backend.studybotbackend.domain.exceptions.NotFoundException
+import backend.studybotbackend.domain.model.answer.Answer
+import backend.studybotbackend.domain.repository.AnswerRepository
+import backend.studybotbackend.domain.repository.QuestionRepository
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
+import org.springframework.stereotype.Repository
+import kotlin.jvm.optionals.getOrElse
+
+@Repository
+class AnswerRepositoryImpl: AnswerRepository, AnswerDomainConverter(){
+    @Autowired
+    private lateinit var answerDao: AnswerDao
+
+    override fun getAnswerById(id: Long): State<Answer> {
+        val entity = answerDao.findById(id).getOrElse { throw NotFoundException() }
+        return State.Success(entity.asDomain())
+    }
+}

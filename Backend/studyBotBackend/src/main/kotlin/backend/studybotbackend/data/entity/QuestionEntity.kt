@@ -9,23 +9,23 @@ import jakarta.persistence.*
 @Table(name = "questions")
 data class QuestionEntity(
     @Column(length = TextLength.LONG)
-    var questionText: String,
-
-    @ManyToMany(mappedBy = "questions")
-    var tests: MutableList<TestEntity>,
+    val questionText: String,
 
     @Column
-    var questionType: QuestionType,
+    val questionType: QuestionType,
+
+    @ManyToMany(mappedBy = "questions")
+    val tests: List<TestEntity>,
 
     @OneToMany(mappedBy = "question")
-    var answers: MutableList<AnswerEntity>,
+    val answers: List<AnswerEntity>,
 
-    @OneToMany(mappedBy = "question")
-    var results: MutableList<ResultEntity>,
+    @ManyToMany(mappedBy = "questions")
+    val results: List<ResultEntity>,
 
     ) : DatabaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var questionId: Long = 0
+    val questionId: Long = 0
 
 }

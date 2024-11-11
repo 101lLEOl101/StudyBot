@@ -10,25 +10,24 @@ import jakarta.persistence.*
 @Table(name = "workers")
 data class WorkerEntity(
     @Column(length = TextLength.SHORT)
-    var firstName: String,
+    val firstName: String,
 
     @Column(length = TextLength.SHORT)
-    var lastName: String,
+    val lastName: String,
 
     @Column(length = TextLength.SHORT)
-    var nickName: String,
+    val nickName: String,
 
     @Column(length = TextLength.SHORT)
-    var password: String,
-
-    @ManyToMany(mappedBy = "workers")
-    var partys: MutableList<PartyEntity>,
+    val password: String,
 
     @Column
-    var workerRole: Role,
+    val workerRole: Role,
 
-    ) : DatabaseEntity {
+    @ManyToMany(mappedBy = "workers")
+    val partys: List<PartyEntity>,
+) : DatabaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var workerId: Long = 0
+    val workerId: Long = 0
 }

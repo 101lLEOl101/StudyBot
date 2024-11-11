@@ -9,16 +9,16 @@ import jakarta.persistence.*
 @Table(name = "partys")
 data class PartyEntity(
     @Column(length = TextLength.SHORT)
-    var partyName: String,
+    val partyName: String,
     @ManyToMany
-    var workers: MutableList<WorkerEntity>,
+    val workers: List<WorkerEntity>,
     @ManyToMany
-    var students: MutableList<StudentEntity>,
+    val students: List<StudentEntity>,
     @ManyToMany
-    var disciplines: MutableList<DisciplineEntity>,
+    val disciplines: List<DisciplineEntity>,
 
     ) : DatabaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var partyId: Long = 0
+    val partyId: Long = 0
 }

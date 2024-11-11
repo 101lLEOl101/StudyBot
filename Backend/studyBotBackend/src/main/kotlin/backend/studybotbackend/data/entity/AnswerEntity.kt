@@ -15,18 +15,18 @@ import jakarta.persistence.Table
 @Table(name = "answers")
 data class AnswerEntity(
     @Column(length = TextLength.MIDLE)
-    var correct: String,
+    val correct: String,
 
     @Column(length = TextLength.MIDLE)
-    var answerText: String,
+    val answerText: String,
 
     @ManyToOne
-    var question: QuestionEntity,
+    val question: QuestionEntity,
 
     ) : DatabaseEntity {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var answerId: Long = 0
+    val answerId: Long = 0
 }
