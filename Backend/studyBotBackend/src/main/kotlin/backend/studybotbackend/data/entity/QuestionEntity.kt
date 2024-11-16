@@ -20,8 +20,6 @@ data class QuestionEntity(
     @OneToMany(mappedBy = "question")
     val answers: List<AnswerEntity>,
 
-    @ManyToMany(mappedBy = "questions")
-    val results: List<ResultEntity>,
 
     ) : DatabaseEntity {
     @Id

@@ -6,4 +6,6 @@ import backend.studybotbackend.domain.model.question.Question
 
 interface QuestionRepository {
     fun getQuestionById(id: Long): State<Question>
+
+    fun getQuestionsByTest(id: Long): State<List<Question>>
 }

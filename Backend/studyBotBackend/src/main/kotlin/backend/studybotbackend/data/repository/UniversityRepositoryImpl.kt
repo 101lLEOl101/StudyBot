@@ -21,5 +21,10 @@ class UniversityRepositoryImpl : UniversityRepository, UnivercityDomainConverter
         return State.Success(entity.asDomain())
     }
 
+    override fun getUniversityByStudent(id: Long): State<University> {
+        val entity = universityDao.findByStudent(id).getOrElse { throw NotFoundException() }
+        return State.Success(entity.asDomain())
+    }
+
 
 }

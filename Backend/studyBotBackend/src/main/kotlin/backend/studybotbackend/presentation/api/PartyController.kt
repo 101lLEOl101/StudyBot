@@ -34,5 +34,29 @@ class PartyController(
         return entity.asResponse()
     }
 
+    @GetMapping("get/by-chat-id")
+    fun getPartysByChatId(
+        @RequestParam id: Long,
+    ): ResponseEntity<Any>{
+        val entity = partyRepository.getPartysByStudentId(id)
+        return entity.asResponse()
+    }
+
+    @GetMapping("get/by-worker-id")
+    fun getPartysByWorkerId(
+        @RequestParam id: Long,
+    ): ResponseEntity<Any>{
+        val entity = partyRepository.getPartysByWorkerId(id)
+        return entity.asResponse()
+    }
+
+    @GetMapping("get/by-discipline-id")
+    fun getPartysByDisciplineId(
+        @RequestParam id: Long,
+    ): ResponseEntity<Any>{
+        val entity = partyRepository.getPartysByDisciplineId(id)
+        return entity.asResponse()
+    }
+
 
 }

@@ -34,6 +34,10 @@ class WorkerController(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = workerRepository.getWorkerById(id).asResponse()
 
+    @GetMapping("get/by-party")
+    fun getWorkerByParty(
+        @RequestParam id: Long,
+    ): ResponseEntity<Any> = workerRepository.getWorkersByParty(id).asResponse()
 
 
 }

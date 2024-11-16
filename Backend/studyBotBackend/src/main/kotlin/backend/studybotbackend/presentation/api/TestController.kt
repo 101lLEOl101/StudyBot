@@ -32,4 +32,15 @@ class TestController(
     fun getTestById(
         @RequestParam id: Long
     ): ResponseEntity<Any> = testRepository.getTestById(id).asResponse()
+
+    @GetMapping("get/by-discipline")
+    fun getTestByDiscipline(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> = testRepository.getTestsByDiscipline(id).asResponse()
+
+    @GetMapping("get/by-name")
+    fun getTestByTestName(
+        @RequestParam name: String
+    ): ResponseEntity<Any> = testRepository.getTestsByName(name).asResponse()
+
 }

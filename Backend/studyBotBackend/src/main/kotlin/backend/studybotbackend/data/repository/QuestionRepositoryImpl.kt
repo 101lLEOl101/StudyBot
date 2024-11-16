@@ -20,4 +20,9 @@ class QuestionRepositoryImpl(
         return State.Success(entity.asDomain())
 
     }
+
+    override fun getQuestionsByTest(id: Long): State<List<Question>> {
+        val entities = questionDao.findByTest(id).map { it.asDomain() }
+        return State.Success(entities)
+    }
 }

@@ -19,4 +19,9 @@ class WorkerRepositoryImpl(
         return State.Success(entity.asDomain())
     }
 
+    override fun getWorkersByParty(id: Long): State<List<Worker>> {
+        val entities = workerDao.findByParty(id).map { it.asDomain() }
+        return State.Success(entities)
+    }
+
 }

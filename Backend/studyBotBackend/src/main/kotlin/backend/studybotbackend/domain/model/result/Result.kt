@@ -9,7 +9,7 @@ data class Result(
     val finishTime: LocalDateTime,
     val student: Long,
     val test: Long,
-    val questions: List<Long>,
+    val answers: List<Long>,
 ) : Domain {
     companion object {
         fun new(
@@ -17,14 +17,14 @@ data class Result(
             expiresTime: LocalDateTime,
             student: Long,
             test: Long,
-            questions: List<Long> = listOf(),
+            answers: List<Long> = listOf(),
         ) = Result(
             0,
             createTime,
             expiresTime,
             student,
             test,
-            questions,
+            answers,
         )
     }
 }

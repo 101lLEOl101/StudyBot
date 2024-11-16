@@ -34,4 +34,10 @@ class QuestionController(
     fun getQuestionById(
         @RequestParam id: Long
     ): ResponseEntity<Any> = questionRepository.getQuestionById(id).asResponse()
+
+    @GetMapping("get/by-test")
+    fun getQuestionByTest(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> = questionRepository.getQuestionsByTest(id).asResponse()
+
 }

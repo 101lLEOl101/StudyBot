@@ -21,4 +21,17 @@ class AnswerRepositoryImpl: AnswerRepository, AnswerDomainConverter(){
         val entity = answerDao.findById(id).getOrElse { throw NotFoundException() }
         return State.Success(entity.asDomain())
     }
+
+    override fun getAnswersByResult(id: Long): State<List<Answer>> {
+        val entities = answerDao.findByResult(id).map { it.asDomain() }
+        return State.Success(entities)
+    }
+
+    override fun getRightAnswersByQuestion(id: Long): State<List<Answer>> {
+        val entities = answerDao.findRightByQuestion(id).map { it.asDomain() }
+        return State.Success(entities)    }
+
+    override fun getUserAnswersByQuestion(id: Long): State<List<Answer>> {
+        val entities = answerDao.findUserByQuestion(id).map { it.asDomain() }
+        return State.Success(entities)    }
 }

@@ -7,7 +7,6 @@ import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.test.Test
 import backend.studybotbackend.domain.repository.TestRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import kotlin.jvm.optionals.getOrElse
 
@@ -19,5 +18,15 @@ class TestRepositoryImpl : TestRepository, TestDomainConverter() {
     override fun getTestById(id: Long): State<Test> {
         val entity = testDao.findById(id).getOrElse { throw NotFoundException() }
         return State.Success(entity.asDomain())
+    }
+
+    override fun getTestsByDiscipline(id: Long): State<List<Test>> {
+        val entities = testDao.findByDiscipline(id).map { it.asDomain() }
+        return State.Success(entities)
+    }
+
+    override fun getTestsByName(name: String): State<List<Test>> {
+        val entities = testDao.findByTestNameContainsIgnoreCase(name).map { it.asDomain() }
+        return State.Success(entities)
     }
 }

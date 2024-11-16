@@ -1,5 +1,6 @@
 package backend.studybotbackend.data.util
 
+import backend.studybotbackend.data.dao.AnswerDao
 import backend.studybotbackend.data.dao.QuestionDao
 import backend.studybotbackend.data.dao.StudentDao
 import backend.studybotbackend.data.dao.TestDao
@@ -16,7 +17,7 @@ class ResultDomainConverter : DomainConverter<ResultEntity, Result> {
     @Autowired
     private lateinit var testDao: TestDao
     @Autowired
-    private lateinit var questionDao: QuestionDao
+    private lateinit var answerDao: AnswerDao
 
     override fun Result.asDatabaseEntity(): ResultEntity =
         ResultEntity(
@@ -24,7 +25,7 @@ class ResultDomainConverter : DomainConverter<ResultEntity, Result> {
             finishTime,
             studentDao.findById(student).get(),
             testDao.findById(test).get(),
-            questionDao.findAllById(questions)
+            answerDao.findAllById(answers)
         )
 
     override fun ResultEntity.asDomain(): Result =
@@ -34,6 +35,6 @@ class ResultDomainConverter : DomainConverter<ResultEntity, Result> {
             finishTime,
             student.chatId,
             test.testId,
-            questions.map { it.questionId }
+            answers.map { it.answerId }
             )
 }

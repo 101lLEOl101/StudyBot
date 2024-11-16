@@ -19,8 +19,8 @@ data class ResultEntity(
     @ManyToOne
     val test: TestEntity,
 
-    @ManyToMany
-    val questions: List<QuestionEntity>,
+    @OneToMany(mappedBy = "result")
+    val answers: List<AnswerEntity>,
 
 
     ) : DatabaseEntity {

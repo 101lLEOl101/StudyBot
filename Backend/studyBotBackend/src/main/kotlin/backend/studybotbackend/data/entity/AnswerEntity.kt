@@ -14,6 +14,9 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "answers")
 data class AnswerEntity(
+    @Column
+    val isStudentAnswer: Boolean,
+
     @Column(length = TextLength.MIDLE)
     val correct: String,
 
@@ -22,6 +25,9 @@ data class AnswerEntity(
 
     @ManyToOne
     val question: QuestionEntity,
+
+    @ManyToOne
+    val result: ResultEntity?,
 
     ) : DatabaseEntity {
 

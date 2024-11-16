@@ -32,4 +32,16 @@ class ResultController(
     fun getResultById(
         @RequestParam id: Long
     ): ResponseEntity<Any> = resultRepository.getResultById(id).asResponse()
+
+
+    @GetMapping("get/by-student")
+    fun getResultStudent(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> = resultRepository.getResultsByStudent(id).asResponse()
+
+
+    @GetMapping("get/by-test")
+    fun getResultTest(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> = resultRepository.getResultsByTest(id).asResponse()
 }

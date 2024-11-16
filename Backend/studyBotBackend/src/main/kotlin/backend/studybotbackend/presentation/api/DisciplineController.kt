@@ -34,4 +34,14 @@ class DisciplineController(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = disciplineRepository.getDisciplineById(id).asResponse()
 
+    @GetMapping("get/by-test")
+    fun getDisciplineByTest(
+        @RequestParam id: Long,
+    ): ResponseEntity<Any> = disciplineRepository.getDisciplinesByTest(id).asResponse()
+
+    @GetMapping("get/by-party")
+    fun getDisciplineByParty(
+        @RequestParam id: Long,
+    ): ResponseEntity<Any> = disciplineRepository.getDisciplinesByParty(id).asResponse()
+
 }

@@ -8,7 +8,6 @@ data class Question(
     val questionType: QuestionType,
     val tests: List<Long>,
     val answers: List<Long>,
-    val results: List<Long>,
 ) : Domain {
     companion object {
         fun new(
@@ -16,14 +15,12 @@ data class Question(
             questionType: QuestionType,
             tests: List<Long> = listOf(),
             answers: List<Long> = listOf(),
-            results: List<Long> = listOf(),
         ) = Question(
             0,
             questionText,
             questionType,
             tests,
             answers,
-            results,
         )
     }
 }

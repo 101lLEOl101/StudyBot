@@ -17,15 +17,12 @@ class QuestionDomainConverter : DomainConverter<QuestionEntity, Question> {
     @Autowired
     private lateinit var answerDao: AnswerDao
 
-    @Autowired
-    private lateinit var resultDao: ResultDao
     override fun Question.asDatabaseEntity(): QuestionEntity =
         QuestionEntity(
             questionText,
             questionType,
             testDao.findAllById(tests),
             answerDao.findAllById(answers),
-            resultDao.findAllById(results),
         )
 
     override fun QuestionEntity.asDomain(): Question =
@@ -35,6 +32,5 @@ class QuestionDomainConverter : DomainConverter<QuestionEntity, Question> {
             questionType,
             tests.map { it.testId },
             answers.map { it.answerId },
-            results.map { it.resultId },
         )
 }

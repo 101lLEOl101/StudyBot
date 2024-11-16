@@ -2,6 +2,7 @@ package backend.studybotbackend.data.repository
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.ResultDao
+import backend.studybotbackend.data.entity.ResultEntity
 import backend.studybotbackend.data.util.ResultDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.result.Result
@@ -19,5 +20,15 @@ class ResultRepositoryImpl : ResultRepository, ResultDomainConverter() {
     override fun getResultById(id: Long): State<Result> {
         val entity = resultDao.findById(id).getOrElse { throw NotFoundException()}
         return State.Success(entity.asDomain())
+    }
+
+    override fun getResultsByStudent(id: Long): State<List<Result>> {
+        val entities = resultDao.findByStudent(id).map { it.asDomain() }
+        return State.Success(entities)
+    }
+
+    override fun getResultsByTest(id: Long): State<List<Result>> {
+        val entities = resultDao.findByTest(id).map { it.asDomain() }
+        return State.Success(entities)
     }
 }

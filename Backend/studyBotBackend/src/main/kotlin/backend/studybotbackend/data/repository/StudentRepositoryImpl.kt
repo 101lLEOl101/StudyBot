@@ -18,4 +18,14 @@ class StudentRepositoryImpl(
         val entity = studentDao.findById(id).getOrElse { throw NotFoundException() }
         return State.Success(entity.asDomain())
     }
+
+    override fun getStudentsByUnivercity(id: Long): State<List<Student>> {
+        val entities = studentDao.findByUniversity(id).map { it.asDomain() }
+        return State.Success(entities)
+    }
+
+    override fun getStudentsByParty(id: Long): State<List<Student>> {
+        val entities = studentDao.findByParty(id).map { it.asDomain() }
+        return State.Success(entities)
+    }
 }

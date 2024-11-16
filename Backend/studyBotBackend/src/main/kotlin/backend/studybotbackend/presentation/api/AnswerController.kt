@@ -32,4 +32,19 @@ class AnswerController(
     fun getAnswerById(
         @RequestParam id: Long
     ): ResponseEntity<Any> = answerRepository.getAnswerById(id).asResponse()
+
+    @GetMapping("get/by-result")
+    fun getAnswerByResult(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> = answerRepository.getAnswersByResult(id).asResponse()
+
+    @GetMapping("get/right-by-question")
+    fun getRightAnswerByQuestion(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> = answerRepository.getRightAnswersByQuestion(id).asResponse()
+
+    @GetMapping("get/user-answers-by-question")
+    fun getUserAnswerByQuestion(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> = answerRepository.getUserAnswersByQuestion(id).asResponse()
 }
