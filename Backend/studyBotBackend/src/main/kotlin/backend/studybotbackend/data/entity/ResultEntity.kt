@@ -11,7 +11,7 @@ data class ResultEntity(
     val startTime: LocalDateTime,
 
     @Column
-    val finishTime: LocalDateTime,
+    val finishTime: LocalDateTime?,
 
     @ManyToOne
     val student: StudentEntity,
