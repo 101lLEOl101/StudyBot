@@ -11,7 +11,9 @@ interface StudentDao: JpaRepository<StudentEntity, Long> {
     @Query("select s from StudentEntity s where s.university.universityId = :id")
     fun findByUniversity(@Param("id") id: Long): List<StudentEntity>
 
-    @Query("select s from StudentEntity s INNER JOIN s.partys p where p.partyId = :id")
+    @Query("select st from StudentEntity st INNER JOIN st.subs su " +
+            "where su.status = backend.studybotbackend.domain.model.studentSub.Status.APROVED" +
+            " and su.party.partyId = :id")
     fun findByParty(@Param("id") id: Long): List<StudentEntity>
 
 }

@@ -2,6 +2,7 @@ package backend.studybotbackend.data.util
 
 import backend.studybotbackend.data.dao.PartyDao
 import backend.studybotbackend.data.dao.ResultDao
+import backend.studybotbackend.data.dao.StudentSubDao
 import backend.studybotbackend.data.dao.UniversityDao
 import backend.studybotbackend.data.entity.StudentEntity
 import backend.studybotbackend.domain.model.student.Student
@@ -14,7 +15,7 @@ class StudentDomainConverter : DomainConverter<StudentEntity, Student> {
     @Autowired
     private lateinit var universityDao: UniversityDao
     @Autowired
-    private lateinit var partyDao: PartyDao
+    private lateinit var studentSubDao: StudentSubDao
     @Autowired
     private lateinit var resultDao: ResultDao
 
@@ -22,14 +23,15 @@ class StudentDomainConverter : DomainConverter<StudentEntity, Student> {
         StudentEntity(
             nickname,
             universityDao.findById(university).get(),
-            partyDao.findAllById(partys),
-            resultDao.findAllById(results)
+            resultDao.findAllById(results),
+            studentSubDao.findAllById(subs),
+
         )
     override fun StudentEntity.asDomain(): Student =
         Student(chatId,
             nickname,
             university.universityId,
-            partys.map { it.partyId },
             results.map{it.resultId},
+            subs.map { it.subId },
             )
 }

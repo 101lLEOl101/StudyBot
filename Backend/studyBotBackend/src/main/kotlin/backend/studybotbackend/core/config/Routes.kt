@@ -7,6 +7,7 @@ object Routes {
     const val QUESTION_API = "/api/question"
     const val RESULT_API = "/api/result"
     const val STUDENT_API = "/api/student"
+    const val STUDENT_SUB_API = "/api/student-sub"
     const val TEST_API = "/api/test"
     const val UNIVERSITY_API = "/api/university"
     const val WORKER_API = "/api/worker"

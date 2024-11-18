@@ -14,11 +14,11 @@ data class StudentEntity(
     @ManyToOne
     val university: UniversityEntity,
 
-    @ManyToMany(mappedBy = "students")
-    val partys: List<PartyEntity>,
-
     @OneToMany(mappedBy = "student")
     val results: List<ResultEntity>,
+
+    @OneToMany(mappedBy = "student")
+    val subs: List<StudentSubEntity>,
 
 
     ) : DatabaseEntity {

@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 data class Result(
     val id: Long,
     val startTime: LocalDateTime,
-    val finishTime: LocalDateTime,
+    val finishTime: LocalDateTime?,
     val student: Long,
     val test: Long,
     val answers: List<Long>,

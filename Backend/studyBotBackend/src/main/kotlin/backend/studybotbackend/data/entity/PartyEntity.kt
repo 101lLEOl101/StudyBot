@@ -13,9 +13,10 @@ data class PartyEntity(
     @ManyToMany
     val workers: List<WorkerEntity>,
     @ManyToMany
-    val students: List<StudentEntity>,
-    @ManyToMany
     val disciplines: List<DisciplineEntity>,
+
+    @OneToMany(mappedBy = "party")
+    val subs: List<StudentSubEntity>,
 
     ) : DatabaseEntity {
     @Id
