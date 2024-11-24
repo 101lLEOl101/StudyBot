@@ -1,6 +1,5 @@
 package backend.studybotbackend.data.util
 
-import backend.studybotbackend.data.dao.PartyDao
 import backend.studybotbackend.data.dao.ResultDao
 import backend.studybotbackend.data.dao.StudentSubDao
 import backend.studybotbackend.data.dao.UniversityDao
@@ -21,6 +20,7 @@ class StudentDomainConverter : DomainConverter<StudentEntity, Student> {
 
     override fun Student.asDatabaseEntity(): StudentEntity =
         StudentEntity(
+            chatId,
             nickname,
             universityDao.findById(university).get(),
             resultDao.findAllById(results),

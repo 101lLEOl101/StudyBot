@@ -17,7 +17,7 @@ data class Worker(
             lastName: String,
             nickName: String,
             password: String,
-            workerRole: Role,
+            workerRole: Role = Role.TEACHER,
             partys: List<Long> = listOf(),
         ) = Worker(
             0,

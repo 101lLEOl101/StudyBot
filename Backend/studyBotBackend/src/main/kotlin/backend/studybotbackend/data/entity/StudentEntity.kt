@@ -8,6 +8,10 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "students")
 data class StudentEntity(
+
+    @Column(nullable = false)
+    var chatId: Long,
+
     @Column(length = TextLength.SHORT)
     val nickname: String,
 
@@ -19,10 +23,8 @@ data class StudentEntity(
 
     @OneToMany(mappedBy = "student")
     val subs: List<StudentSubEntity>,
-
-
-    ) : DatabaseEntity {
+    ) : DatabaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val chatId: Long = 0
-}
+    var studentId: Long = 0
+    }

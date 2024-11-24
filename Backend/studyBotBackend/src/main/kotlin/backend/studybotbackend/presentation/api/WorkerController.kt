@@ -3,13 +3,11 @@ package backend.studybotbackend.presentation.api
 import backend.studybotbackend.core.config.Routes
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
+import backend.studybotbackend.domain.model.worker.Worker
 import backend.studybotbackend.domain.repository.WorkerRepository
+import backend.studybotbackend.domain.request.worker.CreateWorkerRequest
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping(Routes.WORKER_API)
@@ -22,6 +20,7 @@ class WorkerController(
             is BaseException -> {
                 ResponseEntity.status(e.statusCode).body(e)
             }
+
             else -> {
                 ResponseEntity.status(500).body(ServerError(description = e.message))
             }
@@ -38,6 +37,22 @@ class WorkerController(
     fun getWorkerByParty(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = workerRepository.getWorkersByParty(id).asResponse()
+
+    @PostMapping("post/create")
+    fun createWorker(
+        @RequestBody workerParams: CreateWorkerRequest
+    ): ResponseEntity<Any> {
+        val worker =
+            Worker.new(
+                firstName =workerParams.firstName,
+                lastName =workerParams.lastName,
+                nickName =workerParams.nickName,
+                password =workerParams.password,
+                workerRole =workerParams.workerRole,
+            )
+        val state = workerRepository.createWorker(worker)
+        return state.asResponse()
+    }
 
 
 }

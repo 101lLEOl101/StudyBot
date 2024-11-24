@@ -29,4 +29,9 @@ class TestRepositoryImpl : TestRepository, TestDomainConverter() {
         val entities = testDao.findByTestNameContainsIgnoreCase(name).map { it.asDomain() }
         return State.Success(entities)
     }
+
+    override fun createTest(test: Test): State<Test> {
+        val entity = testDao.save(test.asDatabaseEntity())
+        return State.Success(entity.asDomain())
+    }
 }

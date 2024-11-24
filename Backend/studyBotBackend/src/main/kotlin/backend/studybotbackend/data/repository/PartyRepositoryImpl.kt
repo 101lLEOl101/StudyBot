@@ -34,5 +34,10 @@ class PartyRepositoryImpl(
         return State.Success(entities)
     }
 
+    override fun createParty(party: Party): State<Party> {
+        val entity = partyDao.save(party.asDatabaseEntity())
+        return State.Success(entity.asDomain())
+    }
+
 
 }

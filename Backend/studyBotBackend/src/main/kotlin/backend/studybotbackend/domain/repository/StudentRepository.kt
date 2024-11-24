@@ -9,4 +9,6 @@ interface StudentRepository {
     fun getStudentsByUnivercity(id: Long): State<List<Student>>
 
     fun getStudentsByParty(id: Long): State<List<Student>>
+
+    fun createStudent(student: Student): State<Student>
 }

@@ -4,9 +4,13 @@ import backend.studybotbackend.core.config.Routes
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.repository.ResultRepository
+import backend.studybotbackend.domain.request.result.StartTestRequest
+import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -44,4 +48,15 @@ class ResultController(
     fun getResultTest(
         @RequestParam id: Long
     ): ResponseEntity<Any> = resultRepository.getResultsByTest(id).asResponse()
+
+    @PostMapping("post/start")
+    fun startTest(
+        @RequestBody req: StartTestRequest
+    ): ResponseEntity<Any>{
+        val state = resultRepository.startTest(
+            chatId = req.chatId,
+            testId = req.testId,
+        )
+        return state.asResponse()
+    }
 }

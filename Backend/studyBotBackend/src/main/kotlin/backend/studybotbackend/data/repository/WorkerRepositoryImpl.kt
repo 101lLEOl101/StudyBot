@@ -24,4 +24,9 @@ class WorkerRepositoryImpl(
         return State.Success(entities)
     }
 
+    override fun createWorker(worker: Worker): State<Worker> {
+        val entity = workerDao.save(worker.asDatabaseEntity())
+        return State.Success(entity.asDomain())
+    }
+
 }

@@ -13,5 +13,7 @@ interface PartyRepository {
 
     fun getPartysByDisciplineId(id: Long): State<List<Party>>
 
+    fun createParty(party: Party): State<Party>
+
 
 }

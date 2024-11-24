@@ -8,4 +8,6 @@ interface UniversityRepository {
     fun getUniversityById(id: Long): State<University>
 
     fun getUniversityByStudent(id: Long): State<University>
+
+    fun createUnivercity(university: University): State<University>
 }

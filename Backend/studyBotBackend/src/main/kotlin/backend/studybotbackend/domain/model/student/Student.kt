@@ -3,7 +3,7 @@ package backend.studybotbackend.domain.model.student
 import backend.studybotbackend.domain.model.Domain
 
 data class Student(
-    val id: Long,
+    val chatId: Long,
     val nickname: String,
     val university: Long,
     val results: List<Long>,
@@ -11,12 +11,13 @@ data class Student(
 ) : Domain {
     companion object {
         fun new(
+            chatId: Long,
             nickname: String,
             university: Long,
             results: List<Long> = listOf(),
             subs: List<Long> = listOf(),
         ) = Student(
-            0,
+            chatId,
             nickname,
             university,
             results,

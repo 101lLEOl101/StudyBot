@@ -14,14 +14,14 @@ data class Result(
     companion object {
         fun new(
             createTime: LocalDateTime,
-            expiresTime: LocalDateTime,
+            finishTime: LocalDateTime?,
             student: Long,
             test: Long,
             answers: List<Long> = listOf(),
         ) = Result(
             0,
             createTime,
-            expiresTime,
+            finishTime,
             student,
             test,
             answers,

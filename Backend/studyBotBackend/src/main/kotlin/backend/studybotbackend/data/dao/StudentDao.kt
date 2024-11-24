@@ -16,4 +16,6 @@ interface StudentDao: JpaRepository<StudentEntity, Long> {
             " and su.party.partyId = :id")
     fun findByParty(@Param("id") id: Long): List<StudentEntity>
 
+
+
 }

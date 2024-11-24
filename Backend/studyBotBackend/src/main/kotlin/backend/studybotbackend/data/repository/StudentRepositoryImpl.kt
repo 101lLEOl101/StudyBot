@@ -28,4 +28,10 @@ class StudentRepositoryImpl(
         val entities = studentDao.findByParty(id).map { it.asDomain() }
         return State.Success(entities)
     }
+
+    override fun createStudent(student: Student): State<Student> {
+        val entity = studentDao.save(student.asDatabaseEntity())
+
+        return State.Success(entity.asDomain())
+    }
 }

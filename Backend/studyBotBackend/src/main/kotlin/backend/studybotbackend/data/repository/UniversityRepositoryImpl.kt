@@ -26,5 +26,10 @@ class UniversityRepositoryImpl : UniversityRepository, UnivercityDomainConverter
         return State.Success(entity.asDomain())
     }
 
+    override fun createUnivercity(university: University): State<University> {
+        val entity = universityDao.save(university.asDatabaseEntity())
+        return State.Success(entity.asDomain())
+    }
+
 
 }

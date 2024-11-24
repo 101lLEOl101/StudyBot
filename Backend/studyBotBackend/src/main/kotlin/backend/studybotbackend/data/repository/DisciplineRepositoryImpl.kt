@@ -31,5 +31,10 @@ class DisciplineRepositoryImpl : DisciplineRepository, DisciplineDomainConverter
         return State.Success(entities)
     }
 
+    override fun createDiscipline(discipline: Discipline): State<Discipline> {
+        val entity = disciplineDao.save(discipline.asDatabaseEntity())
+        return State.Success(entity.asDomain())
+    }
+
 
 }

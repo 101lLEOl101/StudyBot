@@ -3,7 +3,9 @@ package backend.studybotbackend.presentation.api
 import backend.studybotbackend.core.config.Routes
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
+import backend.studybotbackend.domain.model.party.Party
 import backend.studybotbackend.domain.repository.PartyRepository
+import backend.studybotbackend.domain.request.party.CreatePartyRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -56,6 +58,19 @@ class PartyController(
     ): ResponseEntity<Any>{
         val entity = partyRepository.getPartysByDisciplineId(id)
         return entity.asResponse()
+    }
+
+    @PostMapping("post/create")
+    fun createParty(
+        @RequestBody partyParam: CreatePartyRequest
+    ): ResponseEntity<Any>{
+        val party = Party.new(
+            partyName = partyParam.partyName,
+            workers = partyParam.workers,
+            disciplines = partyParam.disciplines,
+        )
+        val state = partyRepository.createParty(party)
+        return state.asResponse()
     }
 
 

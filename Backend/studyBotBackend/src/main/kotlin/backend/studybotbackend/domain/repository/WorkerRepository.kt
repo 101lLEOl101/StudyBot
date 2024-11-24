@@ -8,4 +8,6 @@ interface WorkerRepository {
 
     fun getWorkersByParty(id: Long): State<List<Worker>>
 
+    fun createWorker(worker: Worker): State<Worker>
+
 }

@@ -10,4 +10,6 @@ interface TestRepository {
     fun getTestsByDiscipline(id: Long): State<List<Test>>
 
     fun getTestsByName(name: String): State<List<Test>>
+
+    fun createTest(test: Test): State<Test>
 }
