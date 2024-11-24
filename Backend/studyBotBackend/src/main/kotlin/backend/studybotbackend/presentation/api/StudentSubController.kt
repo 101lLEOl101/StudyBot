@@ -31,17 +31,17 @@ class StudentSubController(
         }
     }
 
-    @GetMapping("get/by-id")
+    @GetMapping("by-id")
     fun getStudentSubById(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = studentSubRepository.getStudentSubById(id).asResponse()
 
-    @GetMapping("get/by-party")
+    @GetMapping("by-party")
     fun getStudentSubByParty(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = studentSubRepository.getStudentSubsByParty(id).asResponse()
 
-    @GetMapping("get/by-student")
+    @GetMapping("by-student")
     fun getStudentSubByStudent(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = studentSubRepository.getStudentSubsByStudent(id).asResponse()

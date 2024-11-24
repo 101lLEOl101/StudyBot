@@ -28,7 +28,7 @@ class PartyController(
     }
 
 
-    @GetMapping("get/by-id")
+    @GetMapping("by-id")
     fun getPartyById(
         @RequestParam id: Long,
     ): ResponseEntity<Any> {
@@ -36,7 +36,7 @@ class PartyController(
         return entity.asResponse()
     }
 
-    @GetMapping("get/by-chat-id")
+    @GetMapping("by-chat-id")
     fun getPartysByChatId(
         @RequestParam id: Long,
     ): ResponseEntity<Any>{
@@ -44,7 +44,7 @@ class PartyController(
         return entity.asResponse()
     }
 
-    @GetMapping("get/by-worker-id")
+    @GetMapping("by-worker-id")
     fun getPartysByWorkerId(
         @RequestParam id: Long,
     ): ResponseEntity<Any>{
@@ -52,7 +52,7 @@ class PartyController(
         return entity.asResponse()
     }
 
-    @GetMapping("get/by-discipline-id")
+    @GetMapping("by-discipline-id")
     fun getPartysByDisciplineId(
         @RequestParam id: Long,
     ): ResponseEntity<Any>{
@@ -60,7 +60,7 @@ class PartyController(
         return entity.asResponse()
     }
 
-    @PostMapping("post/create")
+    @PostMapping("create")
     fun createParty(
         @RequestBody partyParam: CreatePartyRequest
     ): ResponseEntity<Any>{
@@ -72,6 +72,8 @@ class PartyController(
         val state = partyRepository.createParty(party)
         return state.asResponse()
     }
+
+
 
 
 }

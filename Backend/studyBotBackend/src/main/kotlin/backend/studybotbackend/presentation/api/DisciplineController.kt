@@ -33,22 +33,22 @@ class DisciplineController(
         }
     }
 
-    @GetMapping("get/by-id")
+    @GetMapping("by-id")
     fun getDisciplineById(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = disciplineRepository.getDisciplineById(id).asResponse()
 
-    @GetMapping("get/by-test")
+    @GetMapping("by-test")
     fun getDisciplineByTest(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = disciplineRepository.getDisciplinesByTest(id).asResponse()
 
-    @GetMapping("get/by-party")
+    @GetMapping("by-party")
     fun getDisciplineByParty(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = disciplineRepository.getDisciplinesByParty(id).asResponse()
 
-    @PostMapping("post/create")
+    @PostMapping("create")
     fun createDiscipline(
         @RequestBody disciplineParam: CreateDisciplineRequest
     ): ResponseEntity<Any> {

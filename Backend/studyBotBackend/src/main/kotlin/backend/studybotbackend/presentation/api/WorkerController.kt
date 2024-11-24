@@ -28,17 +28,17 @@ class WorkerController(
     }
 
 
-    @GetMapping("get/by-id")
+    @GetMapping("by-id")
     fun getWorkerById(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = workerRepository.getWorkerById(id).asResponse()
 
-    @GetMapping("get/by-party")
+    @GetMapping("by-party")
     fun getWorkerByParty(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = workerRepository.getWorkersByParty(id).asResponse()
 
-    @PostMapping("post/create")
+    @PostMapping("create")
     fun createWorker(
         @RequestBody workerParams: CreateWorkerRequest
     ): ResponseEntity<Any> {

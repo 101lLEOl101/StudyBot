@@ -34,17 +34,17 @@ class UniversityController(
         }
     }
 
-    @GetMapping("get/by-id")
+    @GetMapping("by-id")
     fun getUniversityById(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = universityRepository.getUniversityById(id).asResponse()
 
-    @GetMapping("get/by-student")
+    @GetMapping("by-student")
     fun getUniversityByStudent(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = universityRepository.getUniversityByStudent(id).asResponse()
 
-    @PostMapping("post/create")
+    @PostMapping("create")
     fun createUniversity(
         @RequestBody universityParam:CreateUnivercityRequest
     ): ResponseEntity<Any>{

@@ -33,22 +33,22 @@ class TestController(
         }
     }
 
-    @GetMapping("get/by-id")
+    @GetMapping("by-id")
     fun getTestById(
         @RequestParam id: Long
     ): ResponseEntity<Any> = testRepository.getTestById(id).asResponse()
 
-    @GetMapping("get/by-discipline")
+    @GetMapping("by-discipline")
     fun getTestByDiscipline(
         @RequestParam id: Long
     ): ResponseEntity<Any> = testRepository.getTestsByDiscipline(id).asResponse()
 
-    @GetMapping("get/by-name")
+    @GetMapping("by-name")
     fun getTestByTestName(
         @RequestParam name: String
     ): ResponseEntity<Any> = testRepository.getTestsByName(name).asResponse()
 
-    @PostMapping("post/create")
+    @PostMapping("create")
     fun createTest(
         @RequestBody testParam: CreateTestRequest
     ):ResponseEntity<Any>{

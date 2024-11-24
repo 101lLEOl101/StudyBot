@@ -32,24 +32,24 @@ class ResultController(
         }
     }
 
-    @GetMapping("get/by-id")
+    @GetMapping("by-id")
     fun getResultById(
         @RequestParam id: Long
     ): ResponseEntity<Any> = resultRepository.getResultById(id).asResponse()
 
 
-    @GetMapping("get/by-student")
+    @GetMapping("by-student")
     fun getResultStudent(
         @RequestParam id: Long
     ): ResponseEntity<Any> = resultRepository.getResultsByStudent(id).asResponse()
 
 
-    @GetMapping("get/by-test")
+    @GetMapping("by-test")
     fun getResultTest(
         @RequestParam id: Long
     ): ResponseEntity<Any> = resultRepository.getResultsByTest(id).asResponse()
 
-    @PostMapping("post/start")
+    @PostMapping("start")
     fun startTest(
         @RequestBody req: StartTestRequest
     ): ResponseEntity<Any>{

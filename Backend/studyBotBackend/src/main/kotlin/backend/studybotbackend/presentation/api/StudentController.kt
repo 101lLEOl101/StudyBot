@@ -33,22 +33,22 @@ class StudentController (
         }
     }
 
-    @GetMapping("get/by-id")
+    @GetMapping("by-id")
     fun getStudentById(
         @RequestParam id: Long,
         ): ResponseEntity<Any> = studentRepository.getStudentById(id).asResponse()
 
-    @GetMapping("get/by-univercity")
+    @GetMapping("by-univercity")
     fun getStudentsByUnivercity(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = studentRepository.getStudentsByUnivercity(id).asResponse()
 
-    @GetMapping("get/by-party")
+    @GetMapping("by-party")
     fun getStudentsByParty(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = studentRepository.getStudentsByParty(id).asResponse()
 
-    @PostMapping("post/create")
+    @PostMapping("create")
     fun createStudent(
         @RequestBody studentParam: CreateStudentRequest
     ): ResponseEntity<Any>{
