@@ -11,7 +11,7 @@ data class PartyEntity(
     @Column(length = TextLength.SHORT)
     val partyName: String,
     @ManyToMany
-    val workers: List<WorkerEntity>,
+    val workers: MutableList<WorkerEntity>,
     @ManyToMany
     val disciplines: List<DisciplineEntity>,
 

@@ -9,8 +9,14 @@ import jakarta.persistence.*
 @Table(name = "students")
 data class StudentEntity(
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     var chatId: Long,
+
+    @Column(length = TextLength.SHORT)
+    val firstName: String,
+
+    @Column(length = TextLength.SHORT)
+    val lastName: String,
 
     @Column(length = TextLength.SHORT)
     val nickname: String,

@@ -15,7 +15,7 @@ class StudentRepositoryImpl(
     private val studentDao: StudentDao
 ) : StudentRepository, StudentDomainConverter() {
     override fun getStudentById(id: Long): State<Student> {
-        val entity = studentDao.findById(id).getOrElse { throw NotFoundException() }
+        val entity = studentDao.findByChatId(id).getOrElse { throw NotFoundException() }
         return State.Success(entity.asDomain())
     }
 

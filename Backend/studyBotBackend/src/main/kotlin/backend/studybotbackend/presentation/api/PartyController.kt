@@ -5,6 +5,7 @@ import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.party.Party
 import backend.studybotbackend.domain.repository.PartyRepository
+import backend.studybotbackend.domain.request.party.AddWorkerRequest
 import backend.studybotbackend.domain.request.party.CreatePartyRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -40,7 +41,7 @@ class PartyController(
     fun getPartysByChatId(
         @RequestParam id: Long,
     ): ResponseEntity<Any>{
-        val entity = partyRepository.getPartysByStudentId(id)
+        val entity = partyRepository.getPartysByStudent(id)
         return entity.asResponse()
     }
 
@@ -48,7 +49,7 @@ class PartyController(
     fun getPartysByWorkerId(
         @RequestParam id: Long,
     ): ResponseEntity<Any>{
-        val entity = partyRepository.getPartysByWorkerId(id)
+        val entity = partyRepository.getPartysByWorker(id)
         return entity.asResponse()
     }
 
@@ -56,8 +57,14 @@ class PartyController(
     fun getPartysByDisciplineId(
         @RequestParam id: Long,
     ): ResponseEntity<Any>{
-        val entity = partyRepository.getPartysByDisciplineId(id)
+        val entity = partyRepository.getPartysByDiscipline(id)
         return entity.asResponse()
+    }
+
+    @GetMapping("all")
+    fun getAllPartys(): ResponseEntity<Any>{
+        val state = partyRepository.getAllPartys()
+        return state.asResponse()
     }
 
     @PostMapping("create")
@@ -70,6 +77,14 @@ class PartyController(
             disciplines = partyParam.disciplines,
         )
         val state = partyRepository.createParty(party)
+        return state.asResponse()
+    }
+
+    @PutMapping("add-worker")
+    fun addWorker(
+        @RequestBody req: AddWorkerRequest
+    ): ResponseEntity<Any>{
+        val state = partyRepository.addWorker(req.partyId,req.workerId)
         return state.asResponse()
     }
 

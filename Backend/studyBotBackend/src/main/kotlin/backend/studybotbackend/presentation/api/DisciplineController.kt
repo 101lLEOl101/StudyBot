@@ -48,6 +48,13 @@ class DisciplineController(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = disciplineRepository.getDisciplinesByParty(id).asResponse()
 
+
+    @GetMapping("all")
+    fun getAllDisciplines(): ResponseEntity<Any>{
+        val state = disciplineRepository.getAllDisciplines()
+        return state.asResponse()
+    }
+
     @PostMapping("create")
     fun createDiscipline(
         @RequestBody disciplineParam: CreateDisciplineRequest
@@ -58,5 +65,6 @@ class DisciplineController(
         val state = disciplineRepository.createDiscipline(discipline)
         return state.asResponse()
     }
+
 
 }

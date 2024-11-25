@@ -55,6 +55,8 @@ class StudentController (
         val student = Student.new(
             chatId = studentParam.chatId,
             nickname = studentParam.nickName,
+            firstName = studentParam.firstName,
+            lastName = studentParam.lastName,
             university = studentParam.univercity,
         )
         val state = studentRepository.createStudent(student)

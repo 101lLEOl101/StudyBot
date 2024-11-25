@@ -11,4 +11,7 @@ interface DisciplineRepository {
     fun getDisciplinesByParty(id: Long): State<List<Discipline>>
 
     fun createDiscipline(discipline: Discipline): State<Discipline>
+
+    fun getAllDisciplines(): State<List<Discipline>>
+
 }

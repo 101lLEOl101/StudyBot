@@ -11,4 +11,6 @@ interface StudentSubRepository {
 
     fun getStudentSubsByStudent(id: Long): State<List<StudentSub>>
 
+    fun createSubscribe(chatId: Long, partyId: Long): State<StudentSub>
+
 }

@@ -21,6 +21,8 @@ class StudentDomainConverter : DomainConverter<StudentEntity, Student> {
     override fun Student.asDatabaseEntity(): StudentEntity =
         StudentEntity(
             chatId,
+            firstName,
+            lastName,
             nickname,
             universityDao.findById(university).get(),
             resultDao.findAllById(results),
@@ -29,6 +31,8 @@ class StudentDomainConverter : DomainConverter<StudentEntity, Student> {
         )
     override fun StudentEntity.asDomain(): Student =
         Student(chatId,
+            firstName,
+            lastName,
             nickname,
             university.universityId,
             results.map{it.resultId},
