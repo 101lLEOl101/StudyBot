@@ -11,4 +11,7 @@ interface AnswerRepository {
     fun getRightAnswersByQuestion(id: Long): State<List<Answer>>
 
     fun getUserAnswersByQuestion(id: Long): State<List<Answer>>
+    fun createAnswer(answer: Answer): State<Answer>
+
+    fun deleteAnswer(id: Long): State<Unit>
 }

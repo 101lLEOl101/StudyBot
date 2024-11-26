@@ -11,4 +11,7 @@ interface StudentRepository {
     fun getStudentsByParty(id: Long): State<List<Student>>
 
     fun createStudent(student: Student): State<Student>
+    fun deleteStudent(id: Long): State<Unit>
+
+    fun getAllStudents(): State<List<Student>>
 }

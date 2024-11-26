@@ -13,5 +13,6 @@ interface ResultRepository {
     fun getResultsByTest(id: Long): State<List<Result>>
 
     fun startTest(chatId: Long,testId: Long): State<Result>
+    fun deleteResult(id: Long): State<Unit>
 
 }

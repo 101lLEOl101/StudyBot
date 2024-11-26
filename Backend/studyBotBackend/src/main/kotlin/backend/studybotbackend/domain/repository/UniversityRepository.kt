@@ -10,4 +10,5 @@ interface UniversityRepository {
     fun getUniversityByStudent(id: Long): State<University>
 
     fun createUnivercity(university: University): State<University>
+    fun deleteUniversity(id: Long): State<Unit>
 }

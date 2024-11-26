@@ -38,6 +38,9 @@ class WorkerController(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = workerRepository.getWorkersByParty(id).asResponse()
 
+    @GetMapping("all")
+    fun getAllWorkers(): ResponseEntity<Any> = workerRepository.getAllWorkers().asResponse()
+
     @PostMapping("create")
     fun createWorker(
         @RequestBody workerParams: CreateWorkerRequest
@@ -51,6 +54,14 @@ class WorkerController(
                 workerRole =workerParams.workerRole,
             )
         val state = workerRepository.createWorker(worker)
+        return state.asResponse()
+    }
+
+    @DeleteMapping("by-id")
+    fun deleteWorker(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> {
+        val state = workerRepository.deleteWorker(id)
         return state.asResponse()
     }
 

@@ -8,6 +8,7 @@ import backend.studybotbackend.domain.model.univercity.University
 import backend.studybotbackend.domain.repository.UniversityRepository
 import backend.studybotbackend.domain.request.univercity.CreateUnivercityRequest
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -52,6 +53,14 @@ class UniversityController(
             universityName = universityParam.universityName
         )
         val state = universityRepository.createUnivercity(university)
+        return state.asResponse()
+    }
+
+    @DeleteMapping("by-id")
+    fun deleteUniversity(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> {
+        val state = universityRepository.deleteUniversity(id)
         return state.asResponse()
     }
 }

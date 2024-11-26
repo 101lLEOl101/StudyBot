@@ -1,6 +1,7 @@
 package backend.studybotbackend.data.repository
 
 import backend.studybotbackend.core.util.State
+import backend.studybotbackend.data.dao.StudentDao
 import backend.studybotbackend.data.dao.UniversityDao
 import backend.studybotbackend.data.util.UnivercityDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
@@ -15,6 +16,8 @@ import kotlin.jvm.optionals.getOrElse
 class UniversityRepositoryImpl : UniversityRepository, UnivercityDomainConverter() {
     @Autowired
     private lateinit var universityDao: UniversityDao
+@Autowired
+private lateinit var studentDao: StudentDao
 
     override fun getUniversityById(id: Long): State<University> {
         val entity = universityDao.findById(id).getOrElse { throw NotFoundException() }
@@ -29,6 +32,13 @@ class UniversityRepositoryImpl : UniversityRepository, UnivercityDomainConverter
     override fun createUnivercity(university: University): State<University> {
         val entity = universityDao.save(university.asDatabaseEntity())
         return State.Success(entity.asDomain())
+    }
+
+    override fun deleteUniversity(id: Long): State<Unit> {
+        val entity = universityDao.findById(id).getOrElse { throw NotFoundException() }
+        studentDao.deleteAll(entity.students)
+        universityDao.delete(entity)
+        return State.Success(Unit)
     }
 
 

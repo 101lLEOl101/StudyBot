@@ -29,4 +29,14 @@ class WorkerRepositoryImpl(
         return State.Success(entity.asDomain())
     }
 
+    override fun getAllWorkers(): State<List<Worker>> {
+        return State.Success(workerDao.findAll().map { it.asDomain() })
+    }
+
+    override fun deleteWorker(id: Long): State<Unit> {
+        val entity = workerDao.findById(id).getOrElse { throw NotFoundException() }
+        workerDao.delete(entity)
+        return State.Success(Unit)
+    }
+
 }

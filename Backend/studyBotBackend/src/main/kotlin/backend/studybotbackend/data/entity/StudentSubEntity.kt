@@ -9,8 +9,7 @@ import jakarta.persistence.*
 @Table(name = "student-sub")
 data class StudentSubEntity(
     @Column
-    val status: Status,
-
+    var status: Status,
     @ManyToOne
     val student: StudentEntity,
     @ManyToOne

@@ -17,5 +17,6 @@ interface PartyRepository {
     fun addWorker(partyId: Long, workerId: Long): State<Any>
 
     fun getAllPartys(): State<List<Party>>
+    fun deleteParty(id: Long): State<Unit>
 
 }

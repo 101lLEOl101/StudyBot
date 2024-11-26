@@ -7,6 +7,7 @@ import backend.studybotbackend.domain.repository.ResultRepository
 import backend.studybotbackend.domain.request.result.StartTestRequest
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -57,6 +58,14 @@ class ResultController(
             chatId = req.chatId,
             testId = req.testId,
         )
+        return state.asResponse()
+    }
+
+    @DeleteMapping("by-id")
+    fun deleteResult(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> {
+        val state = resultRepository.deleteResult(id)
         return state.asResponse()
     }
 }

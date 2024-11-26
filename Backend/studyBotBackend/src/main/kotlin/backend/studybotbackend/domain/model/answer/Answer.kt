@@ -17,7 +17,7 @@ data class Answer(
             correct: String,
             answerText: String,
             question: Long,
-            result: Long?
+            result: Long? = null
         ) = Answer(
             0,
             isStudentAnswer,

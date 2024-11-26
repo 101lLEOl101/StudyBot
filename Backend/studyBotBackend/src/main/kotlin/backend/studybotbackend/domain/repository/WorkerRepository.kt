@@ -10,4 +10,7 @@ interface WorkerRepository {
 
     fun createWorker(worker: Worker): State<Worker>
 
+    fun getAllWorkers(): State<List<Worker>>
+    fun deleteWorker(id: Long): State<Unit>
+
 }

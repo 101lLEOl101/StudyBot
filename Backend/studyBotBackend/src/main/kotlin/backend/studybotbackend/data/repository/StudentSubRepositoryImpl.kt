@@ -34,13 +34,27 @@ class StudentSubRepositoryImpl(
 
     override fun createSubscribe(chatId: Long, partyId: Long): State<StudentSub> {
         val subs = studentSubDao.findByParty(partyId)
-        if (subs.any { it.student.chatId == chatId }){
+        if (subs.any { it.student.chatId == chatId }) {
             throw InvalidRequestData("Subscribe is already exist")
         }
         val studentId = studentDao.getIdByChatId(chatId)
         val sub = StudentSub.new(Status.NOT_CONSIDERED, studentId, partyId)
         val entity = studentSubDao.save(sub.asDatabaseEntity())
         return State.Success(entity.asDomain())
+    }
+
+    override fun acceptSub(subId: Long): State<Boolean> {
+        val sub = studentSubDao.findById(subId).getOrElse { throw NotFoundException() }
+        when (sub.status) {
+            Status.APROVED -> {throw InvalidRequestData("Sub is aproved")}
+            Status.NOT_APROVED -> {throw InvalidRequestData("Sub isn't aproved")}
+            Status.NOT_CONSIDERED -> {
+                sub.status = Status.APROVED
+                studentSubDao.save(sub)
+            }
+
+        }
+        return State.Success(true)
     }
 
 }

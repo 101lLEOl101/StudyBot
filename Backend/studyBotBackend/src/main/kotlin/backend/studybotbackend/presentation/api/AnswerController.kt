@@ -3,10 +3,15 @@ package backend.studybotbackend.presentation.api
 import backend.studybotbackend.core.config.Routes
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
+import backend.studybotbackend.domain.model.answer.Answer
 import backend.studybotbackend.domain.repository.AnswerRepository
+import backend.studybotbackend.domain.request.answer.CreateAnswerRequest
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -47,4 +52,26 @@ class AnswerController(
     fun getUserAnswerByQuestion(
         @RequestParam id: Long
     ): ResponseEntity<Any> = answerRepository.getUserAnswersByQuestion(id).asResponse()
+
+    @PostMapping("create")
+    fun createQuestion(
+        @RequestBody answerParam: CreateAnswerRequest
+    ): ResponseEntity<Any> {
+        val answer = Answer.new(
+            isStudentAnswer = answerParam.isStudentAnswer,
+            correct = answerParam.correct,
+            answerText = answerParam.answerText,
+            question = answerParam.question,
+        )
+        val state = answerRepository.createAnswer(answer)
+        return state.asResponse()
+    }
+
+    @DeleteMapping("by-id")
+    fun deleteQuestion(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> {
+        val state = answerRepository.deleteAnswer(id)
+        return state.asResponse()
+    }
 }

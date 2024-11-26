@@ -12,4 +12,5 @@ interface TestRepository {
     fun getTestsByName(name: String): State<List<Test>>
 
     fun createTest(test: Test): State<Test>
+    fun deleteTest(id: Long): State<Unit>
 }

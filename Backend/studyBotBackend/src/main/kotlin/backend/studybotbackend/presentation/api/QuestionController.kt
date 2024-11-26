@@ -6,9 +6,13 @@ import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.question.Question
 import backend.studybotbackend.domain.repository.QuestionRepository
+import backend.studybotbackend.domain.request.question.CreateQuestionRequest
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -39,5 +43,26 @@ class QuestionController(
     fun getQuestionByTest(
         @RequestParam id: Long
     ): ResponseEntity<Any> = questionRepository.getQuestionsByTest(id).asResponse()
+
+    @PostMapping("create")
+    fun createQuestion(
+        @RequestBody questionParam: CreateQuestionRequest
+    ): ResponseEntity<Any> {
+        val question = Question.new(
+            questionText = questionParam.questionText,
+            questionType = questionParam.questionType,
+            tests = questionParam.tests
+        )
+        val state = questionRepository.createQuestion(question)
+        return state.asResponse()
+    }
+
+    @DeleteMapping("by-id")
+    fun deleteQuestion(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> {
+        val state = questionRepository.deleteQuestion(id)
+        return state.asResponse()
+    }
 
 }

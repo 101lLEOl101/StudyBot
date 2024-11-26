@@ -42,5 +42,11 @@ class DisciplineRepositoryImpl : DisciplineRepository, DisciplineDomainConverter
         return State.Success(entities.map { it.asDomain() })
     }
 
+    override fun deleteDiscipline(id: Long): State<Unit> {
+        val entity = disciplineDao.findById(id).getOrElse { throw NotFoundException() }
+        disciplineDao.delete(entity)
+        return State.Success(Unit)
+    }
+
 
 }

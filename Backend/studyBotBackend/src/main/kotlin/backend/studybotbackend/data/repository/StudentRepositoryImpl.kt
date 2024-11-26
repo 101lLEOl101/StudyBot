@@ -2,9 +2,11 @@ package backend.studybotbackend.data.repository
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.StudentDao
+import backend.studybotbackend.data.dao.StudentSubDao
 import backend.studybotbackend.data.util.StudentDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.student.Student
+import backend.studybotbackend.domain.model.studentSub.StudentSub
 import backend.studybotbackend.domain.repository.StudentRepository
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
@@ -12,7 +14,8 @@ import kotlin.jvm.optionals.getOrElse
 
 @Repository
 class StudentRepositoryImpl(
-    private val studentDao: StudentDao
+    private val studentDao: StudentDao,
+    private val studentSubDao: StudentSubDao
 ) : StudentRepository, StudentDomainConverter() {
     override fun getStudentById(id: Long): State<Student> {
         val entity = studentDao.findByChatId(id).getOrElse { throw NotFoundException() }
@@ -33,5 +36,16 @@ class StudentRepositoryImpl(
         val entity = studentDao.save(student.asDatabaseEntity())
 
         return State.Success(entity.asDomain())
+    }
+
+    override fun deleteStudent(id: Long): State<Unit> {
+        val entity = studentDao.findByChatId(id).getOrElse { throw NotFoundException() }
+        studentSubDao.deleteAll(entity.subs)
+        studentDao.delete(entity)
+        return State.Success(Unit)
+    }
+
+    override fun getAllStudents(): State<List<Student>> {
+        return State.Success(studentDao.findAll().map { it.asDomain() })
     }
 }

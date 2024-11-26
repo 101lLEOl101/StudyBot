@@ -13,4 +13,6 @@ interface StudentSubRepository {
 
     fun createSubscribe(chatId: Long, partyId: Long): State<StudentSub>
 
+    fun acceptSub(subId: Long): State<Boolean>
+
 }

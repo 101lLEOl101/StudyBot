@@ -7,6 +7,7 @@ import backend.studybotbackend.domain.model.discipline.Discipline
 import backend.studybotbackend.domain.repository.DisciplineRepository
 import backend.studybotbackend.domain.request.discipline.CreateDisciplineRequest
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -66,5 +67,13 @@ class DisciplineController(
         return state.asResponse()
     }
 
+
+    @DeleteMapping("by-id")
+    fun deleteDicipline(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> {
+        val state = disciplineRepository.deleteDiscipline(id)
+        return state.asResponse()
+    }
 
 }

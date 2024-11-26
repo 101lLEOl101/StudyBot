@@ -2,6 +2,7 @@ package backend.studybotbackend.data.repository
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.PartyDao
+import backend.studybotbackend.data.dao.StudentSubDao
 import backend.studybotbackend.data.dao.WorkerDao
 import backend.studybotbackend.data.entity.PartyEntity
 import backend.studybotbackend.data.util.PartyDomainConverter
@@ -18,6 +19,7 @@ import kotlin.jvm.optionals.getOrElse
 class PartyRepositoryImpl(
     private val partyDao: PartyDao,
     private val workerDao: WorkerDao,
+    private val studentSubDao: StudentSubDao
 ) : PartyRepository, PartyDomainConverter() {
     override fun getPartyById(id: Long): State<Party> {
         val entity: PartyEntity = partyDao.findById(id).getOrElse { throw NotFoundException() }
@@ -58,6 +60,13 @@ class PartyRepositoryImpl(
     override fun getAllPartys(): State<List<Party>> {
         val entities = partyDao.findAll()
         return State.Success(entities.map { it.asDomain() })
+    }
+
+    override fun deleteParty(id: Long): State<Unit> {
+        val entity = partyDao.findById(id).getOrElse { throw NotFoundException() }
+        studentSubDao.deleteAll(entity.subs)
+        partyDao.delete(entity)
+        return State.Success(Unit)
     }
 
 

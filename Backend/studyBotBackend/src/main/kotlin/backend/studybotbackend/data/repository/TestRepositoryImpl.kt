@@ -1,6 +1,7 @@
 package backend.studybotbackend.data.repository
 
 import backend.studybotbackend.core.util.State
+import backend.studybotbackend.data.dao.ResultDao
 import backend.studybotbackend.data.dao.TestDao
 import backend.studybotbackend.data.util.TestDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
@@ -14,6 +15,8 @@ import kotlin.jvm.optionals.getOrElse
 class TestRepositoryImpl : TestRepository, TestDomainConverter() {
     @Autowired
     private lateinit var testDao: TestDao
+    @Autowired
+    private lateinit var resultDao: ResultDao
 
     override fun getTestById(id: Long): State<Test> {
         val entity = testDao.findById(id).getOrElse { throw NotFoundException() }
@@ -33,5 +36,12 @@ class TestRepositoryImpl : TestRepository, TestDomainConverter() {
     override fun createTest(test: Test): State<Test> {
         val entity = testDao.save(test.asDatabaseEntity())
         return State.Success(entity.asDomain())
+    }
+
+    override fun deleteTest(id: Long): State<Unit> {
+        val entity = testDao.findById(id).getOrElse { throw NotFoundException() }
+        resultDao.deleteAll(entity.results)
+        testDao.delete(entity)
+        return State.Success(Unit)
     }
 }

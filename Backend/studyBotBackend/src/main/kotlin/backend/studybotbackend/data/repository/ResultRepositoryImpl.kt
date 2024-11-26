@@ -2,6 +2,7 @@ package backend.studybotbackend.data.repository
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.ResultDao
+import backend.studybotbackend.data.dao.StudentDao
 import backend.studybotbackend.data.entity.ResultEntity
 import backend.studybotbackend.data.util.ResultDomainConverter
 import backend.studybotbackend.domain.exceptions.InvalidRequestData
@@ -18,6 +19,8 @@ import kotlin.jvm.optionals.getOrElse
 class ResultRepositoryImpl : ResultRepository, ResultDomainConverter() {
     @Autowired
     private lateinit var resultDao: ResultDao
+    @Autowired
+    private lateinit var studentDao: StudentDao
 
 
     override fun getResultById(id: Long): State<Result> {
@@ -43,10 +46,16 @@ class ResultRepositoryImpl : ResultRepository, ResultDomainConverter() {
         val domain = Result.new(
             LocalDateTime.now(),
             null,
-            chatId,
+            studentDao.getIdByChatId(chatId),
             testId,
         )
         return State.Success(resultDao.save(domain.asDatabaseEntity()).asDomain())
 
+    }
+
+    override fun deleteResult(id: Long): State<Unit> {
+        val entity = resultDao.findById(id).getOrElse { throw NotFoundException() }
+        resultDao.delete(entity)
+        return State.Success(Unit)
     }
 }

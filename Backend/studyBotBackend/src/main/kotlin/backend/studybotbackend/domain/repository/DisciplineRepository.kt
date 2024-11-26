@@ -14,4 +14,6 @@ interface DisciplineRepository {
 
     fun getAllDisciplines(): State<List<Discipline>>
 
+    fun deleteDiscipline(id: Long): State<Unit>
+
 }

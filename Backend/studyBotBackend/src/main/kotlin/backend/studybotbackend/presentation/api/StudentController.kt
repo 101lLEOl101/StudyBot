@@ -7,6 +7,7 @@ import backend.studybotbackend.domain.model.student.Student
 import backend.studybotbackend.domain.repository.StudentRepository
 import backend.studybotbackend.domain.request.student.CreateStudentRequest
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -48,6 +49,9 @@ class StudentController (
         @RequestParam id: Long,
     ): ResponseEntity<Any> = studentRepository.getStudentsByParty(id).asResponse()
 
+    @GetMapping("all")
+    fun getAllStudents() = studentRepository.getAllStudents().asResponse()
+
     @PostMapping("create")
     fun createStudent(
         @RequestBody studentParam: CreateStudentRequest
@@ -62,5 +66,15 @@ class StudentController (
         val state = studentRepository.createStudent(student)
         return state.asResponse()
     }
+
+    @DeleteMapping("by-id")
+    fun deleteStudent(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> {
+        val state = studentRepository.deleteStudent(id)
+        return state.asResponse()
+    }
+
+
 
 }
