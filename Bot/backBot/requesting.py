@@ -1,17 +1,18 @@
 import requests
 
-adress = "http://26.37.195.47:8000/"
-r = requests.get(f"{adress}api/worker/by-id",
-                 params={"id": "8"}).json()  # после айпи и порта надо написать /api ОБЯЗАТЕЛЬНО
-print(r)
-payload = {
-    "firstName": "{{$randomFirstName}}",
-    "lastName": "{{$randomLastName}}",
-    "nickName": "{{$randomUserName}}",
-    "password": "{{$randomPassword}}",
-    "workerRole": "0"
-}
-r = requests.post(f"{adress}api/worker/create", json=payload)  # словарь не data, a json
-print(r.text)
-r = requests.get(f"{adress}api/worker/by-id", params={"id": "8"}).json()
-print(r)
+
+def set_adress(adr):
+    global adress
+    adress = adr
+
+
+adress = "http://localhost:8000/"  # ToDo: перед запуском удалять эту строку. Сделано для отладки
+
+
+def get_test_by_id(id):
+    r = requests.get(f"{adress}api/test/by-id", params={"id": str(id)}).json()
+    if r.get("message") != 'success':
+        raise KeyError("Test not found.")
+    return r
+
+print(get_test_by_id(3))

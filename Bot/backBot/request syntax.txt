@@ -1,0 +1,15 @@
+r = requests.get(f"{adress}api/worker/by-id",
+                 params={"id": "2"}).json()  # после айпи и порта надо написать /api ОБЯЗАТЕЛЬНО
+
+print(r)
+payload = {
+    "firstName": "{{$randomFirstName}}",
+    "lastName": "{{$randomLastName}}",
+    "nickName": "{{$randomUserName}}",
+    "password": "{{$randomPassword}}",
+    "workerRole": "0"
+}
+r = requests.post(f"{adress}api/worker/create", json=payload)  # словарь не data, a json
+print(r.text)
+r = requests.get(f"{adress}api/worker/by-id", params={"id": "1"}).json()
+print(r)
