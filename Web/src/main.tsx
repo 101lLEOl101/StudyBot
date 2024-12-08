@@ -6,13 +6,13 @@ import '@mantine/core/styles.css'
 import { createTheme, MantineProvider } from "@mantine/core";
 
 const theme = createTheme({
+
 });
 
-
 createRoot(document.getElementById('root')!).render(
-    <MantineProvider theme={theme} defaultColorScheme={'dark'} >
+    <MantineProvider theme={theme} defaultColorScheme={'dark'}  >
         <StrictMode>
-            <App />
+            <App/>
         </StrictMode>
     </MantineProvider>
 )
