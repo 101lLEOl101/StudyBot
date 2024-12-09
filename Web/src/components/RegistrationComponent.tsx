@@ -11,53 +11,10 @@ import {
     TextInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { upperFirst, useToggle } from '@mantine/hooks';
-import {useQuery} from "@tanstack/react-query";
+import {Link} from "react-router-dom";
 
-type User = {
-    id: string;
-    text: string;
-    done: boolean;
-    login: string;
-    password: string;
-}
 
-export const getTasks = () =>{
-    return new Promise<User[]>(res =>{
-        setTimeout(()=> {
-            res([{
-                id: "1",
-                text: "done",
-                done: true,
-                login: "login",
-                password: "password",
-            }, {
-                id: "2",
-                text: "yes",
-                done: true,
-                login: "abcd",
-                password: "efghig",
-            },
-            ])
-        }, 100)
-    })
-}
-
-export function AuthenticationComponent(props: PaperProps) {
-    const { data, error, isLoading } = useQuery({queryKey: ['users', 'list'], queryFn: getTasks});
-    if(isLoading){
-        console.log("loading");
-    }
-
-    else if(error){
-        console.log(error);
-    }
-
-    else{
-        console.log(data);
-    }
-
-    const [type, toggle] = useToggle(['Login', 'Registration']);
+export function RegistrationComponent(props: PaperProps) {
     const form = useForm({
         initialValues: {
             login: '',
@@ -78,7 +35,7 @@ export function AuthenticationComponent(props: PaperProps) {
                 Доступ к Study Bot
             </Text>
 
-            <Divider label={type == 'Registration' ? 'Регистрация' : 'Логин'} labelPosition="center" my="lg" />
+            <Divider label={'Registration'} labelPosition="center" my="lg" />
 
             <form onSubmit={form.onSubmit(() => {})}>
                 <Stack>
@@ -99,24 +56,24 @@ export function AuthenticationComponent(props: PaperProps) {
                         radius="md"
                     />
 
-                    {type === 'Registration' && (<PasswordInput
+                    <PasswordInput
                         label="Повтор Пароля"
                         placeholder="Твой Пароль"
                         value={form.values.repeat_password}
                         onChange={(event) => form.setFieldValue('repeat_password', event.currentTarget.value)}
                         error={form.errors.repeat_password && 'Повторный пароль неверен'}
                         radius="md"
-                    />)}
+                    />
                 </Stack>
 
                 <Group justify="space-between" mt="xl">
-                    <Anchor component="button" type="button" c="dimmed" onClick={() => toggle()} size="xs">
-                        {type === 'Registration'
-                            ? 'Уже есть аккаунт? Вход'
-                            : "Нет аккаунта? Регистрация"}
-                    </Anchor>
-                    <Button type="submit" radius="xl">
-                        {upperFirst(type == 'Registration' ? 'Зарегистрироваться' : 'Войти')}
+                    <Link style={{ textDecoration: 'none', color: 'inherit' }} to={"/login"}>
+                        <Anchor component="button" type="button" c="dimmed" size="xs">
+                            Уже есть аккаунт? Вход
+                        </Anchor>
+                    </Link>
+                    <Button type="submit" radius="xl" >
+                        Зарегистрироваться
                     </Button>
                 </Group>
             </form>
