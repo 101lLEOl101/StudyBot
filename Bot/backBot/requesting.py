@@ -1,7 +1,7 @@
 import requests
 
 
-def set_adress(adr):
+def set_adress(adr): # Функция, которая позволяет задать адрес бэка
     global adress
     adress = adr
 
