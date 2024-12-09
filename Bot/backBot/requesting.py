@@ -50,4 +50,15 @@ def GetResultsById(chatId):
         raise KeyError("Student not found.")
     return r.get("data")
 
-print(GetResultsById(408))
+
+def SendAnswer(questionId, isStudentAnswer, answerText):
+    payload = {
+        "isStudentAnswer": str(bool(isStudentAnswer)),
+        "correct": "true",
+        "answerText": str(answerText),
+        "question": str(questionId)
+    }
+    r = requests.post(f"{adress}api/answer/create", json=payload)
+    return r.json()
+
+print(SendAnswer(1, 1, "test"))
