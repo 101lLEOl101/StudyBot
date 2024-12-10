@@ -44,4 +44,9 @@ class TestRepositoryImpl : TestRepository, TestDomainConverter() {
         testDao.delete(entity)
         return State.Success(Unit)
     }
+
+    override fun getAllTests(): State<List<Test>> {
+        val entities = testDao.findAll()
+        return State.Success(entities.map { it.asDomain() })
+    }
 }

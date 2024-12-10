@@ -9,6 +9,8 @@ interface QuestionRepository {
 
     fun getQuestionsByTest(id: Long): State<List<Question>>
 
+    fun getAllQuestions(): State<List<Question>>
+
     fun createQuestion(question: Question): State<Question>
     fun deleteQuestion(id: Long): State<Unit>
 }

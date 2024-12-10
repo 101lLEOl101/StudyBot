@@ -1,6 +1,7 @@
 package backend.studybotbackend.data.repository
 
 import backend.studybotbackend.core.util.State
+import backend.studybotbackend.data.dao.ResultDao
 import backend.studybotbackend.data.dao.StudentDao
 import backend.studybotbackend.data.dao.StudentSubDao
 import backend.studybotbackend.data.util.StudentDomainConverter
@@ -15,7 +16,8 @@ import kotlin.jvm.optionals.getOrElse
 @Repository
 class StudentRepositoryImpl(
     private val studentDao: StudentDao,
-    private val studentSubDao: StudentSubDao
+    private val studentSubDao: StudentSubDao,
+    private val resultDao: ResultDao
 ) : StudentRepository, StudentDomainConverter() {
     override fun getStudentById(id: Long): State<Student> {
         val entity = studentDao.findByChatId(id).getOrElse { throw NotFoundException() }
@@ -40,6 +42,7 @@ class StudentRepositoryImpl(
 
     override fun deleteStudent(id: Long): State<Unit> {
         val entity = studentDao.findByChatId(id).getOrElse { throw NotFoundException() }
+        resultDao.deleteAll(entity.results)
         studentSubDao.deleteAll(entity.subs)
         studentDao.delete(entity)
         return State.Success(Unit)

@@ -44,6 +44,12 @@ class QuestionController(
         @RequestParam id: Long
     ): ResponseEntity<Any> = questionRepository.getQuestionsByTest(id).asResponse()
 
+    @GetMapping("all")
+    fun getAllQuestions(): ResponseEntity<Any> {
+        val state = questionRepository.getAllQuestions()
+        return state.asResponse()
+    }
+
     @PostMapping("create")
     fun createQuestion(
         @RequestBody questionParam: CreateQuestionRequest

@@ -14,4 +14,6 @@ interface AnswerRepository {
     fun createAnswer(answer: Answer): State<Answer>
 
     fun deleteAnswer(id: Long): State<Unit>
+
+    fun getAllAnswers(): State<List<Answer>>
 }

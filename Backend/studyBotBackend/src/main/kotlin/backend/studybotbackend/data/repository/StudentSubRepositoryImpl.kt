@@ -57,4 +57,9 @@ class StudentSubRepositoryImpl(
         return State.Success(true)
     }
 
+    override fun getAllSubs(): State<List<StudentSub>> {
+        val entities = studentSubDao.findAll()
+        return State.Success(entities.map { it.asDomain() })
+    }
+
 }

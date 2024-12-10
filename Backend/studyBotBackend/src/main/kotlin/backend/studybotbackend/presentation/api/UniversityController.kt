@@ -45,6 +45,12 @@ class UniversityController(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = universityRepository.getUniversityByStudent(id).asResponse()
 
+    @GetMapping("all")
+    fun getAllUnivercities(): ResponseEntity<Any> {
+        val state = universityRepository.getAllUnivercities()
+        return state.asResponse()
+    }
+
     @PostMapping("create")
     fun createUniversity(
         @RequestBody universityParam:CreateUnivercityRequest

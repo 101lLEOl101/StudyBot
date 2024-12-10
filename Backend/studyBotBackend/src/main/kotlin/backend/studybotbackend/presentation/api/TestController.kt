@@ -49,6 +49,12 @@ class TestController(
         @RequestParam name: String
     ): ResponseEntity<Any> = testRepository.getTestsByName(name).asResponse()
 
+    @GetMapping("all")
+    fun getAllTests(): ResponseEntity<Any> {
+        val state = testRepository.getAllTests()
+        return state.asResponse()
+    }
+
     @PostMapping("create")
     fun createTest(
         @RequestBody testParam: CreateTestRequest

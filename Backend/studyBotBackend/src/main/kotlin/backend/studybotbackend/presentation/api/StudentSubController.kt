@@ -42,6 +42,12 @@ class StudentSubController(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = studentSubRepository.getStudentSubsByStudent(id).asResponse()
 
+    @GetMapping("all")
+    fun getAllSubs(): ResponseEntity<Any> {
+        val state = studentSubRepository.getAllSubs()
+        return state.asResponse()
+    }
+
     @PostMapping("subscribe")
     fun createSub(
         @RequestBody subReq: SubscribeRequest

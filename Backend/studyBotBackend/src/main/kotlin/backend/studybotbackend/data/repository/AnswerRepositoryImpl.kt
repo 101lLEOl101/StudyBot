@@ -40,6 +40,11 @@ class AnswerRepositoryImpl : AnswerRepository, AnswerDomainConverter() {
         return State.Success(entity.asDomain())
     }
 
+    override fun getAllAnswers(): State<List<Answer>> {
+        val entities = answerDao.findAll()
+        return State.Success(entities.map { it.asDomain() })
+    }
+
     override fun deleteAnswer(id: Long): State<Unit> {
         val entity = answerDao.findById(id).getOrElse { throw NotFoundException() }
         answerDao.delete(entity)

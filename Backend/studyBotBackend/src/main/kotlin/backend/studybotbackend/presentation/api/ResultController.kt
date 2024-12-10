@@ -50,6 +50,12 @@ class ResultController(
         @RequestParam id: Long
     ): ResponseEntity<Any> = resultRepository.getResultsByTest(id).asResponse()
 
+    @GetMapping("all")
+    fun getAllResults(): ResponseEntity<Any> {
+        val state = resultRepository.getAllResults()
+        return state.asResponse()
+    }
+
     @PostMapping("start")
     fun startTest(
         @RequestBody req: StartTestRequest

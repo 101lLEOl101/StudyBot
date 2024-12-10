@@ -53,6 +53,12 @@ class AnswerController(
         @RequestParam id: Long
     ): ResponseEntity<Any> = answerRepository.getUserAnswersByQuestion(id).asResponse()
 
+    @GetMapping("all")
+    fun getAllAnswers(): ResponseEntity<Any> {
+        val state = answerRepository.getAllAnswers()
+        return state.asResponse()
+    }
+
     @PostMapping("create")
     fun createQuestion(
         @RequestBody answerParam: CreateAnswerRequest
@@ -74,4 +80,6 @@ class AnswerController(
         val state = answerRepository.deleteAnswer(id)
         return state.asResponse()
     }
+
+
 }

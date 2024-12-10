@@ -53,6 +53,11 @@ class ResultRepositoryImpl : ResultRepository, ResultDomainConverter() {
 
     }
 
+    override fun getAllResults(): State<List<Result>> {
+        val entities = resultDao.findAll()
+        return State.Success(entities.map { it.asDomain() })
+    }
+
     override fun deleteResult(id: Long): State<Unit> {
         val entity = resultDao.findById(id).getOrElse { throw NotFoundException() }
         resultDao.delete(entity)

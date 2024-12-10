@@ -33,6 +33,11 @@ class QuestionRepositoryImpl(
         return State.Success(entity.asDomain())
     }
 
+    override fun getAllQuestions(): State<List<Question>> {
+        val entities = questionDao.findAll()
+        return State.Success(entities.map { it.asDomain() })
+    }
+
     override fun deleteQuestion(id: Long): State<Unit> {
         val entity = questionDao.findById(id).getOrElse { throw NotFoundException() }
         answerDao.deleteAll(entity.answers)

@@ -6,6 +6,7 @@ import backend.studybotbackend.data.dao.UniversityDao
 import backend.studybotbackend.data.util.UnivercityDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.univercity.University
+import backend.studybotbackend.domain.repository.StudentRepository
 import backend.studybotbackend.domain.repository.UniversityRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -17,7 +18,7 @@ class UniversityRepositoryImpl : UniversityRepository, UnivercityDomainConverter
     @Autowired
     private lateinit var universityDao: UniversityDao
 @Autowired
-private lateinit var studentDao: StudentDao
+private lateinit var studentRepository: StudentRepository
 
     override fun getUniversityById(id: Long): State<University> {
         val entity = universityDao.findById(id).getOrElse { throw NotFoundException() }
@@ -36,9 +37,14 @@ private lateinit var studentDao: StudentDao
 
     override fun deleteUniversity(id: Long): State<Unit> {
         val entity = universityDao.findById(id).getOrElse { throw NotFoundException() }
-        studentDao.deleteAll(entity.students)
+        entity.students.map { studentRepository.deleteStudent(it.chatId) }
         universityDao.delete(entity)
         return State.Success(Unit)
+    }
+
+    override fun getAllUnivercities(): State<List<University>> {
+        val entities = universityDao.findAll()
+        return State.Success(entities.map { it.asDomain() })
     }
 
 
