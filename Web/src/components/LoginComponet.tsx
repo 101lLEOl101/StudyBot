@@ -20,7 +20,6 @@ export function LoginComponet(props: PaperProps) {
             login: '',
             password: '',
             repeat_password: '',
-            terms: true,
         },
 
         validate: {

@@ -1,5 +1,5 @@
 import {
-    Anchor,
+    ActionIcon, Box,
     Button,
     Divider,
     Group,
@@ -12,12 +12,14 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import {Link} from "react-router-dom";
+import { IoCloseCircleOutline } from "react-icons/io5";
 
-
-export function RegistrationComponent(props: PaperProps) {
+export function CreateTeacherComponent(props: PaperProps) {
     const form = useForm({
         initialValues: {
             login: '',
+            name: '',
+            second_name: '',
             password: '',
             repeat_password: '',
         },
@@ -29,26 +31,49 @@ export function RegistrationComponent(props: PaperProps) {
     });
 
     return (
-        <Paper radius="md" p="xl" withBorder {...props}>
+        <Paper radius="md" p="xl" pt={"5"} withBorder {...props}>
+            <Box display={"flex"} ml={"100%"}>
+                <Link to={"/teachers"}>
+                    <ActionIcon  radius={100} variant="subtle" color="red">
+                        <IoCloseCircleOutline size={32}/>
+                    </ActionIcon>
+                </Link>
+            </Box>
             <Text size="lg" ta={"center"} fw={500}>
-                Доступ к Study Bot
+                Преподаватель
             </Text>
 
-            <Divider label={'Registration'} labelPosition="center" my="lg" />
+            <Divider label={'Добавление'} labelPosition="center" my="lg" />
 
             <form onSubmit={form.onSubmit(() => {})}>
                 <Stack>
                     <TextInput
                         label="Логин"
-                        placeholder="Твой Логин"
+                        placeholder="Логин Преподавателя"
                         value={form.values.login}
                         onChange={(event) => form.setFieldValue('login', event.currentTarget.value)}
                         radius="md"
                     />
 
+                    <TextInput
+                        label="Имя"
+                        placeholder="Имя Преподавателя"
+                        value={form.values.name}
+                        onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}
+                        radius="md"
+                    />
+
+                    <TextInput
+                        label="Фамилия"
+                        placeholder="Фамилия Преподавателя"
+                        value={form.values.second_name}
+                        onChange={(event) => form.setFieldValue('second_name', event.currentTarget.value)}
+                        radius="md"
+                    />
+
                     <PasswordInput
                         label="Пароль"
-                        placeholder="Твой Пароль"
+                        placeholder="Пароль Преподавателя"
                         value={form.values.password}
                         onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
                         error={form.errors.password && 'Пароль должен иметь не менее 6 символов'}
@@ -57,7 +82,7 @@ export function RegistrationComponent(props: PaperProps) {
 
                     <PasswordInput
                         label="Повтор Пароля"
-                        placeholder="Твой Пароль"
+                        placeholder="Пароль Преподавателя"
                         value={form.values.repeat_password}
                         onChange={(event) => form.setFieldValue('repeat_password', event.currentTarget.value)}
                         error={form.errors.repeat_password && 'Повторный пароль неверен'}
@@ -65,14 +90,9 @@ export function RegistrationComponent(props: PaperProps) {
                     />
                 </Stack>
 
-                <Group justify="space-between" mt="xl">
-                    <Link style={{ textDecoration: 'none', color: 'inherit' }} to={"/login"}>
-                        <Anchor component="button" type="button" c="dimmed" size="xs">
-                            Уже есть аккаунт? Вход
-                        </Anchor>
-                    </Link>
+                <Group justify="end" mt="xl">
                     <Button type="submit" radius="xl" >
-                        Зарегистрироваться
+                        Добавить преподавателя
                     </Button>
                 </Group>
             </form>
