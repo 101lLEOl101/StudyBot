@@ -64,15 +64,16 @@ class StudentSub:
 
 
 class Test:
+
     def __init__(self, createTime: int, expiresTime: int, discipline: int, testName: str, questions: list[int],
-                 results: list[int], testId: int):
+                 results: list[int], id: int):
         self.createTime = createTime
         self.expiresTime = expiresTime
         self.discipline = discipline
         self.testName = testName
         self.questions = questions
         self.results = results
-        self.testId = testId
+        self.id = id
 
 
 class University:
