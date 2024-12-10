@@ -24,7 +24,7 @@ export function CreateGroupComponent(props: PaperProps) {
     return (
         <Paper radius="md" p="xl" pt={"5"} withBorder {...props}>
             <Box display={"flex"} ml={"100%"}>
-                <Link to={"/groups-students"}>
+                <Link to={"/group-students"}>
                     <ActionIcon  radius={100} variant="subtle" color="red">
                         <IoCloseCircleOutline size={32}/>
                     </ActionIcon>

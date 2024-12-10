@@ -12,6 +12,7 @@ import CreateTeacherPage from "./pages/TecherCreatePage.tsx";
 import CreateDisciplinePage from "./pages/CreateDisciplinePage.tsx";
 import CreateGroupPage from "./pages/CreateGroupPage.tsx";
 import GroupStudentsPage from "./pages/GroupStudentsPage.tsx";
+import RequestsStudentsPage from "./pages/RequestsStudentsPage.tsx";
 
 export default function App() {
     return (
@@ -27,6 +28,9 @@ export default function App() {
                 <Route path={"/create-teacher"} element={<CreateTeacherPage/>}/>
                 <Route path={"/create-discipline"} element={<CreateDisciplinePage/>}/>
                 <Route path={"/create-group"} element={<CreateGroupPage/>}/>
+                <Route path={"/requests-students"}>
+                    <Route path=":id" element={<RequestsStudentsPage/>}/>
+                </Route>
                 <Route path="/group-students">
                     <Route index element={<GroupsStudentsPage />} />
                     <Route path=":id" element={<GroupStudentsPage />} />

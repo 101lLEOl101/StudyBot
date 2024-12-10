@@ -1,5 +1,4 @@
-import {ActionIcon, Badge, Box, Group, Table, Text} from '@mantine/core';
-import {useParams} from "react-router-dom";
+import {ActionIcon, Badge, Group, Table, Text} from '@mantine/core';
 import {IconTrash} from "@tabler/icons-react";
 
 const data_tests = [
@@ -100,7 +99,6 @@ export default function GroupStudentsComponent() {
 
     return (
         <>
-            <Box>{useParams().id}</Box>
             <Text size="lg" c={"blue"} ta={"center"} p={10}>Активные Тесты группы</Text>
             <Table.ScrollContainer minWidth={800}>
                 <Table verticalSpacing="sm">

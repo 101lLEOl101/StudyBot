@@ -1,6 +1,6 @@
 import {HeaderComponent} from "../components/HeaderComponent.tsx";
 import { Button, Group, Paper} from "@mantine/core";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import GroupStudentsComponent from "../components/GroupStudentsComponent.tsx";
 
 export default function GroupStudentsPage() {
@@ -13,7 +13,7 @@ export default function GroupStudentsPage() {
                     <Link to={"/create-group"}>
                         <Button>Создать Тест</Button>
                     </Link>
-                    <Link to={"/create-group"}>
+                    <Link to={`/requests-students/${useParams().id}`}>
                         <Button variant={"default"}>Запросы Студентов</Button>
                     </Link>
                 </Group>

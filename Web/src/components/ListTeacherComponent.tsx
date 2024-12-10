@@ -1,30 +1,20 @@
 import { IconPencil, IconTrash } from '@tabler/icons-react';
-import { ActionIcon, Avatar, Group, Table, Text } from '@mantine/core';
+import { ActionIcon, Group, Table, Text } from '@mantine/core';
 
 const data = [
     {
-        avatar:
-            'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png',
         name: 'Robert Wolfkisser',
     },
     {
-        avatar:
-            'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png',
         name: 'Jill Jailbreaker',
     },
     {
-        avatar:
-            'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png',
         name: 'Henry Silkeater',
     },
     {
-        avatar:
-            'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png',
         name: 'Bill Horsefighter',
     },
     {
-        avatar:
-            'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png',
         name: 'Jeremy Footviewer',
     },
 ];
@@ -34,7 +24,6 @@ export default function ListTeacherComponent() {
         <Table.Tr key={item.name}>
             <Table.Td>
                 <Group gap="sm">
-                    <Avatar size={30} src={item.avatar} radius={30} />
                     <Text fz="sm" fw={500}>
                         {item.name}
                     </Text>
