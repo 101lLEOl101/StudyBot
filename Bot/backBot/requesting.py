@@ -68,7 +68,7 @@ def GetResultsById(chatId):  # Получить результаты по ID с�
     data = []
     for i in r:
         data += [Result(i.get("startTime"), i.get("finishTime"), i.get("student"), i.get("test"), i.get("answers"),
-                      i.get("id"))]
+                        i.get("id"))]
     return data
 
 
@@ -81,6 +81,26 @@ def SendAnswer(questionId, isStudentAnswer, answerText):  # Создать от�
     }
     r = requests.post(f"{adress}api/answer/create", json=payload)
     return r.json()
+
+
+def GetWholeTest(id): # Получить тест целиком
+    curTest = GetTestById(id)
+    curQuestions = curTest.questions
+    questions_ = []
+    for i in curQuestions:
+        r = requests.get(f"{adress}api/question/by-id", params={"id": str(i)}).json()
+        if r.get("message") != 'success':
+            raise KeyError("Question not found.")
+        r = r.get("data")
+        q = Question(r.get("questionText"), r.get("questionType"), r.get("tests"), r.get("answers"), r.get("id"))
+        questions_ += [q]
+    curResults = curTest.results
+    results_ = []
+    for i in curResults:
+        r = GetResultsById(i)
+        results_ += [r]
+    wholeTest = WholeTest(curTest, questions_, results_, curTest.expiresTime)
+    return wholeTest
 
 
 print(GetResultsById(408)[0].startTime)  # ToDo: отладочная строка.

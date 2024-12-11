@@ -65,7 +65,7 @@ class StudentSub:
 
 class Test:
 
-    def __init__(self, createTime: int, expiresTime: int, discipline: int, testName: str, questions: list[int],
+    def __init__(self, createTime: int, expiresTime: str, discipline: int, testName: str, questions: list[int],
                  results: list[int], id: int):
         self.createTime = createTime
         self.expiresTime = expiresTime
@@ -93,3 +93,11 @@ class Worker:
         self.workerRole = workerRole
         self.partys = partys
         self.workerId = workerId
+
+
+class WholeTest:
+    def __init__(self, test: Test, questions: list[Question], results: list[Result], expiresAt : str):
+        self.test = test
+        self.questions = questions
+        self.results = results
+        self.expiresAt = expiresAt
