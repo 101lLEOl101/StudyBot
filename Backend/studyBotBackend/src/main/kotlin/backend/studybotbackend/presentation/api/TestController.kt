@@ -36,22 +36,26 @@ class TestController(
 
     @GetMapping("by-id")
     fun getTestById(
-        @RequestParam id: Long
+        @RequestParam id: Long,
     ): ResponseEntity<Any> = testRepository.getTestById(id).asResponse()
 
     @GetMapping("by-discipline")
     fun getTestByDiscipline(
-        @RequestParam id: Long
-    ): ResponseEntity<Any> = testRepository.getTestsByDiscipline(id).asResponse()
+        @RequestParam id: Long,
+        @RequestParam isAvailable: Boolean = true
+    ): ResponseEntity<Any> = testRepository.getTestsByDiscipline(id,isAvailable).asResponse()
 
     @GetMapping("by-name")
     fun getTestByTestName(
-        @RequestParam name: String
-    ): ResponseEntity<Any> = testRepository.getTestsByName(name).asResponse()
+        @RequestParam name: String,
+        @RequestParam isAvailable: Boolean = true
+    ): ResponseEntity<Any> = testRepository.getTestsByName(name,isAvailable).asResponse()
 
     @GetMapping("all")
-    fun getAllTests(): ResponseEntity<Any> {
-        val state = testRepository.getAllTests()
+    fun getAllTests(
+        @RequestParam isAvailable: Boolean = true
+    ): ResponseEntity<Any> {
+        val state = testRepository.getAllTests(isAvailable)
         return state.asResponse()
     }
 

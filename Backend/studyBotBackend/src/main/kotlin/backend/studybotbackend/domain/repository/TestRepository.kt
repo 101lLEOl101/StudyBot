@@ -7,11 +7,11 @@ interface TestRepository {
 
     fun getTestById(id: Long): State<Test>
 
-    fun getTestsByDiscipline(id: Long): State<List<Test>>
+    fun getTestsByDiscipline(id: Long, isAvailable: Boolean): State<List<Test>>
 
-    fun getTestsByName(name: String): State<List<Test>>
+    fun getTestsByName(name: String, isAvailable: Boolean): State<List<Test>>
 
     fun createTest(test: Test): State<Test>
     fun deleteTest(id: Long): State<Unit>
-    fun getAllTests(): State<List<Test>>
+    fun getAllTests(isAvailable: Boolean): State<List<Test>>
 }
