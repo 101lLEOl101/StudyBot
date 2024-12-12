@@ -67,4 +67,12 @@ class StudentSubController(
         return state.asResponse()
     }
 
+    @PutMapping("reject-sub")
+    fun rejectSub(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> {
+        val state = studentSubRepository.rejectSub(id)
+        return state.asResponse()
+    }
+
 }

@@ -50,6 +50,15 @@ class ResultController(
         @RequestParam id: Long
     ): ResponseEntity<Any> = resultRepository.getResultsByTest(id).asResponse()
 
+    @GetMapping("by-student-and-test")
+    fun getResultsStudentTest(
+        @RequestParam chatId: Long,
+        @RequestParam testId: Long,
+    ): ResponseEntity<Any> {
+        val state = resultRepository.getResultsByStudentTest(chatId,testId)
+        return state.asResponse()
+    }
+
     @GetMapping("all")
     fun getAllResults(): ResponseEntity<Any> {
         val state = resultRepository.getAllResults()

@@ -4,6 +4,7 @@ import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.WorkerDao
 import backend.studybotbackend.data.entity.WorkerEntity
 import backend.studybotbackend.data.util.WorkerDomainConverter
+import backend.studybotbackend.domain.exceptions.InvalidCredentials
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.worker.Worker
 import backend.studybotbackend.domain.repository.WorkerRepository
@@ -37,6 +38,27 @@ class WorkerRepositoryImpl(
         val entity = workerDao.findById(id).getOrElse { throw NotFoundException() }
         workerDao.delete(entity)
         return State.Success(Unit)
+    }
+
+    override fun signIn(nickname: String, password: String): State<Worker> {
+        val entity = workerDao.signIn(nickname, password).getOrElse { throw InvalidCredentials() }
+        return State.Success(entity.asDomain())
+    }
+
+    override fun updateWorker(
+        workerId: Long,
+        firstName: String?,
+        lastName: String?,
+        nickName: String?,
+        password: String?
+    ): State<Worker> {
+        val entity = workerDao.findById(workerId).getOrElse { throw NotFoundException() }
+        entity.firstName = firstName ?: entity.firstName
+        entity.lastName = lastName ?: entity.lastName
+        entity.nickName = nickName ?: entity.nickName
+        entity.password = password ?: entity.password
+        workerDao.save(entity)
+        return State.Success(entity.asDomain())
     }
 
 }

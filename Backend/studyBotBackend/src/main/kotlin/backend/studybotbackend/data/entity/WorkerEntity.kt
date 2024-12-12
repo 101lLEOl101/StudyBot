@@ -10,16 +10,16 @@ import jakarta.persistence.*
 @Table(name = "workers")
 data class WorkerEntity(
     @Column(length = TextLength.SHORT)
-    val firstName: String,
+    var firstName: String,
 
     @Column(length = TextLength.SHORT)
-    val lastName: String,
+    var lastName: String,
 
     @Column(length = TextLength.SHORT)
-    val nickName: String,
+    var nickName: String,
 
     @Column(length = TextLength.SHORT)
-    val password: String,
+    var password: String,
 
     @Column
     val workerRole: Role,

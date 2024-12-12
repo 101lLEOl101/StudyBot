@@ -13,6 +13,9 @@ interface ResultDao : JpaRepository<ResultEntity, Long> {
     @Query("select r from ResultEntity r where r.test.testId = :id")
     fun findByTest(@Param("id") id: Long): List<ResultEntity>
 
+    @Query("select r from ResultEntity r where r.student.chatId = :chatId and r.test.testId = :testId")
+    fun findByStudentAndTest(@Param("chatId")chatId: Long, @Param("testId") testId: Long): List<ResultEntity>
+
     @Query("select r from ResultEntity r where " +
             "r.student.chatId = :chat_id " +
             "and r.test.testId = :test_id")

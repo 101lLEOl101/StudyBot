@@ -58,6 +58,11 @@ class ResultRepositoryImpl : ResultRepository, ResultDomainConverter() {
         return State.Success(entities.map { it.asDomain() })
     }
 
+    override fun getResultsByStudentTest(chatId: Long, testId: Long): State<List<Result>> {
+        val entities = resultDao.findByStudentAndTest(chatId,testId)
+        return State.Success(entities.map { it.asDomain() })
+    }
+
     override fun deleteResult(id: Long): State<Unit> {
         val entity = resultDao.findById(id).getOrElse { throw NotFoundException() }
         resultDao.delete(entity)

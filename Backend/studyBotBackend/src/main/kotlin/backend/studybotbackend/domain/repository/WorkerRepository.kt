@@ -12,5 +12,13 @@ interface WorkerRepository {
 
     fun getAllWorkers(): State<List<Worker>>
     fun deleteWorker(id: Long): State<Unit>
+    fun signIn(nickname: String, password: String): State<Worker>
+    fun updateWorker(
+        workerId: Long,
+        firstName: String?,
+        lastName: String?,
+        nickName: String?,
+        password: String?
+    ): State<Worker>
 
 }

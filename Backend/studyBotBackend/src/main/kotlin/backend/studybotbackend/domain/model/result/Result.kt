@@ -14,6 +14,8 @@ data class Result(
     val test: Long,
     val answers: List<Long>,
 ) : Domain {
+    val isFinished: Boolean = finishTime != null
+
     companion object {
         fun new(
             createTime: LocalDateTime,

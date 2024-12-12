@@ -22,6 +22,20 @@ class StudentSubRepositoryImpl(
         return State.Success(entity.asDomain())
     }
 
+    override fun rejectSub(subId: Long): State<Boolean> {
+        val sub = studentSubDao.findById(subId).getOrElse { throw NotFoundException() }
+        when (sub.status) {
+            Status.APROVED -> {throw InvalidRequestData("Sub is aproved")}
+            Status.NOT_APROVED -> {throw InvalidRequestData("Sub isn't aproved")}
+            Status.NOT_CONSIDERED -> {
+                sub.status = Status.NOT_APROVED
+                studentSubDao.save(sub)
+            }
+
+        }
+        return State.Success(true)
+    }
+
     override fun getStudentSubsByParty(id: Long): State<List<StudentSub>> {
         val entities = studentSubDao.findByParty(id).map { it.asDomain() }
         return State.Success(entities)

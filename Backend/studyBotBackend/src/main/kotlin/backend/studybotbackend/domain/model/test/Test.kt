@@ -15,6 +15,7 @@ data class Test(
     val questions: List<Long>,
     val results: List<Long>,
 ) : Domain {
+    val isExpired = LocalDateTime.now().isAfter(expiresTime)
     companion object {
         fun new(
             createTime: LocalDateTime,

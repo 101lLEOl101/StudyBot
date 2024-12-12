@@ -6,6 +6,8 @@ import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.worker.Worker
 import backend.studybotbackend.domain.repository.WorkerRepository
 import backend.studybotbackend.domain.request.worker.CreateWorkerRequest
+import backend.studybotbackend.domain.request.worker.SignInRequest
+import backend.studybotbackend.domain.request.worker.UpdateWorkerRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -41,21 +43,48 @@ class WorkerController(
     @GetMapping("all")
     fun getAllWorkers(): ResponseEntity<Any> = workerRepository.getAllWorkers().asResponse()
 
+    @GetMapping("sign-in")
+    fun signIn(
+        @RequestBody req: SignInRequest
+    ): ResponseEntity<Any> {
+        val state = workerRepository.signIn(
+            nickname = req.nickname,
+            password = req.password,
+        )
+        return state.asResponse()
+    }
+
+    @PutMapping("update")
+    fun updateWorker(
+        @RequestBody req: UpdateWorkerRequest
+    ): ResponseEntity<Any> {
+        val state = workerRepository.updateWorker(
+            workerId = req.workerId,
+            firstName = req.firstName,
+            lastName = req.lastName,
+            nickName = req.nickName,
+            password = req.password,
+        )
+        return state.asResponse()
+    }
+
+
     @PostMapping("create")
     fun createWorker(
         @RequestBody workerParams: CreateWorkerRequest
     ): ResponseEntity<Any> {
         val worker =
             Worker.new(
-                firstName =workerParams.firstName,
-                lastName =workerParams.lastName,
-                nickName =workerParams.nickName,
-                password =workerParams.password,
-                workerRole =workerParams.workerRole,
+                firstName = workerParams.firstName,
+                lastName = workerParams.lastName,
+                nickName = workerParams.nickName,
+                password = workerParams.password,
+                workerRole = workerParams.workerRole,
             )
         val state = workerRepository.createWorker(worker)
         return state.asResponse()
     }
+
 
     @DeleteMapping("by-id")
     fun deleteWorker(
