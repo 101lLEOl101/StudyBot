@@ -10,11 +10,8 @@ export default function GroupStudentsPage() {
             <Paper withBorder maw={1200} ml={"auto"} mr={"auto"} mb={50} p={10}>
                 <GroupStudentsComponent/>
                 <Group  justify="end">
-                    <Link to={"/create-group"}>
-                        <Button>Создать Тест</Button>
-                    </Link>
                     <Link to={`/requests-students/${useParams().id}`}>
-                        <Button variant={"default"}>Запросы Студентов</Button>
+                        <Button >Запросы Студентов</Button>
                     </Link>
                 </Group>
             </Paper>

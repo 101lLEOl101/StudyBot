@@ -1,4 +1,6 @@
-import {Group, Table, Text} from '@mantine/core';
+import {ActionIcon, Group, Table, Text} from '@mantine/core';
+import {Link} from "react-router-dom";
+import {IconPlus} from "@tabler/icons-react";
 
 const data = [
     {
@@ -21,6 +23,15 @@ export default function ListDisciplinesComponent() {
                         {item.name}
                     </Text>
                 </Group>
+            </Table.Td>
+            <Table.Td ta={"right"}>
+                <Link to={"/create-test"}>
+                    <ActionIcon variant="subtle" color="gray">
+                        <IconPlus>
+                            Создать Дисциплину
+                        </IconPlus>
+                    </ActionIcon>
+                </Link>
             </Table.Td>
         </Table.Tr>
     ));
