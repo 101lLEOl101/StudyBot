@@ -2,7 +2,7 @@ import {
     ActionIcon, Box,
     Button,
     Divider,
-    Group,
+    Group, Loader,
     Paper,
     PaperProps,
     PasswordInput,
@@ -10,11 +10,21 @@ import {
     Text,
     TextInput,
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import {Link} from "react-router-dom";
+import {useForm, UseFormReturnType} from '@mantine/form';
+import {Link, useNavigate} from "react-router-dom";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import {useEffect, useState} from "react";
+import {axiosConfig} from "../../axios.ts";
+import {useMutation} from "@tanstack/react-query";
 
 export function CreateTeacherComponent(props: PaperProps) {
+    const navigate = useNavigate();
+    useEffect(() => {
+        const userId = localStorage.getItem('userRole');
+        if (userId === "TEACHER") {
+            navigate('/active-tests');
+        }
+    }, [navigate]);
     const form = useForm({
         initialValues: {
             login: '',
@@ -23,13 +33,41 @@ export function CreateTeacherComponent(props: PaperProps) {
             password: '',
             repeat_password: '',
         },
-
         validate: {
             password: (val) => (val.length <= 6 ? 'Пароль должен иметь не менее 6 символов' : null),
             repeat_password: (val, vals) => (val !== vals.password ? 'Повторный пароль неверен' : null)
         },
     });
+    const CreateTeacherFun = async (form: UseFormReturnType<{ login: string; name: string; second_name: string; password: string; repeat_password: string }>) => {
+        const body = {
+            firstName: form.values.name,
+            lastName: form.values.second_name,
+            nickName: form.values.login,
+            password: form.values.password,
+            workerRole: 0
+        };
+        return (await axiosConfig.post('/api/worker/create', body)).data;
+    }
+    const [errorMessage, setErrorMessage] = useState("");
+    const [loadingMessage, setLoadingMessage] = useState(false)
 
+    const {mutate} = useMutation(CreateTeacherFun, {
+        onSuccess: () => {
+            navigate('/teachers');
+        },
+        onError: () => {
+            setErrorMessage("Ошибка создания");
+        },
+        onSettled: () => {
+            setLoadingMessage(false);
+        },
+    });
+
+    const handleCreate = () => {
+        setLoadingMessage(true);
+        setErrorMessage("");
+        mutate(form);
+    };
     return (
         <Paper radius="md" p="xl" pt={"5"} withBorder {...props}>
             <Box display={"flex"} ml={"100%"}>
@@ -89,9 +127,18 @@ export function CreateTeacherComponent(props: PaperProps) {
                         radius="md"
                     />
                 </Stack>
-
+                {errorMessage && (
+                    <Text color="red" size="sm" mt="sm">
+                        {errorMessage}
+                    </Text>
+                )}
+                {loadingMessage && (
+                    <Box pt = {10} style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                        <Loader size="lg"/>
+                    </Box>
+                )}
                 <Group justify="end" mt="xl">
-                    <Button type="submit" radius="xl" >
+                    <Button onClick={handleCreate} type="submit" radius="xl" >
                         Добавить преподавателя
                     </Button>
                 </Group>

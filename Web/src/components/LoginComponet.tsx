@@ -38,6 +38,7 @@ export function LoginComponet(props: PaperProps) {
     const {mutate} = useMutation(LoginFun, {
         onSuccess: (data) => {
             localStorage.setItem('userId', data.data.id);
+            localStorage.setItem('userRole', data.data.workerRole);
             navigate('/active-tests');
         },
         onError: () => {
@@ -49,7 +50,7 @@ export function LoginComponet(props: PaperProps) {
         },
     });
 
-    const handleLogin = async () => {
+    const handleLogin = () => {
         setLoadingMessage(true);
         setErrorMessage("");
         mutate(form);
@@ -87,7 +88,7 @@ export function LoginComponet(props: PaperProps) {
                     </Text>
                 )}
                 {loadingMessage && (
-                    <Box style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                    <Box pt = {10} style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
                         <Loader size="lg"/>
                     </Box>
                 )}

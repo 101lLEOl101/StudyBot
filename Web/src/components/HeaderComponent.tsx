@@ -12,23 +12,25 @@ type HeaderComponentProps = {
 }
 
 export function HeaderComponent(props:HeaderComponentProps) {
-    const removeid = () => {
+    const removeUser = () => {
         localStorage.removeItem('userId');
+        localStorage.removeItem('userRole');
     }
     return (
         <Box pb={40}>
             <header className={classes.header}>
                 <Group justify="space-between" h="100%">
-                    <Image height={"80%"} radius="md"
-                           src="https://auth.mephi.ru/assets/new_logo-0d4e8ce16244ce25269fe731be496247e0c9d6ea475a0f517150f4fb12a53579.png" />
+                    <Image height={"80%"} radius="md" src="https://auth.mephi.ru/assets/new_logo-0d4e8ce16244ce25269fe731be496247e0c9d6ea475a0f517150f4fb12a53579.png" />
 
                     <Group h="100%" gap={0} visibleFrom="sm">
                         <Link to={"/active-tests"}  className={props.active_page === 0 ? classes.activeLink + ' ' + classes.link : classes.link}>
                             Активные тесты
                         </Link>
+                        { localStorage.getItem('userRole') === "ADMIN" &&
                         <Link to={"/teachers"} className={props.active_page === 1 ? classes.activeLink + ' ' + classes.link : classes.link}>
                             Преподаватели
                         </Link>
+                        }
                         <Link to={"/group-students"} className={props.active_page === 2 ? classes.activeLink + ' ' + classes.link : classes.link}>
                             Группы студентов
                         </Link>
@@ -41,7 +43,7 @@ export function HeaderComponent(props:HeaderComponentProps) {
                     </Group>
 
                     <Group visibleFrom="sm">
-                        <Link to={"/"}><Button onClick={removeid}>Выйти</Button></Link>
+                        <Link to={"/"}><Button onClick={removeUser}>Выйти</Button></Link>
                     </Group>
                 </Group>
             </header>

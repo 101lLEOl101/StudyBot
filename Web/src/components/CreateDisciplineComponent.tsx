@@ -2,32 +2,53 @@ import {
     ActionIcon, Box,
     Button,
     Divider,
-    Group,
+    Group, Loader,
     Paper,
     PaperProps,
     Stack,
     Text,
     TextInput,
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import {Link} from "react-router-dom";
+import {useForm, UseFormReturnType} from '@mantine/form';
+import {Link, useNavigate} from "react-router-dom";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import {axiosConfig} from "../../axios.ts";
+import {useState} from "react";
+import {useMutation} from "@tanstack/react-query";
 
 export function CreateDisciplineComponent(props: PaperProps) {
+    const navigate = useNavigate();
     const form = useForm({
         initialValues: {
             name: '',
-            second_name: '',
-            password: '',
-            repeat_password: '',
         },
+    });
+    const CreateTeacherFun = async (form: UseFormReturnType<{ name: string }>) => {
+        const body = {
+            disciplineName: form.values.name,
+        };
+        return (await axiosConfig.post('/api/discipline/create', body)).data;
+    }
+    const [errorMessage, setErrorMessage] = useState("");
+    const [loadingMessage, setLoadingMessage] = useState(false)
 
-        validate: {
-            password: (val) => (val.length <= 6 ? 'Пароль должен иметь не менее 6 символов' : null),
-            repeat_password: (val, vals) => (val !== vals.password ? 'Повторный пароль неверен' : null)
+    const {mutate} = useMutation(CreateTeacherFun, {
+        onSuccess: () => {
+            navigate('/disciplines');
+        },
+        onError: () => {
+            setErrorMessage("Ошибка создания");
+        },
+        onSettled: () => {
+            setLoadingMessage(false);
         },
     });
 
+    const handleCreate = () => {
+        setLoadingMessage(true);
+        setErrorMessage("");
+        mutate(form);
+    };
     return (
         <Paper radius="md" p="xl" pt={"5"} withBorder {...props}>
             <Box display={"flex"} ml={"100%"}>
@@ -53,9 +74,18 @@ export function CreateDisciplineComponent(props: PaperProps) {
                         radius="md"
                     />
                 </Stack>
-
+                {errorMessage && (
+                    <Text color="red" size="sm" mt="sm">
+                        {errorMessage}
+                    </Text>
+                )}
+                {loadingMessage && (
+                    <Box pt = {10} style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                        <Loader size="lg"/>
+                    </Box>
+                )}
                 <Group justify="end" mt="xl">
-                    <Button type="submit" radius="xl" >
+                    <Button onClick={handleCreate} type="submit" radius="xl" >
                         Создать Дисциплину
                     </Button>
                 </Group>
