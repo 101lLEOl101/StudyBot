@@ -43,7 +43,7 @@ class WorkerController(
     @GetMapping("all")
     fun getAllWorkers(): ResponseEntity<Any> = workerRepository.getAllWorkers().asResponse()
 
-    @GetMapping("sign-in")
+    @PostMapping("sign-in")
     fun signIn(
         @RequestBody req: SignInRequest
     ): ResponseEntity<Any> {
