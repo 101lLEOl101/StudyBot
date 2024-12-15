@@ -14,7 +14,7 @@ export default function ListTeacherComponent() {
         )
     } else if (status === "error") {
         return (
-        <Notification color="red" title="Error loading teachers">
+        <Notification color="red" title="Error loading">
             {error.message || 'An unknown error occurred.'}
         </Notification>
         )

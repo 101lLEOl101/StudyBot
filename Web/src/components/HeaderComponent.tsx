@@ -12,7 +12,9 @@ type HeaderComponentProps = {
 }
 
 export function HeaderComponent(props:HeaderComponentProps) {
-
+    const removeid = () => {
+        localStorage.removeItem('userId');
+    }
     return (
         <Box pb={40}>
             <header className={classes.header}>
@@ -39,7 +41,7 @@ export function HeaderComponent(props:HeaderComponentProps) {
                     </Group>
 
                     <Group visibleFrom="sm">
-                        <Link to={"/login"}><Button>Выйти</Button></Link>
+                        <Link to={"/"}><Button onClick={removeid}>Выйти</Button></Link>
                     </Group>
                 </Group>
             </header>

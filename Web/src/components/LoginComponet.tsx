@@ -1,8 +1,8 @@
 import {
-    Anchor,
+    Box,
     Button,
     Divider,
-    Group,
+    Group, Loader,
     Paper,
     PaperProps,
     PasswordInput,
@@ -10,8 +10,11 @@ import {
     Text,
     TextInput,
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import {Link} from "react-router-dom";
+import {useForm, UseFormReturnType} from '@mantine/form';
+import {useNavigate} from "react-router-dom";
+import {useState} from "react";
+import {useMutation} from "@tanstack/react-query";
+import {axiosConfig} from "../../axios.ts";
 
 
 export function LoginComponet(props: PaperProps) {
@@ -19,15 +22,38 @@ export function LoginComponet(props: PaperProps) {
         initialValues: {
             login: '',
             password: '',
-            repeat_password: '',
         },
+    });
+    const LoginFun = async (form: UseFormReturnType<{ login: string; password: string }>) => {
+        const body = {
+            nickname: form.values.login,
+            password: form.values.password,
+        };
+        return (await axiosConfig.post('/api/worker/sign-in', body)).data;
+    }
+    const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate();
+    const [loadingMessage, setLoadingMessage] = useState(false)
 
-        validate: {
-            password: (val) => (val.length <= 6 ? 'Пароль должен иметь не менее 6 символов' : null),
-            repeat_password: (val, vals) => (val !== vals.password ? 'Повторный пароль неверен' : null)
+    const {mutate} = useMutation(LoginFun, {
+        onSuccess: (data) => {
+            localStorage.setItem('userId', data.data.id);
+            navigate('/active-tests');
+        },
+        onError: () => {
+            setLoadingMessage(false);
+            setErrorMessage("Неправильный логин или пароль");
+        },
+        onSettled: () => {
+            setLoadingMessage(false);
         },
     });
 
+    const handleLogin = async () => {
+        setLoadingMessage(true);
+        setErrorMessage("");
+        mutate(form);
+    };
     return (
         <Paper radius="md" p="xl" withBorder {...props}>
             <Text size="lg" ta={"center"} fw={500}>
@@ -55,14 +81,18 @@ export function LoginComponet(props: PaperProps) {
                         radius="md"
                     />
                 </Stack>
-
-                <Group justify="space-between" mt="xl">
-                    <Link style={{ textDecoration: 'none', color: 'inherit' }} to={"/registration"}>
-                        <Anchor component="button" type="button" c="dimmed" size="xs">
-                            Нет аккаунта? Регистрация
-                        </Anchor>
-                    </Link>
-                    <Button type="submit" radius="xl" >
+                {errorMessage && (
+                    <Text color="red" size="sm" mt="sm">
+                        {errorMessage}
+                    </Text>
+                )}
+                {loadingMessage && (
+                    <Box style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                        <Loader size="lg"/>
+                    </Box>
+                )}
+                <Group justify="center" mt="xl">
+                    <Button onClick={handleLogin} type="submit" radius="xl" >
                         Войти
                     </Button>
                 </Group>
