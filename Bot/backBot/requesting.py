@@ -103,4 +103,4 @@ def GetWholeTest(id): # Получить тест целиком
     return wholeTest
 
 
-print(GetResultsById(408)[0].startTime)  # ToDo: отладочная строка.
+print(GetWholeTest(1).questions)  # ToDo: отладочная строка.
