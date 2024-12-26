@@ -351,7 +351,7 @@ async def answer_chosen(message: types.Message, state: FSMContext):
                         if (answer.text == answer.student_text):
                             correct_num = correct_num + 1
                     percent_correct = correct_num / ans_num
-                    res_text = res_text + str(percent_correct) + "%\n"
+                    res_text = res_text + str(percent_correct*100) + "%\n"
                 else:
                     res_text = res_text + "Не пройден\n"
                     break
