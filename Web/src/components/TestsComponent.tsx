@@ -36,7 +36,7 @@ export default function TestsComponent() {
             </Table.Td>
 
             <Table.Td ta={"center"}>
-                <Badge color={jobColors[item.discipline.toLowerCase()]} variant="light">
+                <Badge color={jobColors[item.discipline.toLowerCase()]}>
                     {item.discipline}
                 </Badge>
             </Table.Td>

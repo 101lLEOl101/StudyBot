@@ -1,6 +1,4 @@
 import {axiosConfig} from "../../axios.ts";
-import {UseFormReturnType} from "@mantine/form";
-
 
 export async function fetchTeachers(){
     return (await axiosConfig.get('/api/worker/all')).data;
@@ -10,10 +8,14 @@ export async function fetchDisciplines(){
     return (await axiosConfig.get('/api/discipline/all')).data;
 }
 
-export async function login(form: UseFormReturnType<{ login: string; password: string }>){
-    const body = {
-        nickname: form.values.login,
-        password: form.values.password,
-    };
-    return (await axiosConfig.post('/api/worker/sign-in', body)).data;
+export async function fetchDiscipline(id:number){
+    return (await axiosConfig.get(`/api/discipline/by-id?id=${id}`)).data;
+}
+
+export async function fetchGroups(){
+    return (await axiosConfig.get('/api/party/all')).data;
+}
+
+export async function fetchGroup(id:number){
+    return (await axiosConfig.get(`/api/party/by-id?id=${id}`)).data;
 }

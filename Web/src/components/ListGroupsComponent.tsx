@@ -1,39 +1,38 @@
-import {Button, Table, Text} from '@mantine/core';
+import {Box, Button, Loader, Notification, Table, Text} from '@mantine/core';
 import {Link} from "react-router-dom";
-
-const data = [
-    {
-        name: 'Б23-534',
-        id: 0,
-        count_students: 20
-    },
-    {
-        name: 'Б22-504',
-        id: 1,
-        count_students: 18
-    },
-    {
-        name: 'С20-514',
-        id: 2,
-        count_students: 23
-    },
-];
+import {useQuery} from "@tanstack/react-query";
+import {fetchGroups} from "../api/service.ts";
 
 export default function ListGroupsComponent() {
-    const rows = data.map((item) => (
-        <Table.Tr key={item.name}>
+    const {status, data, error } = useQuery(["groups"], fetchGroups);
+    if(status === "loading") {
+        return (
+            <Box style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                <Loader size="lg"/>
+            </Box>
+        )
+    } else if (status === "error") {
+        return (
+            <Notification color="red" title="Error loading">
+                {error.message || 'An unknown error occurred.'}
+            </Notification>
+        )
+    }
+    const groups = data.data.filter((group) => group.workers[0].toString() == localStorage.getItem("userId"))
+    const rows = groups.map((item) => (
+        <Table.Tr key={item.partyName}>
             <Table.Td ta={"left"}>
                 <Link to={`/group-students/${item.id}`}>
                     <Button variant={"default"}>
                         <Text fz="sm" fw={500}>
-                            {item.name}
+                            {item.partyName}
                         </Text>
                     </Button>
                 </Link>
             </Table.Td>
             <Table.Td ta={"right"}>
                 <Text size="sm">
-                    {item.count_students}
+                    {item.subs.length}
                 </Text>
             </Table.Td>
         </Table.Tr>

@@ -1,5 +1,6 @@
 import {ActionIcon, Badge, Group, Table, Text} from '@mantine/core';
 import {IconTrash} from "@tabler/icons-react";
+import {stringToColour} from "../stringToColour.ts";
 
 const data_tests = [
     {
@@ -42,11 +43,6 @@ const data_students = [
     },
 ];
 
-const jobColors: Record<string, string> = {
-    math: 'blue',
-    physics: 'cyan',
-    programming: 'pink',
-};
 
 export default function GroupStudentsComponent() {
     const rows_tests = data_tests.map((item) => (
@@ -60,7 +56,7 @@ export default function GroupStudentsComponent() {
             </Table.Td>
 
             <Table.Td ta={"center"}>
-                <Badge color={jobColors[item.discipline.toLowerCase()]} variant="light">
+                <Badge color={stringToColour(item.discipline)} variant="light">
                     {item.discipline}
                 </Badge>
             </Table.Td>
