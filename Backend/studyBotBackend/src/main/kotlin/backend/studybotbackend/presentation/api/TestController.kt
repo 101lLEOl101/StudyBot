@@ -4,6 +4,7 @@ import backend.studybotbackend.core.config.Routes
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.test.Test
+import backend.studybotbackend.domain.model.test.TestTree
 import backend.studybotbackend.domain.repository.TestRepository
 import backend.studybotbackend.domain.request.test.CreateTestRequest
 import org.springframework.http.ResponseEntity
@@ -22,7 +23,7 @@ import java.time.LocalDateTime
 class TestController(
     private val testRepository: TestRepository
 ) {
-    @ExceptionHandler(Exception::class, BaseException::class)
+    /*@ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
         return when (e) {
             is BaseException -> {
@@ -32,7 +33,7 @@ class TestController(
                 ResponseEntity.status(500).body(ServerError(description = e.message))
             }
         }
-    }
+    }*/
 
     @GetMapping("by-id")
     fun getTestById(
@@ -59,6 +60,12 @@ class TestController(
         return state.asResponse()
     }
 
+    @GetMapping("full-by-id")
+    fun getFullTest(id: Long): ResponseEntity<Any> {
+        val state = testRepository.getFullTest(id)
+        return state.asResponse()
+    }
+
     @PostMapping("create")
     fun createTest(
         @RequestBody testParam: CreateTestRequest
@@ -70,6 +77,13 @@ class TestController(
             testParam.testName,
         )
         val state = testRepository.createTest(test)
+        return state.asResponse()
+    }
+    @PostMapping("create-by-tree")
+    fun createFullTest(
+        @RequestBody testParam: TestTree
+    ): ResponseEntity<Any> {
+        val state = testRepository.createFullTest(testParam)
         return state.asResponse()
     }
 

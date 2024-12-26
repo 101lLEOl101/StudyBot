@@ -49,6 +49,11 @@ class DisciplineController(
         @RequestParam id: Long,
     ): ResponseEntity<Any> = disciplineRepository.getDisciplinesByParty(id).asResponse()
 
+    @GetMapping("by-student")
+    fun getDisciplinesByStudent(
+        @RequestParam id: Long,
+    )= disciplineRepository.getDisciplinesByStudent(id).asResponse()
+
 
     @GetMapping("all")
     fun getAllDisciplines(): ResponseEntity<Any>{

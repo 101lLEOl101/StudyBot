@@ -48,5 +48,10 @@ class DisciplineRepositoryImpl : DisciplineRepository, DisciplineDomainConverter
         return State.Success(Unit)
     }
 
+    override fun getDisciplinesByStudent(id: Long): State<List<Discipline>> {
+        val entities = disciplineDao.findByStudent(id)
+        return State.Success(entities.map { it.asDomain() })
+    }
+
 
 }

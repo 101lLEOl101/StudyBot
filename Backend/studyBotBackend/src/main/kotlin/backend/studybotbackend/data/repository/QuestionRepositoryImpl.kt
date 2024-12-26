@@ -3,12 +3,12 @@ package backend.studybotbackend.data.repository
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.AnswerDao
 import backend.studybotbackend.data.dao.QuestionDao
+import backend.studybotbackend.data.dao.TestDao
 import backend.studybotbackend.data.entity.QuestionEntity
 import backend.studybotbackend.data.util.QuestionDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.question.Question
 import backend.studybotbackend.domain.repository.QuestionRepository
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import kotlin.jvm.optionals.getOrElse
 
@@ -16,9 +16,10 @@ import kotlin.jvm.optionals.getOrElse
 class QuestionRepositoryImpl(
     private val questionDao: QuestionDao,
     private val answerDao: AnswerDao,
-) : QuestionRepository , QuestionDomainConverter(){
+    private val testDao: TestDao,
+) : QuestionRepository, QuestionDomainConverter() {
     override fun getQuestionById(id: Long): State<Question> {
-        val entity = questionDao.findById(id).getOrElse { throw NotFoundException()}
+        val entity = questionDao.findById(id).getOrElse { throw NotFoundException() }
         return State.Success(entity.asDomain())
 
     }
@@ -30,6 +31,11 @@ class QuestionRepositoryImpl(
 
     override fun createQuestion(question: Question): State<Question> {
         val entity = questionDao.save(question.asDatabaseEntity())
+        entity.tests.forEach {
+            val testEntity = testDao.findById(it.testId).getOrElse { throw NotFoundException() }
+            testEntity.questions = (testEntity.questions + entity).toMutableList()
+            testDao.save(testEntity)
+        }
         return State.Success(entity.asDomain())
     }
 

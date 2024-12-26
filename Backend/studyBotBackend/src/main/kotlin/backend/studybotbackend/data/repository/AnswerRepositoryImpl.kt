@@ -2,6 +2,7 @@ package backend.studybotbackend.data.repository
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.AnswerDao
+import backend.studybotbackend.data.dao.QuestionDao
 import backend.studybotbackend.data.util.AnswerDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.answer.Answer
@@ -14,6 +15,8 @@ import kotlin.jvm.optionals.getOrElse
 class AnswerRepositoryImpl : AnswerRepository, AnswerDomainConverter() {
     @Autowired
     private lateinit var answerDao: AnswerDao
+    @Autowired
+    private lateinit var questiionDao: QuestionDao
 
     override fun getAnswerById(id: Long): State<Answer> {
         val entity = answerDao.findById(id).getOrElse { throw NotFoundException() }
@@ -36,7 +39,10 @@ class AnswerRepositoryImpl : AnswerRepository, AnswerDomainConverter() {
     }
 
     override fun createAnswer(answer: Answer): State<Answer> {
-        val entity = answerDao.save(answer.asDatabaseEntity())
+        val entity = answerDao.saveAndFlush(answer.asDatabaseEntity())
+        entity.question.answers = entity.question.answers.toMutableList()
+        entity.question.answers.add(entity)
+        questiionDao.saveAndFlush(entity.question)
         return State.Success(entity.asDomain())
     }
 

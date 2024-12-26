@@ -15,10 +15,10 @@ data class QuestionEntity(
     val questionType: QuestionType,
 
     @ManyToMany(mappedBy = "questions")
-    val tests: List<TestEntity>,
+    val tests: MutableList<TestEntity>,
 
     @OneToMany(mappedBy = "question")
-    val answers: List<AnswerEntity>,
+    var answers: MutableList<AnswerEntity>,
 
 
     ) : DatabaseEntity {
@@ -26,4 +26,7 @@ data class QuestionEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val questionId: Long = 0
 
+    override fun hashCode(): Int {
+        return questionId.toInt()
+    }
 }

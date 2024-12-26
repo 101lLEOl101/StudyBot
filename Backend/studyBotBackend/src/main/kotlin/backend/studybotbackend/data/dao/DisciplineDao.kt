@@ -13,5 +13,8 @@ interface DisciplineDao: JpaRepository<DisciplineEntity,Long> {
     @Query("select d from DisciplineEntity d INNER JOIN d.partys p where p.partyId = :id")
     fun findByParty(@Param("id") id: Long): List<DisciplineEntity>
 
+    @Query("select d from DisciplineEntity d INNER JOIN d.partys p INNER JOIN p.subs s where s.student.chatId = :id")
+    fun findByStudent(@Param("id")id: Long): List<DisciplineEntity>
+
 
 }
