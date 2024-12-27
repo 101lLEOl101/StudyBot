@@ -2,6 +2,7 @@ package backend.studybotbackend.domain.repository
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.model.party.Party
+import backend.studybotbackend.domain.model.party.PartyInfo
 
 interface PartyRepository {
     fun getPartyById(id: Long): State<Party>
@@ -18,5 +19,6 @@ interface PartyRepository {
 
     fun getAllPartys(): State<List<Party>>
     fun deleteParty(id: Long): State<Unit>
+    fun getPartyInfo(id: Long): State<PartyInfo>
 
 }

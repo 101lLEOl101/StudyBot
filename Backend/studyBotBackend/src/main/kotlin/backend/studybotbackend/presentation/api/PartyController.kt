@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 class PartyController(
     private val partyRepository: PartyRepository
 ) {
-    @ExceptionHandler(Exception::class, BaseException::class)
+   /* @ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
         return when (e) {
             is BaseException -> {
@@ -26,7 +26,7 @@ class PartyController(
                 ResponseEntity.status(500).body(ServerError(description = e.message))
             }
         }
-    }
+    }*/
 
 
     @GetMapping("by-id")
@@ -66,6 +66,11 @@ class PartyController(
         val state = partyRepository.getAllPartys()
         return state.asResponse()
     }
+
+    @GetMapping("party-info")
+    fun getPartyInfo(
+        @RequestParam id: Long
+    ): ResponseEntity<Any> = partyRepository.getPartyInfo(id).asResponse()
 
     @PostMapping("create")
     fun createParty(
