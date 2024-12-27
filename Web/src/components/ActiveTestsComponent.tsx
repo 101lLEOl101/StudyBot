@@ -1,4 +1,5 @@
 import {Badge, Group, Table, Text } from '@mantine/core';
+import {stringToColour} from "../stringToColour.ts";
 
 const data = [
     {
@@ -18,12 +19,6 @@ const data = [
     },
 ];
 
-const jobColors: Record<string, string> = {
-    math: 'blue',
-    physics: 'cyan',
-    programming: 'pink',
-};
-
 export default function ActiveTestsComponent() {
     const rows = data.map((item) => (
         <Table.Tr key={item.name}>
@@ -36,7 +31,7 @@ export default function ActiveTestsComponent() {
             </Table.Td>
 
             <Table.Td ta={"center"}>
-                <Badge color={jobColors[item.discipline.toLowerCase()]} >
+                <Badge color={stringToColour(item.discipline)} >
                     {item.discipline}
                 </Badge>
             </Table.Td>

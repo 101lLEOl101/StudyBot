@@ -31,7 +31,7 @@ export default function ListDisciplinesComponent() {
                 </Group>
             </Table.Td>
             <Table.Td ta={"right"}>
-                <Link to={"/create-test"}>
+                <Link to={`/create-test/${item.id}`}>
                     <ActionIcon variant="subtle" color="gray">
                         <IconPlus>
                         </IconPlus>

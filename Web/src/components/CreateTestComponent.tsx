@@ -1,37 +1,104 @@
 import {
     ActionIcon, Box,
-    Button,
+    Button, Checkbox,
     Divider,
-    Group,
+    Group, Loader, Notification,
     Paper,
-    PaperProps,
-    Stack,
-    Text,
-    TextInput,
+    Stack, Table,
+    Text, TextInput,
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import {Link} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import {DateInput} from "@mantine/dates";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import {FieldArray, Formik, Form} from "formik";
+import {axiosConfig} from "../../axios.ts";
+import {useState} from "react";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {IconPlus} from "@tabler/icons-react";
+import {fetchDiscipline} from "../api/service.ts";
 
 dayjs.extend(customParseFormat);
 
-export function CreateTestComponent(props: PaperProps) {
-    const form = useForm({
-        initialValues: {
-            name: '',
-            date_start: new Date,
-            date_end: new Date,
-            questions: []
+interface TestForm {
+    name_test: string;
+    date_start: Date;
+    date_end: Date;
+    questions: {
+        question_text: string;
+        answers: {
+            answer_text: string;
+            correct: boolean;
+        }[];
+    }[];
+}
+
+export function CreateTestComponent() {
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const CreateTestFun = async (form:TestForm) => {
+        const body = {
+            createTime: form.date_start.toISOString(),
+            expiresTime: form.date_end.toISOString(),
+            discipline: {
+                id: Number(id),
+                disciplineName: data.data.disciplineName,
+            },
+            testName: form.name_test,
+            questions: form.questions.map((question) => ({
+                questionText: question.question_text,
+                questionType: "SINGLE_CHOICE",
+                answers: question.answers.map((answer) => ({
+                    isStudentAnswer: false,
+                    correct: answer.correct.toString(),
+                    answerText: answer.answer_text,
+                })),
+            })),
+        };
+        return (await axiosConfig.post('/api/test/create-by-tree', body)).data;
+    }
+    const [errorMessage, setErrorMessage] = useState("");
+    const [loadingMessage, setLoadingMessage] = useState(false)
+
+    const {mutate} = useMutation(CreateTestFun, {
+        onSuccess: () => {
+            navigate('/active-tests');
+        },
+        onError: () => {
+            setErrorMessage("Ошибка создания");
+        },
+        onSettled: () => {
+            setLoadingMessage(false);
         },
     });
-    console.log(form.values.date_start.toString())
+
+    const { data, status, error} = useQuery(
+        ['discipline', id],
+        () => fetchDiscipline(Number(id)),
+    );
+    if(status === "loading") {
+        return (
+            <Box style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                <Loader size="lg"/>
+            </Box>
+        )
+    } else if (status === "error") {
+        return (
+            <Notification color="red" title="Error loading">
+                {error.message || 'An unknown error occurred.'}
+            </Notification>
+        )
+    }
+    const handleCreate = (form:TestForm) => {
+        setLoadingMessage(true);
+        setErrorMessage("");
+        mutate(form);
+    };
     return (
-        <Paper radius="md" p="xl" pt={"5"} withBorder {...props}>
+        <Paper radius="md" p="xl" pt={"5"} withBorder >
             <Box display={"flex"} ml={"100%"}>
-                <Link to={"/teachers"}>
+                <Link to={"/disciplines"}>
                     <ActionIcon  radius={100} variant="subtle" color="red">
                         <IoCloseCircleOutline size={32}/>
                     </ActionIcon>
@@ -43,51 +110,152 @@ export function CreateTestComponent(props: PaperProps) {
 
             <Divider label={'Создание'} labelPosition="center" my="lg" />
 
-            <form onSubmit={form.onSubmit(() => {})}>
-                <Stack>
-                    <Group ml={'auto'} mr={'auto'}>
-                        <TextInput
-                            label="Название"
-                            placeholder="Название Теста"
-                            value={form.values.name}
-                            onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}
-                            radius="md"
-                        />
-
-                        <DateInput
-                            label="Дата Начала"
-                            className={"date"}
-                            dateParser={(s) =>
-                                dayjs(s, "DD/MM/YYYY HH:mm:ss").toDate().getTime()
-                                    ? dayjs(s, "DD/MM/YYYY HH:mm:ss").toDate()
-                                    : new Date(s)
-                            }
-                            value={form.values.date_start}
-                            valueFormat="DD/MM/YYYY HH:mm:ss"
-                            radius="md"
-                        />
-
-                        <DateInput
-                            label="Дата Окончания"
-                            className={"date"}
-                            dateParser={(s) =>
-                                dayjs(s, "DD/MM/YYYY HH:mm:ss").toDate().getTime()
-                                    ? dayjs(s, "DD/MM/YYYY HH:mm:ss").toDate()
-                                    : new Date(s)
-                            }
-                            value={form.values.date_end}
-                            valueFormat="DD/MM/YYYY HH:mm:ss"
-                            radius="md"
-                        />
+            <Formik initialValues={{name_test: '', date_start: new Date, date_end: new Date, questions: [{question_text: '', answers: [{correct: false, answer_text: '',}]}]}} onSubmit={handleCreate}>{({values}) => (
+                <Form>
+                    <Stack>
+                        <Group ml={'auto'} mr={'auto'}>
+                            <TextInput
+                                name = "name_test"
+                                label="Название"
+                                placeholder="Название Теста"
+                                radius="md"
+                            />
+                            <DateInput
+                                label="Дата Начала"
+                                className={"date"}
+                                dateParser={(s) =>
+                                    dayjs(s, "DD/MM/YYYY HH:mm:ss").toDate().getTime()
+                                        ? dayjs(s, "DD/MM/YYYY HH:mm:ss").toDate()
+                                        : new Date(s)
+                                }
+                                name="date_start"
+                                value={values.date_start}
+                                valueFormat="DD/MM/YYYY HH:mm:ss"
+                                radius="md"
+                            />
+                            <DateInput
+                                label="Дата Окончания"
+                                className={"date"}
+                                name="date_end"
+                                dateParser={(s) =>
+                                    dayjs(s, "DD/MM/YYYY HH:mm:ss").toDate().getTime()
+                                        ? dayjs(s, "DD/MM/YYYY HH:mm:ss").toDate()
+                                        : new Date(s)
+                                }
+                                value={values.date_end}
+                                valueFormat="DD/MM/YYYY HH:mm:ss"
+                                radius="md"
+                            />
+                        </Group>
+                    </Stack>
+                    <Table verticalSpacing="sm">
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th ta={"left"}>Вопросы</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>
+                            <FieldArray name="questions" render={questionHelper => (
+                                <>
+                                    { values.questions.map((question, index) => (
+                                        <Paper ml={'auto'} mr={'auto'} m={10} key={index} radius="md" p="xl" pt={"5"} withBorder>
+                                            <Box display={"flex"} ml={"100%"} onClick={() => questionHelper.remove(index)}>
+                                                <ActionIcon  radius={100} variant="subtle" color="red">
+                                                    <IoCloseCircleOutline size={32}/>
+                                                </ActionIcon>
+                                            </Box>
+                                            <Table.Tr>
+                                                <TextInput
+                                                    ml={"auto"}
+                                                    mr={"auto"}
+                                                    ta={"center"}
+                                                    maw={400}
+                                                    name = {`questions.${index}.question_text`}
+                                                    label="Вопрос"
+                                                    placeholder="Текст Вопроса"
+                                                    radius="md"
+                                                />
+                                                <Table>
+                                                    <Table.Thead>
+                                                        <Table.Tr>
+                                                            <Table.Th ta={"left"}>Ответы</Table.Th>
+                                                        </Table.Tr>
+                                                    </Table.Thead>
+                                                    <Table.Tbody>
+                                                        <FieldArray name={`questions.${index}.answers`} render={answerHelper => (
+                                                            <>
+                                                            <Group mb={10}>
+                                                                {question.answers.map((answer,jndex) => (
+                                                                    <Paper ml={"auto"} mr={"auto"} key={jndex} radius="md" p={"sm"} withBorder>
+                                                                        <Box display={"flex"} ml={"92%"} onClick={() => answerHelper.remove(jndex)}>
+                                                                            <ActionIcon  radius={100} variant="subtle" color="red">
+                                                                                <IoCloseCircleOutline size={32}/>
+                                                                            </ActionIcon>
+                                                                        </Box>
+                                                                        <Group ml={'auto'} mr={'auto'} m={10}>
+                                                                            <TextInput
+                                                                                name={`answers.${jndex}.answer_text`}
+                                                                                label="Ответ"
+                                                                                placeholder="Ответ"
+                                                                                radius="md"
+                                                                            />
+                                                                            <Checkbox pt={23}
+                                                                                name={`answers.${jndex}.correct`}
+                                                                                      checked={answer.correct}
+                                                                                      onChange={(event) => {
+                                                                                          const isChecked = event.currentTarget.checked;
+                                                                                          questionHelper.replace(index, {
+                                                                                              ...question,
+                                                                                              answers: question.answers.map((a, aj) =>
+                                                                                                  aj === jndex ? { ...a, correct: isChecked } : { ...a, correct: false }
+                                                                                              ),
+                                                                                          });
+                                                                                      }}
+                                                                            />
+                                                                        </Group>
+                                                                    </Paper>
+                                                                ))}
+                                                            </Group>
+                                                                <Group justify="end">
+                                                                <Button  onClick={() => answerHelper.push({correct: false, answer_text: '',})}>
+                                                                    <IconPlus>
+                                                                    </IconPlus>
+                                                                </Button>
+                                                                </Group>
+                                                            </>
+                                                        )}>
+                                                        </FieldArray>
+                                                    </Table.Tbody>
+                                                </Table>
+                                            </Table.Tr>
+                                        </Paper>
+                                    ))}
+                                    <Button onClick={() => questionHelper.push({question_text: "",answers:[{correct: false, answer_text: '',}]})}>
+                                        <IconPlus>
+                                        </IconPlus>
+                                    </Button>
+                                </>
+                            )}>
+                            </FieldArray>
+                        </Table.Tbody>
+                    </Table>
+                    {errorMessage && (
+                        <Text color="red" size="sm" mt="sm">
+                            {errorMessage}
+                        </Text>
+                    )}
+                    {loadingMessage && (
+                        <Box pt = {10} style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                            <Loader size="lg"/>
+                        </Box>
+                    )}
+                    <Group justify="end" mt="xl">
+                        <Button type="submit" radius="xl" >
+                            Создать Тест
+                        </Button>
                     </Group>
-                </Stack>
-
-                <Group justify="end" mt="xl">
-                    <Button type="submit" radius="xl" >
-                        Создать Тест
-                    </Button>
-                </Group>
-            </form>
+                </Form>)}
+            </Formik>
         </Paper>
     );
 }

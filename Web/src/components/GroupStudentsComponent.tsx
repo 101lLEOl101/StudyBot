@@ -56,7 +56,7 @@ export default function GroupStudentsComponent() {
             </Table.Td>
 
             <Table.Td ta={"center"}>
-                <Badge color={stringToColour(item.discipline)} variant="light">
+                <Badge color={stringToColour(item.discipline)}>
                     {item.discipline}
                 </Badge>
             </Table.Td>
