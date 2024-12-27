@@ -5,7 +5,7 @@ import backend.studybotbackend.data.dao.ResultDao
 import backend.studybotbackend.data.dao.TestDao
 import backend.studybotbackend.data.entity.TestEntity
 import backend.studybotbackend.data.util.TestDomainConverter
-import backend.studybotbackend.data.util.TestFullConverter
+import backend.studybotbackend.data.util.FullDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.test.Test
 import backend.studybotbackend.domain.model.test.TestFull
@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 import kotlin.jvm.optionals.getOrElse
 
 @Repository
-class TestRepositoryImpl : TestRepository, TestDomainConverter(), TestFullConverter {
+class TestRepositoryImpl : TestRepository, TestDomainConverter(), FullDomainConverter {
     @Autowired
     private lateinit var testDao: TestDao
 

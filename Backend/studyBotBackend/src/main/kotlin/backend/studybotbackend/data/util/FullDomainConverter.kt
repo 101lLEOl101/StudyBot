@@ -11,7 +11,7 @@ import backend.studybotbackend.domain.model.test.*
 import org.springframework.stereotype.Component
 
 @Component
-interface TestFullConverter{
+interface FullDomainConverter{
 
     fun TestEntity.toFull(): TestFull{
         return TestFull(
