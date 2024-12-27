@@ -5,6 +5,7 @@ import backend.studybotbackend.data.dao.StudentSubDao
 import backend.studybotbackend.data.dao.WorkerDao
 import backend.studybotbackend.data.entity.PartyEntity
 import backend.studybotbackend.domain.model.party.Party
+import backend.studybotbackend.domain.model.studentSub.Status
 import backend.studybotbackend.domain.util.DomainConverter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -28,6 +29,7 @@ class PartyDomainConverter : DomainConverter<PartyEntity, Party> {
     override fun PartyEntity.asDomain(): Party =
         Party(
             partyId,
+            subs.count { it.status == Status.APROVED }.toLong(),
             partyName,
             workers.map { it.workerId },
             disciplines.map { it.disciplineId },

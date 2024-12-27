@@ -4,6 +4,7 @@ import backend.studybotbackend.domain.model.Domain
 
 data class Party(
     val id: Long,
+    val studentsNum: Long,
     val partyName: String,
     val workers: List<Long>,
     val disciplines: List<Long>,
@@ -16,6 +17,7 @@ data class Party(
             disciplines: List<Long> = listOf(),
             subs: List<Long> = listOf(),
         ) = Party(
+            0,
             0,
             partyName,
             workers,
