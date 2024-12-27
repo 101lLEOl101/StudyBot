@@ -2,7 +2,7 @@ package backend.studybotbackend.domain.repository
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.model.test.Test
-import backend.studybotbackend.domain.model.test.TestTree
+import backend.studybotbackend.domain.model.test.TestFull
 
 interface TestRepository {
 
@@ -15,6 +15,6 @@ interface TestRepository {
     fun createTest(test: Test): State<Test>
     fun deleteTest(id: Long): State<Unit>
     fun getAllTests(isAvailable: Boolean): State<List<Test>>
-    fun getFullTest(id: Long): State<TestTree>
-    fun createFullTest(testParam: TestTree): State<TestTree>
+    fun getFullTest(id: Long): State<TestFull>
+    fun createFullTest(testParam: TestFull): State<TestFull>
 }

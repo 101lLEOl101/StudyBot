@@ -11,51 +11,52 @@ import backend.studybotbackend.domain.model.test.*
 import org.springframework.stereotype.Component
 
 @Component
-interface TestTreeConverter{
+interface TestFullConverter{
 
-    fun TestEntity.toTestTree(): TestTree{
-        return TestTree(
+    fun TestEntity.toFull(): TestFull{
+        return TestFull(
             testId,
             createTime,
             expiresTime,
-            discipline.toDisciplineTree(),
+            discipline.toFull(),
             testName,
-            questions.map { it.toQuestionTree() },
+            questions.map { it.toFull() },
             results.map { it.resultId }
         )
     }
 
-    fun TestTree.toDomain(): Test{
+    fun TestFull.toDomain(): Test{
         return Test.new(
             createTime,
             expiresTime,
             discipline.id,
+            discipline.disciplineName,
             testName)
     }
 
-    fun DisciplineEntity.toDisciplineTree(): DisciplineTree{
-        return DisciplineTree(
+    fun DisciplineEntity.toFull(): DisciplineFull{
+        return DisciplineFull(
             disciplineId,
             disciplineName,
         )
     }
 
-    fun DisciplineTree.toDomain(): Discipline{
+    fun DisciplineFull.toDomain(): Discipline{
         return Discipline.new(
             disciplineName
         )
     }
 
-    fun QuestionEntity.toQuestionTree(): QuestionTree{
-        return QuestionTree(
+    fun QuestionEntity.toFull(): QuestionFull{
+        return QuestionFull(
             questionId,
             questionText,
             questionType,
-            answers.filter { !it.isStudentAnswer }.map { it.toAnswerTree() }
+            answers.filter { !it.isStudentAnswer }.map { it.toFull() }
         )
     }
 
-    fun QuestionTree.toDomain(tests: List<Long> = listOf()): Question{
+    fun QuestionFull.toDomain(tests: List<Long> = listOf()): Question{
         return Question.new(
             questionText,
             questionType,
@@ -63,8 +64,8 @@ interface TestTreeConverter{
         )
     }
 
-    fun AnswerEntity.toAnswerTree(): AnswerTree{
-        return AnswerTree(
+    fun AnswerEntity.toFull(): AnswerFull{
+        return AnswerFull(
             answerId,
             isStudentAnswer,
             correct,
@@ -72,7 +73,7 @@ interface TestTreeConverter{
         )
     }
 
-    fun AnswerTree.toDomain(question: Long): Answer{
+    fun AnswerFull.toDomain(question: Long): Answer{
         return Answer.new(
             isStudentAnswer,
             correct,

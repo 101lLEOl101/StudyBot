@@ -33,6 +33,7 @@ class TestDomainConverter : DomainConverter<TestEntity, Test> {
         createTime,
         expiresTime,
         discipline.disciplineId,
+        discipline.disciplineName,
         testName,
         questions.map { it.questionId },
         results.map { it.resultId },

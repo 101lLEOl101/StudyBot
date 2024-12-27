@@ -5,10 +5,10 @@ import backend.studybotbackend.data.dao.ResultDao
 import backend.studybotbackend.data.dao.TestDao
 import backend.studybotbackend.data.entity.TestEntity
 import backend.studybotbackend.data.util.TestDomainConverter
-import backend.studybotbackend.data.util.TestTreeConverter
+import backend.studybotbackend.data.util.TestFullConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.test.Test
-import backend.studybotbackend.domain.model.test.TestTree
+import backend.studybotbackend.domain.model.test.TestFull
 import backend.studybotbackend.domain.repository.AnswerRepository
 import backend.studybotbackend.domain.repository.QuestionRepository
 import backend.studybotbackend.domain.repository.TestRepository
@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 import kotlin.jvm.optionals.getOrElse
 
 @Repository
-class TestRepositoryImpl : TestRepository, TestDomainConverter(), TestTreeConverter {
+class TestRepositoryImpl : TestRepository, TestDomainConverter(), TestFullConverter {
     @Autowired
     private lateinit var testDao: TestDao
 
@@ -70,12 +70,12 @@ class TestRepositoryImpl : TestRepository, TestDomainConverter(), TestTreeConver
         return State.Success(entities.filter { filterTest(it, isAvailable) }.map { it.asDomain() })
     }
 
-    override fun getFullTest(id: Long): State<TestTree> {
+    override fun getFullTest(id: Long): State<TestFull> {
         val entity = testDao.findById(id).getOrElse { throw NotFoundException() }
-        return State.Success(entity.toTestTree())
+        return State.Success(entity.toFull())
     }
 
-    override fun createFullTest(test: TestTree): State<TestTree> {
+    override fun createFullTest(test: TestFull): State<TestFull> {
         val testEntity = createTest(test.toDomain()).data
         val testId = testEntity!!.id
 

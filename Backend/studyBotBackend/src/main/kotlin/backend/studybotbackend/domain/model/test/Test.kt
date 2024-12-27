@@ -11,6 +11,7 @@ data class Test(
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     val expiresTime: LocalDateTime,
     val discipline: Long,
+    val disciplineName : String,
     val testName: String,
     val questions: List<Long>,
     val results: List<Long>,
@@ -21,6 +22,7 @@ data class Test(
             createTime: LocalDateTime,
             expiresTime: LocalDateTime,
             discipline: Long,
+            disciplineName: String = "",
             testName: String,
             questions: List<Long> = listOf(),
             results: List<Long> = listOf(),
@@ -30,6 +32,7 @@ data class Test(
             expiresTime,
             discipline,
             testName,
+            disciplineName,
             questions,
             results,
         )
