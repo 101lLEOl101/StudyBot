@@ -17,5 +17,6 @@ interface StudentSubRepository {
 
     fun rejectSub(subId: Long): State<Boolean>
     fun getAllSubs(): State<List<StudentSub>>
+    fun deleteSub(id: Long): State<Unit>
 
 }

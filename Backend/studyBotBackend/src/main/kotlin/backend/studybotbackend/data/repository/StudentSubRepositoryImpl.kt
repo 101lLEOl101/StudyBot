@@ -57,6 +57,12 @@ class StudentSubRepositoryImpl(
         return State.Success(entity.asDomain())
     }
 
+    override fun deleteSub(id: Long): State<Unit> {
+        val entity = studentSubDao.findById(id).getOrElse { throw NotFoundException() }
+        studentSubDao.delete(entity)
+        return State.Success(Unit)
+    }
+
     override fun acceptSub(subId: Long): State<Boolean> {
         val sub = studentSubDao.findById(subId).getOrElse { throw NotFoundException() }
         when (sub.status) {

@@ -1,6 +1,7 @@
 package backend.studybotbackend.presentation.api
 
 import backend.studybotbackend.core.config.Routes
+import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.repository.StudentSubRepository
@@ -72,6 +73,14 @@ class StudentSubController(
         @RequestParam id: Long
     ): ResponseEntity<Any> {
         val state = studentSubRepository.rejectSub(id)
+        return state.asResponse()
+    }
+
+    @DeleteMapping("delete")
+    fun deleteSub(
+        @RequestParam id: Long
+    ): ResponseEntity<Any>{
+        val state = studentSubRepository.deleteSub(id)
         return state.asResponse()
     }
 
