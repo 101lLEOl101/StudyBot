@@ -32,7 +32,7 @@ export function CreateGroupComponent(props: PaperProps) {
     const [loadingMessage, setLoadingMessage] = useState(false);
     const {mutate} = useMutation(CreateDisciplineFun, {
         onSuccess: () => {
-            navigate('/disciplines');
+            navigate('/group-students');
         },
         onError: () => {
             setErrorMessage("Ошибка создания");

@@ -18,7 +18,10 @@ export default function ListGroupsComponent() {
             </Notification>
         )
     }
-    const groups = data.data.filter((group) => group.workers[0].toString() == localStorage.getItem("userId"))
+    console.log(data.data);
+    const groups = data.data.filter((group) => {
+        return group.workers && group.workers.length > 0 && group.workers[0].toString() === localStorage.getItem("userId");
+    });
     const rows = groups.map((item) => (
         <Table.Tr key={item.partyName}>
             <Table.Td ta={"left"}>
