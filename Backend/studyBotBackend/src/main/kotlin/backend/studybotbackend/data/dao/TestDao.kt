@@ -13,6 +13,6 @@ interface TestDao: JpaRepository<TestEntity, Long> {
     fun findByTestNameContainsIgnoreCase(name: String): List<TestEntity>
 
     @Query("select t from TestEntity t INNER JOIN t.discipline.partys p where p.partyId =:id")
-    fun findByParty(@Param("id") party: Long)
+    fun findByParty(@Param("id") party: Long): List<TestEntity>
 
 }

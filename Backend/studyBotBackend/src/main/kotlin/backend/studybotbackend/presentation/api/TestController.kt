@@ -39,6 +39,11 @@ class TestController(
         @RequestParam isAvailable: Boolean = true
     ): ResponseEntity<Any> = testRepository.getTestsByDiscipline(id,isAvailable).asResponse()
 
+    @GetMapping("by-party")
+    fun getTestByParty(
+        @RequestParam id: Long,
+        @RequestParam isAvailable: Boolean = true
+    ): ResponseEntity<Any> = testRepository.getTestsByParty(id,isAvailable).asResponse()
     @GetMapping("by-name")
     fun getTestByTestName(
         @RequestParam name: String,

@@ -28,6 +28,8 @@ class StudentSubDomainConverter : DomainConverter<StudentSubEntity, StudentSub> 
             subId,
             status,
             student.chatId,
+            String.format("%s %s %s", student.firstName, student.lastName, student.nickname),
             party.partyId,
+            party.partyName,
         )
 }

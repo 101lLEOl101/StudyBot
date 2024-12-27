@@ -17,4 +17,5 @@ interface TestRepository {
     fun getAllTests(isAvailable: Boolean): State<List<Test>>
     fun getFullTest(id: Long): State<TestFull>
     fun createFullTest(testParam: TestFull): State<TestFull>
+    fun getTestsByParty(id: Long, IsAvailable: Boolean): State<List<Test>>
 }

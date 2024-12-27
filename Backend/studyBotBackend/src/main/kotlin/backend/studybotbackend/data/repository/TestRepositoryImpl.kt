@@ -88,4 +88,9 @@ class TestRepositoryImpl : TestRepository, TestDomainConverter(), FullDomainConv
 
         return getFullTest(testId)
     }
+
+    override fun getTestsByParty(id: Long, isAvailable: Boolean): State<List<Test>> {
+        val entities = testDao.findByParty(id)
+        return State.Success(entities.filter { filterTest(it, isAvailable) }.map { it.asDomain() })
+    }
 }
