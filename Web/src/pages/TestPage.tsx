@@ -1,13 +1,13 @@
 import {HeaderComponent} from "../components/HeaderComponent.tsx";
 import {Paper} from "@mantine/core";
-import RequestsStudentsComponent from "../components/RequestsStudentsComponent.tsx";
+import TestComponent from "../components/TestComponent.tsx";
 
-export default function RequestsStudentsPage() {
+export default function TestPage() {
     return (
         <>
-            <HeaderComponent active_page={2}/>
+            <HeaderComponent active_page={4}/>
             <Paper withBorder maw={1200} ml={"auto"} mr={"auto"} mb={50} p={10}>
-                <RequestsStudentsComponent/>
+                <TestComponent/>
             </Paper>
         </>
     )

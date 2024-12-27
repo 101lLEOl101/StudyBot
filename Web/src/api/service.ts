@@ -27,3 +27,11 @@ export async function fetchActiveTests(){
 export async function fetchNonActiveTests(){
     return (await axiosConfig.get('/api/test/all?isAvailable=false')).data;
 }
+
+export async function fetchAccessStudent(id:number){
+    return (await axiosConfig.get(`/api/student-sub/by-party?id=${id}`)).data;
+}
+
+export async function fetchGroupInfo(id:number){
+    return (await axiosConfig.get(`/api/party/party-info?id=${id}`)).data;
+}

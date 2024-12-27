@@ -18,7 +18,6 @@ export default function ListGroupsComponent() {
             </Notification>
         )
     }
-    console.log(data.data);
     const groups = data.data.filter((group) => {
         return group.workers && group.workers.length > 0 && group.workers[0].toString() === localStorage.getItem("userId");
     });
@@ -35,7 +34,7 @@ export default function ListGroupsComponent() {
             </Table.Td>
             <Table.Td ta={"right"}>
                 <Text size="sm">
-                    {item.subs.length}
+                    {item.studentsNum}
                 </Text>
             </Table.Td>
         </Table.Tr>

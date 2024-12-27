@@ -14,6 +14,7 @@ import GroupStudentsPage from "./pages/GroupStudentsPage.tsx";
 import RequestsStudentsPage from "./pages/RequestsStudentsPage.tsx";
 import CreateTestPage from "./pages/CreateTestPage.tsx";
 import {useEffect} from "react";
+import TestPage from "./pages/TestPage.tsx";
 
 export default function App() {
     const navigate = useNavigate();
@@ -30,7 +31,10 @@ export default function App() {
                 <Route path={"/teachers"} element={<TeachersPage/>}/>
                 <Route path={"/group-students"} element={<GroupsStudentsPage/>}/>
                 <Route path={"/disciplines"} element={<DisciplinesPage/>}/>
-                <Route path={"/tests"} element={<TestsPage/>}/>
+                <Route path="/tests">
+                    <Route index element={<TestsPage/>} />
+                    <Route path=":id" element={<TestPage/>} />
+                </Route>
                 <Route path={"/"} element={<LoginPage/>}/>
                 <Route path={"/create-teacher"} element={<CreateTeacherPage/>}/>
                 <Route path={"/create-discipline"} element={<CreateDisciplinePage/>}/>

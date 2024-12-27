@@ -1,7 +1,8 @@
-import {Badge, Box, Group, Loader, Notification, Table, Text} from '@mantine/core';
+import {Badge, Box, Button, Group, Loader, Notification, Table, Text} from '@mantine/core';
 import {stringToColour} from "../stringToColour.ts";
 import {useQuery} from "@tanstack/react-query";
 import {fetchActiveTests} from "../api/service.ts";
+import {Link} from "react-router-dom";
 
 export default function ActiveTestsComponent() {
     const {status, data, error } = useQuery(["active-tests"], fetchActiveTests);
@@ -21,7 +22,6 @@ export default function ActiveTestsComponent() {
         );
     }
 
-    // Check if there are no tests
     if (data?.data?.length === 0) {
         return (
             <Box style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
@@ -36,9 +36,11 @@ export default function ActiveTestsComponent() {
         <Table.Tr key={item.testName}>
             <Table.Td ta={"left"}>
                 <Group gap="sm">
-                    <Text fz="sm" fw={500}>
-                        {item.testName}
-                    </Text>
+                    <Link to={`/tests/${item.id}`}>
+                        <Button variant={"default"} fz="sm" fw={500}>
+                            {item.testName}
+                        </Button>
+                    </Link>
                 </Group>
             </Table.Td>
 

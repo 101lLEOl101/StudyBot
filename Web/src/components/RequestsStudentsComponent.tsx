@@ -1,54 +1,77 @@
 import {IconCheck, IconTrash} from '@tabler/icons-react';
-import {ActionIcon, Box, Group, Paper, Table, Text} from '@mantine/core';
+import {ActionIcon, Box, Group, Loader, Notification, Table, Text} from '@mantine/core';
 import {Link, useParams} from "react-router-dom";
 import {IoCloseCircleOutline} from "react-icons/io5";
-
-const data_students = [
-    {
-        tag: '@rifa',
-        name: 'Robert Wolfkisser',
-    },
-    {
-        tag: '@sdgdsg',
-        name: 'Jill Jailbreaker',
-    },
-    {
-        tag: '@jghjfnm',
-        name: 'Henry Silkeater',
-    },
-    {
-        tag: '@zxcz',
-        name: 'Bill Horsefighter',
-    },
-    {
-        tag: '@dsfbfb',
-        name: 'Jeremy Footviewer',
-    },
-];
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {fetchAccessStudent} from "../api/service.ts";
+import {axiosConfig} from "../../axios.ts";
+import {queryClient} from "../api/query-client.ts";
 
 export default function RequestsStudentsComponent() {
-    const rows = data_students.map((item) => (
-        <Table.Tr key={item.name}>
+    const {id} = useParams();
+
+    const modifyStudent = async ({ action, studentId }: { action: "accept-sub" | "reject-sub"; studentId: number }) => {
+        const endpoint = `api/student-sub/${action}?id=${studentId}`;
+        return (await axiosConfig.put(endpoint)).data;
+    };
+
+    const { mutate } = useMutation(modifyStudent, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(["students-sub"]); // Invalidate queries to refresh data
+        },
+    });
+
+    const handleAction = (action: "accept-sub" | "reject-sub", studentId: number) => {
+        mutate({ action, studentId });
+    };
+
+    const { status, data, error } = useQuery(["students-sub", id], () => fetchAccessStudent(Number(id)));
+
+    if (status === "loading") {
+        return (
+            <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                <Loader size="lg" />
+            </Box>
+        );
+    } else if (status === "error") {
+        return (
+            <Notification color="red" title="Error loading">
+                {error.message || 'An unknown error occurred.'}
+            </Notification>
+        );
+    }
+    const filteredData = data.data.filter((item) => item.status === "NOT_CONSIDERED") || [];
+    if (filteredData.length === 0) {
+        return (
+            <Box style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                <Text color="dimmed" size="lg">
+                    Нет Запросов
+                </Text>
+            </Box>
+        );
+    }
+    const rows = filteredData.map((item) => (
+        <Table.Tr key={item.id}>
             <Table.Td>
                 <Group gap="sm">
                     <Text fz="sm" fw={500}>
-                        {item.name}
+                        {item.id}
                     </Text>
                 </Group>
             </Table.Td>
             <Table.Td>
                 <Group gap="sm">
                     <Text fz="sm" fw={500}>
-                        {item.tag}
+                        {item.student}
                     </Text>
                 </Group>
             </Table.Td>
             <Table.Td>
                 <Group gap={0} justify="flex-end">
-                    <ActionIcon variant="subtle" color="green">
+                    <ActionIcon onClick={() => handleAction("accept-sub", item.id)} variant="subtle" color="green">
                         <IconCheck size={16} stroke={1.5} />
                     </ActionIcon>
-                    <ActionIcon variant="subtle" color="red">
+                    <ActionIcon onClick={() => handleAction("reject-sub", item.id)} variant="subtle" color="red">
                         <IconTrash size={16} stroke={1.5} />
                     </ActionIcon>
                 </Group>
@@ -57,25 +80,26 @@ export default function RequestsStudentsComponent() {
     ));
 
     return (
-        <Paper radius="md" p="xl" pt={"5"} withBorder >
-            <Box display={"flex"} ml={"100%"}>
-                <Link to={`/group-students/${useParams().id}`}>
-                    <ActionIcon  radius={100} variant="subtle" color="red">
-                        <IoCloseCircleOutline size={32}/>
+        <>
+            <Box display={"flex"} ml={"98%"}>
+                <Link to={`/group-students/${id}`}>
+                    <ActionIcon radius={100} variant="subtle" color="red">
+                        <IoCloseCircleOutline size={32} />
                     </ActionIcon>
                 </Link>
             </Box>
+            <Text size="lg" ta={"center"}>Запросы Группы</Text>
             <Table.ScrollContainer minWidth={800}>
                 <Table verticalSpacing="sm">
                     <Table.Thead>
                         <Table.Tr>
                             <Table.Th>ФИО</Table.Th>
-                            <Table.Th>Телеграм teg</Table.Th>
+                            <Table.Th>Chat id</Table.Th>
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>{rows}</Table.Tbody>
                 </Table>
             </Table.ScrollContainer>
-        </Paper>
+        </>
     );
 }

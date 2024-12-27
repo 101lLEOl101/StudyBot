@@ -1,7 +1,8 @@
-import {Badge, Box, Group, Loader, Notification, Table, Text} from '@mantine/core';
+import {Badge, Box, Button, Group, Loader, Notification, Table, Text} from '@mantine/core';
 import {stringToColour} from "../stringToColour.ts";
 import {useQuery} from "@tanstack/react-query";
 import {fetchNonActiveTests} from "../api/service.ts";
+import {Link} from "react-router-dom";
 
 export default function TestsComponent() {
     const {status, data, error } = useQuery(["non-active-tests"], fetchNonActiveTests);
@@ -22,9 +23,11 @@ export default function TestsComponent() {
         <Table.Tr key={item.testName}>
             <Table.Td ta={"left"}>
                 <Group gap="sm">
-                    <Text fz="sm" fw={500}>
-                        {item.testName}
-                    </Text>
+                    <Link to={`/tests/${item.id}`}>
+                        <Button variant={"default"} fz="sm" fw={500}>
+                            {item.testName}
+                        </Button>
+                    </Link>
                 </Group>
             </Table.Td>
 

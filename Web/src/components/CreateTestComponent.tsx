@@ -54,7 +54,6 @@ export function CreateTestComponent() {
                 })),
             })),
         };
-        console.log(body.testName);
         return (await axiosConfig.post('/api/test/create-by-tree', body)).data;
     }
     const [errorMessage, setErrorMessage] = useState("");
