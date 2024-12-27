@@ -112,7 +112,7 @@ class FrontAnswer:
         self.student_text = studentText
 
 class FrontQuestion:
-    def __init__(self, text: str, type: int, answers: list[Answer], buttons_text:list[str], is_answered:bool):
+    def __init__(self, text: str, type: int, answers: list[Answers], buttons_text:list[str], is_answered:bool):
         self.text = text
         self.type = type
         self.answers = answers
@@ -120,7 +120,7 @@ class FrontQuestion:
         self.is_answered = is_answered
 
 class FrontTest:
-    def __init__(self, testName: str, start: datetime, end: datetime,
+    def __init__(self, testName: str, start, end,
                  questions: list[Question], discipline: Discipline):
         self.testName = testName
         self.start = start
