@@ -9,9 +9,7 @@ export async function fetchDisciplines(){
 }
 
 export async function fetchDiscipline(id:number){
-    const data = (await axiosConfig.get(`/api/discipline/by-id?id=${id}`)).data
-    console.log(data);
-    return data;
+    return (await axiosConfig.get(`/api/discipline/by-id?id=${id}`)).data;
 }
 
 export async function fetchGroups(){

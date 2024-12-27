@@ -38,6 +38,7 @@ export function CreateTestComponent() {
     const navigate = useNavigate();
     const { id } = useParams();
     const CreateTestFun = async (form:TestForm) => {
+        console.log(form.name_test, form.questions);
         const body = {
             createTime: form.date_start.toISOString(),
             expiresTime: form.date_end.toISOString(),
@@ -110,7 +111,7 @@ export function CreateTestComponent() {
 
             <Divider label={'Создание'} labelPosition="center" my="lg" />
 
-            <Formik initialValues={{name_test: '', date_start: new Date, date_end: new Date, questions: [{question_text: '', answers: [{correct: false, answer_text: '',}]}]}} onSubmit={handleCreate}>{({values}) => (
+            <Formik initialValues={{name_test: '', date_start: new Date, date_end: new Date, questions: [{question_text: '', answers: [{correct: false, answer_text: '',}]}]}} onSubmit={handleCreate}>{({values, handleChange, setFieldValue}) => (
                 <Form>
                     <Stack>
                         <Group ml={'auto'} mr={'auto'}>
@@ -119,6 +120,8 @@ export function CreateTestComponent() {
                                 label="Название"
                                 placeholder="Название Теста"
                                 radius="md"
+                                value={values.name_test}
+                                onChange={handleChange}
                             />
                             <DateInput
                                 label="Дата Начала"
@@ -174,6 +177,8 @@ export function CreateTestComponent() {
                                                     label="Вопрос"
                                                     placeholder="Текст Вопроса"
                                                     radius="md"
+                                                    value={values.questions[index].question_text}
+                                                    onChange={handleChange}
                                                 />
                                                 <Table>
                                                     <Table.Thead>
@@ -194,10 +199,12 @@ export function CreateTestComponent() {
                                                                         </Box>
                                                                         <Group ml={'auto'} mr={'auto'} m={10}>
                                                                             <TextInput
-                                                                                name={`answers.${jndex}.answer_text`}
+                                                                                name={`questions.${index}.answers.${jndex}.answer_text`}
                                                                                 label="Ответ"
                                                                                 placeholder="Ответ"
                                                                                 radius="md"
+                                                                                value={values.questions[index].answers[jndex].answer_text}
+                                                                                onChange={handleChange}
                                                                             />
                                                                             <Checkbox pt={23}
                                                                                 name={`answers.${jndex}.correct`}
