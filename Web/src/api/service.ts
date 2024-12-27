@@ -21,5 +21,9 @@ export async function fetchGroup(id:number){
 }
 
 export async function fetchActiveTests(){
+    return (await axiosConfig.get('/api/test/all?isAvailable=true')).data;
+}
+
+export async function fetchNonActiveTests(){
     return (await axiosConfig.get('/api/test/all?isAvailable=false')).data;
 }

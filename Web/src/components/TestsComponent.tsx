@@ -1,43 +1,41 @@
-import {Badge, Group, Table, Text } from '@mantine/core';
+import {Badge, Box, Group, Loader, Notification, Table, Text} from '@mantine/core';
 import {stringToColour} from "../stringToColour.ts";
-
-const data = [
-    {
-        name: 'Operation plus',
-        discipline: 'Math',
-        time_end: 'september 9 20:00'
-    },
-    {
-        name: 'Law of Gravity',
-        discipline: 'Physics',
-        time_end: 'september 9 20:00'
-    },
-    {
-        name: 'functions',
-        discipline: 'Programming',
-        time_end: 'september 9 20:00'
-    },
-];
+import {useQuery} from "@tanstack/react-query";
+import {fetchNonActiveTests} from "../api/service.ts";
 
 export default function TestsComponent() {
-    const rows = data.map((item) => (
-        <Table.Tr key={item.name}>
+    const {status, data, error } = useQuery(["non-active-tests"], fetchNonActiveTests);
+    if(status === "loading") {
+        return (
+            <Box style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                <Loader size="lg"/>
+            </Box>
+        )
+    } else if (status === "error") {
+        return (
+            <Notification color="red" title="Error loading">
+                {error.message || 'An unknown error occurred.'}
+            </Notification>
+        )
+    }
+    const rows = data.data.map((item) => (
+        <Table.Tr key={item.testName}>
             <Table.Td ta={"left"}>
                 <Group gap="sm">
                     <Text fz="sm" fw={500}>
-                        {item.name}
+                        {item.testName}
                     </Text>
                 </Group>
             </Table.Td>
 
             <Table.Td ta={"center"}>
-                <Badge color={stringToColour(item.discipline)}>
-                    {item.discipline}
+                <Badge color={stringToColour(item.disciplineName)}>
+                    {item.disciplineName}
                 </Badge>
             </Table.Td>
             <Table.Td ta={"right"}>
                 <Text size="sm">
-                    {item.time_end}
+                    {item.expiresTime}
                 </Text>
             </Table.Td>
         </Table.Tr>

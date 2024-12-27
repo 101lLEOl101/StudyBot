@@ -2,7 +2,7 @@ import {
     ActionIcon, Box,
     Button, Checkbox,
     Divider,
-    Group, Loader, Notification,
+    Group, Loader,
     Paper,
     Stack, Table,
     Text, TextInput,
@@ -15,9 +15,8 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import {FieldArray, Formik, Form} from "formik";
 import {axiosConfig} from "../../axios.ts";
 import {useState} from "react";
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {useMutation} from "@tanstack/react-query";
 import {IconPlus} from "@tabler/icons-react";
-import {fetchDiscipline} from "../api/service.ts";
 
 dayjs.extend(customParseFormat);
 
@@ -38,13 +37,11 @@ export function CreateTestComponent() {
     const navigate = useNavigate();
     const { id } = useParams();
     const CreateTestFun = async (form:TestForm) => {
-        console.log(form.name_test, form.questions);
         const body = {
             createTime: form.date_start.toISOString(),
             expiresTime: form.date_end.toISOString(),
             discipline: {
                 id: Number(id),
-                disciplineName: data.data.disciplineName,
             },
             testName: form.name_test,
             questions: form.questions.map((question) => ({
@@ -57,6 +54,7 @@ export function CreateTestComponent() {
                 })),
             })),
         };
+        console.log(body.testName);
         return (await axiosConfig.post('/api/test/create-by-tree', body)).data;
     }
     const [errorMessage, setErrorMessage] = useState("");
@@ -73,24 +71,6 @@ export function CreateTestComponent() {
             setLoadingMessage(false);
         },
     });
-
-    const { data, status, error} = useQuery(
-        ['discipline', id],
-        () => fetchDiscipline(Number(id)),
-    );
-    if(status === "loading") {
-        return (
-            <Box style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
-                <Loader size="lg"/>
-            </Box>
-        )
-    } else if (status === "error") {
-        return (
-            <Notification color="red" title="Error loading">
-                {error.message || 'An unknown error occurred.'}
-            </Notification>
-        )
-    }
     const handleCreate = (form:TestForm) => {
         setLoadingMessage(true);
         setErrorMessage("");
@@ -116,7 +96,7 @@ export function CreateTestComponent() {
                     <Stack>
                         <Group ml={'auto'} mr={'auto'}>
                             <TextInput
-                                name = "name_test"
+                                name ={"name_test"}
                                 label="Название"
                                 placeholder="Название Теста"
                                 radius="md"
@@ -126,13 +106,14 @@ export function CreateTestComponent() {
                             <DateInput
                                 label="Дата Начала"
                                 className={"date"}
+                                name="date_start"
                                 dateParser={(s) =>
                                     dayjs(s, "DD/MM/YYYY HH:mm:ss").toDate().getTime()
                                         ? dayjs(s, "DD/MM/YYYY HH:mm:ss").toDate()
                                         : new Date(s)
                                 }
-                                name="date_start"
                                 value={values.date_start}
+                                onChange={(value) => setFieldValue("date_start", value)} // Explicitly set the value
                                 valueFormat="DD/MM/YYYY HH:mm:ss"
                                 radius="md"
                             />
@@ -146,6 +127,7 @@ export function CreateTestComponent() {
                                         : new Date(s)
                                 }
                                 value={values.date_end}
+                                onChange={(value) => setFieldValue("date_end", value)}
                                 valueFormat="DD/MM/YYYY HH:mm:ss"
                                 radius="md"
                             />
