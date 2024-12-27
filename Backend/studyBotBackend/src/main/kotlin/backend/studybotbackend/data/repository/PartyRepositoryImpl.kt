@@ -73,9 +73,11 @@ class PartyRepositoryImpl(
     }
 
     override fun getPartyInfo(id: Long): State<PartyInfo> {
+        val entity = partyDao.findById(id).getOrElse { throw NotFoundException() }
+        val partyName = entity.partyName
         val students = studentRepository.getStudentsByParty(id).data!!
         val tests = testRepository.getTestsByParty(id, true).data!!
-        val partyInfo = PartyInfo(tests,students)
+        val partyInfo = PartyInfo(id,partyName,tests,students)
         return State.Success(partyInfo)
     }
 
