@@ -148,19 +148,19 @@ export function CreateTestComponent() {
                                                     <IoCloseCircleOutline size={32}/>
                                                 </ActionIcon>
                                             </Box>
+                                            <TextInput
+                                                ml={"auto"}
+                                                mr={"auto"}
+                                                ta={"center"}
+                                                maw={400}
+                                                name = {`questions.${index}.question_text`}
+                                                label="Вопрос"
+                                                placeholder="Текст Вопроса"
+                                                radius="md"
+                                                value={values.questions[index].question_text}
+                                                onChange={handleChange}
+                                            />
                                             <Table.Tr>
-                                                <TextInput
-                                                    ml={"auto"}
-                                                    mr={"auto"}
-                                                    ta={"center"}
-                                                    maw={400}
-                                                    name = {`questions.${index}.question_text`}
-                                                    label="Вопрос"
-                                                    placeholder="Текст Вопроса"
-                                                    radius="md"
-                                                    value={values.questions[index].question_text}
-                                                    onChange={handleChange}
-                                                />
                                                 <Table>
                                                     <Table.Thead>
                                                         <Table.Tr>
@@ -204,12 +204,10 @@ export function CreateTestComponent() {
                                                                     </Paper>
                                                                 ))}
                                                             </Group>
-                                                                <Group justify="end">
                                                                 <Button  onClick={() => answerHelper.push({correct: false, answer_text: '',})}>
                                                                     <IconPlus>
                                                                     </IconPlus>
                                                                 </Button>
-                                                                </Group>
                                                             </>
                                                         )}>
                                                         </FieldArray>
