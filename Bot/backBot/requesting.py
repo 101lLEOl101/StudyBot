@@ -102,5 +102,3 @@ def GetWholeTest(id): # Получить тест целиком
     wholeTest = WholeTest(curTest, questions_, results_, curTest.expiresTime)
     return wholeTest
 
-
-print(GetWholeTest(1).questions)  # ToDo: отладочная строка.
