@@ -51,8 +51,7 @@ class StudentSubRepositoryImpl(
         if (subs.any { it.student.chatId == chatId }) {
             throw InvalidRequestData("Subscribe is already exist")
         }
-        val studentId = studentDao.getIdByChatId(chatId)
-        val sub = StudentSub.new(Status.NOT_CONSIDERED, studentId, partyId)
+        val sub = StudentSub.new(Status.NOT_CONSIDERED, chatId, partyId)
         val entity = studentSubDao.save(sub.asDatabaseEntity())
         return State.Success(entity.asDomain())
     }

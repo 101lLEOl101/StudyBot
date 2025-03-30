@@ -19,7 +19,7 @@ class StudentSubDomainConverter : DomainConverter<StudentSubEntity, StudentSub> 
     override fun StudentSub.asDatabaseEntity(): StudentSubEntity =
         StudentSubEntity(
             status,
-            studentDao.findById(student).get(),
+            studentDao.findByChatId(student).get(),
             partyDao.findById(party).get(),
         )
 
