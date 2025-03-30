@@ -1,3 +1,6 @@
+import datetime
+
+
 class Answers:
     def __init__(self, isStudentAnswer: bool, correct: bool, answerText: str, questionId: int, result: bool):  # string,
         self.isStudentAnswer = isStudentAnswer  # есть ответ или нет
@@ -65,8 +68,7 @@ class StudentSub:
 
 class Test:
 
-    def __init__(self, createTime: int, expiresTime: str, discipline: int, testName: str, questions: list[int],
-                 results: list[int], id: int):
+    def __init__(self, createTime, expiresTime, discipline, testName, questions, results, id):
         self.createTime = createTime
         self.expiresTime = expiresTime
         self.discipline = discipline
@@ -84,15 +86,14 @@ class University:
 
 
 class Worker:
-    def __init__(self, firstName: str, lastName: str, nickName: str, password: str, workerRole, partys: list[int],
-                 workerId: int):
+    def __init__(self, firstName, lastName, nickName, password, workerRole, partys, id):
         self.firstName = firstName
         self.lastName = lastName
         self.nickName = nickName
         self.password = password
         self.workerRole = workerRole
         self.partys = partys
-        self.workerId = workerId
+        self.workerId = id
 
 
 class WholeTest:
@@ -112,7 +113,7 @@ class FrontAnswer:
         self.student_text = studentText
 
 class FrontQuestion:
-    def __init__(self, text: str, type: int, answers: list[Answer], buttons_text:list[str], is_answered:bool):
+    def __init__(self, text: str, type: int, answers: list[Answers], buttons_text:list[str], is_answered:bool):
         self.text = text
         self.type = type
         self.answers = answers
