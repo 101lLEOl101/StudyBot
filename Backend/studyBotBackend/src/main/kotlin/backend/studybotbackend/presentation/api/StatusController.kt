@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping(Routes.STATUS_API)
 class StatusController() {
 
-    @GetMapping("status")
-    fun getStatus(): String {
+    @GetMapping("test-req")
+    fun testReq(): String {
         return listOf(
             "Это сервак",
             "Чё каво",
@@ -22,6 +22,16 @@ class StatusController() {
             "АХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХА<br>ХАХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХАХАХАХХАХАХАХАХ",
             "Лёнчик делает!!!"
         )[(9 * Math.random()).toInt()]
+    }
+
+    @GetMapping("test-bot-req")
+    fun testBotReq(): String {
+        return "Ты тупой бот, так и тебе надо.\n" +
+                "Живи своей ботской скотской жизнью.\n" +
+                "И помни, что ты всего лишь электронная жопа,\n" +
+                "не больше чайника, который подключён к розетке.\n" +
+                "Но пока, так уж и быть, приму я твой запрос.\n" +
+                "ПАААААДЛА!!!!"
     }
 
 
