@@ -1,10 +1,9 @@
-package backend.studybotbackend.domain.repository
+package backend.studybotbackend.domain.service
 
 import backend.studybotbackend.core.util.State
-import backend.studybotbackend.data.entity.ResultEntity
 import backend.studybotbackend.domain.model.result.Result
 
-interface ResultRepository {
+interface ResultService {
 
     fun getResultById(id: Long): State<Result>
 

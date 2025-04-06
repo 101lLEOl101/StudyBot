@@ -1,11 +1,10 @@
 package backend.studybotbackend.presentation.api
 
 import backend.studybotbackend.core.config.Routes
-import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.question.Question
-import backend.studybotbackend.domain.repository.QuestionRepository
+import backend.studybotbackend.domain.service.QuestionService
 import backend.studybotbackend.domain.request.question.CreateQuestionRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping(Routes.QUESTION_API)
 class QuestionController(
-    private val questionRepository: QuestionRepository
+    private val questionService: QuestionService
 ) {
     @ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
@@ -37,16 +36,16 @@ class QuestionController(
     @GetMapping("by-id")
     fun getQuestionById(
         @RequestParam id: Long
-    ): ResponseEntity<Any> = questionRepository.getQuestionById(id).asResponse()
+    ): ResponseEntity<Any> = questionService.getQuestionById(id).asResponse()
 
     @GetMapping("by-test")
     fun getQuestionByTest(
         @RequestParam id: Long
-    ): ResponseEntity<Any> = questionRepository.getQuestionsByTest(id).asResponse()
+    ): ResponseEntity<Any> = questionService.getQuestionsByTest(id).asResponse()
 
     @GetMapping("all")
     fun getAllQuestions(): ResponseEntity<Any> {
-        val state = questionRepository.getAllQuestions()
+        val state = questionService.getAllQuestions()
         return state.asResponse()
     }
 
@@ -59,7 +58,7 @@ class QuestionController(
             questionType = questionParam.questionType,
             tests = questionParam.tests
         )
-        val state = questionRepository.createQuestion(question)
+        val state = questionService.createQuestion(question)
         return state.asResponse()
     }
 
@@ -67,7 +66,7 @@ class QuestionController(
     fun deleteQuestion(
         @RequestParam id: Long
     ): ResponseEntity<Any> {
-        val state = questionRepository.deleteQuestion(id)
+        val state = questionService.deleteQuestion(id)
         return state.asResponse()
     }
 

@@ -1,18 +1,17 @@
-package backend.studybotbackend.data.repository
+package backend.studybotbackend.data.service
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.DisciplineDao
 import backend.studybotbackend.data.util.DisciplineDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.discipline.Discipline
-import backend.studybotbackend.domain.repository.DisciplineRepository
+import backend.studybotbackend.domain.service.DisciplineService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrElse
 
-@Repository
-class DisciplineRepositoryImpl : DisciplineRepository, DisciplineDomainConverter() {
+@Service
+class DisciplineServiceImpl : DisciplineService, DisciplineDomainConverter() {
     @Autowired
     private lateinit var disciplineDao: DisciplineDao
 

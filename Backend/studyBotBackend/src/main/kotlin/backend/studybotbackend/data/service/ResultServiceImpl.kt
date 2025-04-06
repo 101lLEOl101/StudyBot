@@ -1,22 +1,20 @@
-package backend.studybotbackend.data.repository
+package backend.studybotbackend.data.service
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.ResultDao
 import backend.studybotbackend.data.dao.StudentDao
-import backend.studybotbackend.data.entity.ResultEntity
 import backend.studybotbackend.data.util.ResultDomainConverter
 import backend.studybotbackend.domain.exceptions.InvalidRequestData
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.result.Result
-import backend.studybotbackend.domain.repository.ResultRepository
+import backend.studybotbackend.domain.service.ResultService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import kotlin.jvm.optionals.getOrElse
 
-@Repository
-class ResultRepositoryImpl : ResultRepository, ResultDomainConverter() {
+@Service
+class ResultServiceImpl : ResultService, ResultDomainConverter() {
     @Autowired
     private lateinit var resultDao: ResultDao
     @Autowired

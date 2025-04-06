@@ -5,7 +5,7 @@ import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.test.Test
 import backend.studybotbackend.domain.model.test.TestFull
-import backend.studybotbackend.domain.repository.TestRepository
+import backend.studybotbackend.domain.service.TestService
 import backend.studybotbackend.domain.request.test.CreateTestRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -14,7 +14,7 @@ import java.time.LocalDateTime
 @RestController
 @RequestMapping(Routes.TEST_API)
 class TestController(
-    private val testRepository: TestRepository
+    private val testService: TestService
 ) {
     @ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
@@ -31,36 +31,36 @@ class TestController(
     @GetMapping("by-id")
     fun getTestById(
         @RequestParam id: Long,
-    ): ResponseEntity<Any> = testRepository.getTestById(id).asResponse()
+    ): ResponseEntity<Any> = testService.getTestById(id).asResponse()
 
     @GetMapping("by-discipline")
     fun getTestByDiscipline(
         @RequestParam id: Long,
         @RequestParam isAvailable: Boolean = true
-    ): ResponseEntity<Any> = testRepository.getTestsByDiscipline(id,isAvailable).asResponse()
+    ): ResponseEntity<Any> = testService.getTestsByDiscipline(id,isAvailable).asResponse()
 
     @GetMapping("by-party")
     fun getTestByParty(
         @RequestParam id: Long,
         @RequestParam isAvailable: Boolean = true
-    ): ResponseEntity<Any> = testRepository.getTestsByParty(id,isAvailable).asResponse()
+    ): ResponseEntity<Any> = testService.getTestsByParty(id,isAvailable).asResponse()
     @GetMapping("by-name")
     fun getTestByTestName(
         @RequestParam name: String,
         @RequestParam isAvailable: Boolean = true
-    ): ResponseEntity<Any> = testRepository.getTestsByName(name,isAvailable).asResponse()
+    ): ResponseEntity<Any> = testService.getTestsByName(name,isAvailable).asResponse()
 
     @GetMapping("all")
     fun getAllTests(
         @RequestParam isAvailable: Boolean = true
     ): ResponseEntity<Any> {
-        val state = testRepository.getAllTests(isAvailable)
+        val state = testService.getAllTests(isAvailable)
         return state.asResponse()
     }
 
     @GetMapping("full-by-id")
     fun getFullTest(id: Long): ResponseEntity<Any> {
-        val state = testRepository.getFullTest(id)
+        val state = testService.getFullTest(id)
         return state.asResponse()
     }
 
@@ -74,14 +74,14 @@ class TestController(
             discipline = testParam.discipline,
             testName = testParam.testName,
         )
-        val state = testRepository.createTest(test)
+        val state = testService.createTest(test)
         return state.asResponse()
     }
     @PostMapping("create-by-tree")
     fun createFullTest(
         @RequestBody testParam: TestFull
     ): ResponseEntity<Any> {
-        val state = testRepository.createFullTest(testParam)
+        val state = testService.createFullTest(testParam)
         return state.asResponse()
     }
 
@@ -89,7 +89,7 @@ class TestController(
     fun deleteTest(
         @RequestParam id: Long
     ): ResponseEntity<Any> {
-        val state = testRepository.deleteTest(id)
+        val state = testService.deleteTest(id)
         return state.asResponse()
     }
 

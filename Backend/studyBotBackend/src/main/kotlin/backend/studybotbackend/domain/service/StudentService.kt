@@ -1,9 +1,9 @@
-package backend.studybotbackend.domain.repository
+package backend.studybotbackend.domain.service
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.model.student.Student
 
-interface StudentRepository {
+interface StudentService {
     fun getStudentById(id: Long): State<Student>
 
     fun getStudentsByUnivercity(id: Long): State<List<Student>>

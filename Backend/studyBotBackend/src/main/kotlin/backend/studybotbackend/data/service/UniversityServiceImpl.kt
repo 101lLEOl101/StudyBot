@@ -1,24 +1,22 @@
-package backend.studybotbackend.data.repository
+package backend.studybotbackend.data.service
 
 import backend.studybotbackend.core.util.State
-import backend.studybotbackend.data.dao.StudentDao
 import backend.studybotbackend.data.dao.UniversityDao
 import backend.studybotbackend.data.util.UnivercityDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.univercity.University
-import backend.studybotbackend.domain.repository.StudentRepository
-import backend.studybotbackend.domain.repository.UniversityRepository
+import backend.studybotbackend.domain.service.StudentService
+import backend.studybotbackend.domain.service.UniversityService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrElse
 
-@Repository
-class UniversityRepositoryImpl : UniversityRepository, UnivercityDomainConverter() {
+@Service
+class UniversityServiceImpl : UniversityService, UnivercityDomainConverter() {
     @Autowired
     private lateinit var universityDao: UniversityDao
 @Autowired
-private lateinit var studentRepository: StudentRepository
+private lateinit var studentService: StudentService
 
     override fun getUniversityById(id: Long): State<University> {
         val entity = universityDao.findById(id).getOrElse { throw NotFoundException() }
@@ -37,7 +35,7 @@ private lateinit var studentRepository: StudentRepository
 
     override fun deleteUniversity(id: Long): State<Unit> {
         val entity = universityDao.findById(id).getOrElse { throw NotFoundException() }
-        entity.students.map { studentRepository.deleteStudent(it.chatId) }
+        entity.students.map { studentService.deleteStudent(it.chatId) }
         universityDao.delete(entity)
         return State.Success(Unit)
     }

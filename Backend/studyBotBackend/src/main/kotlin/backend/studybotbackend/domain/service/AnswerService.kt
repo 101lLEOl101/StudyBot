@@ -1,9 +1,9 @@
-package backend.studybotbackend.domain.repository
+package backend.studybotbackend.domain.service
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.model.answer.Answer
 
-interface AnswerRepository {
+interface AnswerService {
     fun getAnswerById(id: Long): State<Answer>
 
     fun getAnswersByResult(id: Long): State<List<Answer>>

@@ -1,23 +1,22 @@
-package backend.studybotbackend.data.repository
+package backend.studybotbackend.data.service
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.AnswerDao
 import backend.studybotbackend.data.dao.QuestionDao
 import backend.studybotbackend.data.dao.TestDao
-import backend.studybotbackend.data.entity.QuestionEntity
 import backend.studybotbackend.data.util.QuestionDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.question.Question
-import backend.studybotbackend.domain.repository.QuestionRepository
-import org.springframework.stereotype.Repository
+import backend.studybotbackend.domain.service.QuestionService
+import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrElse
 
-@Repository
-class QuestionRepositoryImpl(
+@Service
+class QuestionServiceImpl(
     private val questionDao: QuestionDao,
     private val answerDao: AnswerDao,
     private val testDao: TestDao,
-) : QuestionRepository, QuestionDomainConverter() {
+) : QuestionService, QuestionDomainConverter() {
     override fun getQuestionById(id: Long): State<Question> {
         val entity = questionDao.findById(id).getOrElse { throw NotFoundException() }
         return State.Success(entity.asDomain())

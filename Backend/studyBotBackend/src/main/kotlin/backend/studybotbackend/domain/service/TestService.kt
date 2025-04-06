@@ -1,10 +1,10 @@
-package backend.studybotbackend.domain.repository
+package backend.studybotbackend.domain.service
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.model.test.Test
 import backend.studybotbackend.domain.model.test.TestFull
 
-interface TestRepository {
+interface TestService {
 
     fun getTestById(id: Long): State<Test>
 

@@ -4,7 +4,7 @@ import backend.studybotbackend.core.config.Routes
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.discipline.Discipline
-import backend.studybotbackend.domain.repository.DisciplineRepository
+import backend.studybotbackend.domain.service.DisciplineService
 import backend.studybotbackend.domain.request.discipline.CreateDisciplineRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping(Routes.DISCIPLINE_API)
 class DisciplineController(
-    private val disciplineRepository: DisciplineRepository
+    private val disciplineService: DisciplineService
 ) {
     @ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
@@ -37,27 +37,27 @@ class DisciplineController(
     @GetMapping("by-id")
     fun getDisciplineById(
         @RequestParam id: Long,
-    ): ResponseEntity<Any> = disciplineRepository.getDisciplineById(id).asResponse()
+    ): ResponseEntity<Any> = disciplineService.getDisciplineById(id).asResponse()
 
     @GetMapping("by-test")
     fun getDisciplineByTest(
         @RequestParam id: Long,
-    ): ResponseEntity<Any> = disciplineRepository.getDisciplinesByTest(id).asResponse()
+    ): ResponseEntity<Any> = disciplineService.getDisciplinesByTest(id).asResponse()
 
     @GetMapping("by-party")
     fun getDisciplineByParty(
         @RequestParam id: Long,
-    ): ResponseEntity<Any> = disciplineRepository.getDisciplinesByParty(id).asResponse()
+    ): ResponseEntity<Any> = disciplineService.getDisciplinesByParty(id).asResponse()
 
     @GetMapping("by-student")
     fun getDisciplinesByStudent(
         @RequestParam id: Long,
-    )= disciplineRepository.getDisciplinesByStudent(id).asResponse()
+    )= disciplineService.getDisciplinesByStudent(id).asResponse()
 
 
     @GetMapping("all")
     fun getAllDisciplines(): ResponseEntity<Any>{
-        val state = disciplineRepository.getAllDisciplines()
+        val state = disciplineService.getAllDisciplines()
         return state.asResponse()
     }
 
@@ -68,7 +68,7 @@ class DisciplineController(
         val discipline = Discipline.new(
             disciplineName = disciplineParam.disciplineName
         )
-        val state = disciplineRepository.createDiscipline(discipline)
+        val state = disciplineService.createDiscipline(discipline)
         return state.asResponse()
     }
 
@@ -77,7 +77,7 @@ class DisciplineController(
     fun deleteDicipline(
         @RequestParam id: Long
     ): ResponseEntity<Any> {
-        val state = disciplineRepository.deleteDiscipline(id)
+        val state = disciplineService.deleteDiscipline(id)
         return state.asResponse()
     }
 

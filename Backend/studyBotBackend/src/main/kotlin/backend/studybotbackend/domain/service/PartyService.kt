@@ -1,10 +1,10 @@
-package backend.studybotbackend.domain.repository
+package backend.studybotbackend.domain.service
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.model.party.Party
 import backend.studybotbackend.domain.model.party.PartyInfo
 
-interface PartyRepository {
+interface PartyService {
     fun getPartyById(id: Long): State<Party>
 
     fun getPartysByStudent(id: Long): State<List<Party>>

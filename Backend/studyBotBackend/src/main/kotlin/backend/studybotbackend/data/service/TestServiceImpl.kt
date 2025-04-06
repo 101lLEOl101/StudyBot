@@ -1,4 +1,4 @@
-package backend.studybotbackend.data.repository
+package backend.studybotbackend.data.service
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.ResultDao
@@ -9,16 +9,16 @@ import backend.studybotbackend.data.util.FullDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.test.Test
 import backend.studybotbackend.domain.model.test.TestFull
-import backend.studybotbackend.domain.repository.AnswerRepository
-import backend.studybotbackend.domain.repository.QuestionRepository
-import backend.studybotbackend.domain.repository.TestRepository
+import backend.studybotbackend.domain.service.AnswerService
+import backend.studybotbackend.domain.service.QuestionService
+import backend.studybotbackend.domain.service.TestService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import kotlin.jvm.optionals.getOrElse
 
-@Repository
-class TestRepositoryImpl : TestRepository, TestDomainConverter(), FullDomainConverter {
+@Service
+class TestServiceImpl : TestService, TestDomainConverter(), FullDomainConverter {
     @Autowired
     private lateinit var testDao: TestDao
 
@@ -26,10 +26,10 @@ class TestRepositoryImpl : TestRepository, TestDomainConverter(), FullDomainConv
     private lateinit var resultDao: ResultDao
 
     @Autowired
-    private lateinit var questionRepository: QuestionRepository
+    private lateinit var questionService: QuestionService
 
     @Autowired
-    private lateinit var answerRepository: AnswerRepository
+    private lateinit var answerService: AnswerService
 
     companion object {
         fun filterTest(test: TestEntity, isAvailable: Boolean): Boolean {
@@ -80,9 +80,9 @@ class TestRepositoryImpl : TestRepository, TestDomainConverter(), FullDomainConv
         val testId = testEntity!!.id
 
         test.questions.forEach { questionTree ->
-            val question = questionRepository.createQuestion(questionTree.toDomain(listOf(testId))).data
+            val question = questionService.createQuestion(questionTree.toDomain(listOf(testId))).data
             questionTree.answers.forEach{answerTree ->
-                answerRepository.createAnswer(answerTree.toDomain(question!!.id))
+                answerService.createAnswer(answerTree.toDomain(question!!.id))
             }
         }
 

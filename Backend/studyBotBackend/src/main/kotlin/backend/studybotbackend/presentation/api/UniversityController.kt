@@ -1,11 +1,10 @@
 package backend.studybotbackend.presentation.api
 
 import backend.studybotbackend.core.config.Routes
-import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.univercity.University
-import backend.studybotbackend.domain.repository.UniversityRepository
+import backend.studybotbackend.domain.service.UniversityService
 import backend.studybotbackend.domain.request.univercity.CreateUnivercityRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping(Routes.UNIVERSITY_API)
 class UniversityController(
-    private val universityRepository: UniversityRepository
+    private val universityService: UniversityService
 ) {
     @ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
@@ -38,16 +37,16 @@ class UniversityController(
     @GetMapping("by-id")
     fun getUniversityById(
         @RequestParam id: Long,
-    ): ResponseEntity<Any> = universityRepository.getUniversityById(id).asResponse()
+    ): ResponseEntity<Any> = universityService.getUniversityById(id).asResponse()
 
     @GetMapping("by-student")
     fun getUniversityByStudent(
         @RequestParam id: Long,
-    ): ResponseEntity<Any> = universityRepository.getUniversityByStudent(id).asResponse()
+    ): ResponseEntity<Any> = universityService.getUniversityByStudent(id).asResponse()
 
     @GetMapping("all")
     fun getAllUnivercities(): ResponseEntity<Any> {
-        val state = universityRepository.getAllUnivercities()
+        val state = universityService.getAllUnivercities()
         return state.asResponse()
     }
 
@@ -58,7 +57,7 @@ class UniversityController(
         val university = University.new(
             universityName = universityParam.universityName
         )
-        val state = universityRepository.createUnivercity(university)
+        val state = universityService.createUnivercity(university)
         return state.asResponse()
     }
 
@@ -66,7 +65,7 @@ class UniversityController(
     fun deleteUniversity(
         @RequestParam id: Long
     ): ResponseEntity<Any> {
-        val state = universityRepository.deleteUniversity(id)
+        val state = universityService.deleteUniversity(id)
         return state.asResponse()
     }
 }

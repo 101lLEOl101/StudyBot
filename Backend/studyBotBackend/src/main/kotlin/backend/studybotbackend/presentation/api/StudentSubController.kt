@@ -1,10 +1,9 @@
 package backend.studybotbackend.presentation.api
 
 import backend.studybotbackend.core.config.Routes
-import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
-import backend.studybotbackend.domain.repository.StudentSubRepository
+import backend.studybotbackend.domain.service.StudentSubService
 import backend.studybotbackend.domain.request.studentSub.SubscribeRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping(Routes.STUDENT_SUB_API)
 class StudentSubController(
-    private val studentSubRepository: StudentSubRepository
+    private val studentSubService: StudentSubService
 ) {
 
     @ExceptionHandler(Exception::class, BaseException::class)
@@ -31,21 +30,21 @@ class StudentSubController(
     @GetMapping("by-id")
     fun getStudentSubById(
         @RequestParam id: Long,
-    ): ResponseEntity<Any> = studentSubRepository.getStudentSubById(id).asResponse()
+    ): ResponseEntity<Any> = studentSubService.getStudentSubById(id).asResponse()
 
     @GetMapping("by-party")
     fun getStudentSubByParty(
         @RequestParam id: Long,
-    ): ResponseEntity<Any> = studentSubRepository.getStudentSubsByParty(id).asResponse()
+    ): ResponseEntity<Any> = studentSubService.getStudentSubsByParty(id).asResponse()
 
     @GetMapping("by-student")
     fun getStudentSubByStudent(
         @RequestParam id: Long,
-    ): ResponseEntity<Any> = studentSubRepository.getStudentSubsByStudent(id).asResponse()
+    ): ResponseEntity<Any> = studentSubService.getStudentSubsByStudent(id).asResponse()
 
     @GetMapping("all")
     fun getAllSubs(): ResponseEntity<Any> {
-        val state = studentSubRepository.getAllSubs()
+        val state = studentSubService.getAllSubs()
         return state.asResponse()
     }
 
@@ -53,7 +52,7 @@ class StudentSubController(
     fun createSub(
         @RequestBody subReq: SubscribeRequest
     ): ResponseEntity<Any>{
-        val state = studentSubRepository.createSubscribe(
+        val state = studentSubService.createSubscribe(
             subReq.chatId,
             subReq.partyId
         )
@@ -64,7 +63,7 @@ class StudentSubController(
     fun acceptSub(
         @RequestParam id: Long
     ): ResponseEntity<Any>{
-        val state = studentSubRepository.acceptSub(id)
+        val state = studentSubService.acceptSub(id)
         return state.asResponse()
     }
 
@@ -72,7 +71,7 @@ class StudentSubController(
     fun rejectSub(
         @RequestParam id: Long
     ): ResponseEntity<Any> {
-        val state = studentSubRepository.rejectSub(id)
+        val state = studentSubService.rejectSub(id)
         return state.asResponse()
     }
 
@@ -80,7 +79,7 @@ class StudentSubController(
     fun deleteSub(
         @RequestParam id: Long
     ): ResponseEntity<Any>{
-        val state = studentSubRepository.deleteSub(id)
+        val state = studentSubService.deleteSub(id)
         return state.asResponse()
     }
 

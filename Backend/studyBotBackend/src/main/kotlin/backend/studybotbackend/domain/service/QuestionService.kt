@@ -1,10 +1,9 @@
-package backend.studybotbackend.domain.repository
+package backend.studybotbackend.domain.service
 
 import backend.studybotbackend.core.util.State
-import backend.studybotbackend.data.entity.QuestionEntity
 import backend.studybotbackend.domain.model.question.Question
 
-interface QuestionRepository {
+interface QuestionService {
     fun getQuestionById(id: Long): State<Question>
 
     fun getQuestionsByTest(id: Long): State<List<Question>>

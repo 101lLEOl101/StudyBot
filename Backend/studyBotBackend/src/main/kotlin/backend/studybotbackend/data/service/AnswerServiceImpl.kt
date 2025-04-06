@@ -1,4 +1,4 @@
-package backend.studybotbackend.data.repository
+package backend.studybotbackend.data.service
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.AnswerDao
@@ -6,13 +6,13 @@ import backend.studybotbackend.data.dao.QuestionDao
 import backend.studybotbackend.data.util.AnswerDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.answer.Answer
-import backend.studybotbackend.domain.repository.AnswerRepository
+import backend.studybotbackend.domain.service.AnswerService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrElse
 
-@Repository
-class AnswerRepositoryImpl : AnswerRepository, AnswerDomainConverter() {
+@Service
+class AnswerServiceImpl : AnswerService, AnswerDomainConverter() {
     @Autowired
     private lateinit var answerDao: AnswerDao
     @Autowired

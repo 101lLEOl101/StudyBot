@@ -1,9 +1,9 @@
-package backend.studybotbackend.domain.repository
+package backend.studybotbackend.domain.service
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.model.discipline.Discipline
 
-interface DisciplineRepository {
+interface DisciplineService {
     fun getDisciplineById(id: Long): State<Discipline>
 
     fun getDisciplinesByTest(id: Long): State<List<Discipline>>

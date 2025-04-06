@@ -4,7 +4,7 @@ import backend.studybotbackend.core.config.Routes
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.answer.Answer
-import backend.studybotbackend.domain.repository.AnswerRepository
+import backend.studybotbackend.domain.service.AnswerService
 import backend.studybotbackend.domain.request.answer.CreateAnswerRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping(Routes.ANSWER_API)
 class AnswerController(
-    private val answerRepository: AnswerRepository
+    private val answerService: AnswerService
 ) {
     @ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
@@ -36,26 +36,26 @@ class AnswerController(
     @GetMapping("by-id")
     fun getAnswerById(
         @RequestParam id: Long
-    ): ResponseEntity<Any> = answerRepository.getAnswerById(id).asResponse()
+    ): ResponseEntity<Any> = answerService.getAnswerById(id).asResponse()
 
     @GetMapping("by-result")
     fun getAnswerByResult(
         @RequestParam id: Long
-    ): ResponseEntity<Any> = answerRepository.getAnswersByResult(id).asResponse()
+    ): ResponseEntity<Any> = answerService.getAnswersByResult(id).asResponse()
 
     @GetMapping("right-by-question")
     fun getRightAnswerByQuestion(
         @RequestParam id: Long
-    ): ResponseEntity<Any> = answerRepository.getRightAnswersByQuestion(id).asResponse()
+    ): ResponseEntity<Any> = answerService.getRightAnswersByQuestion(id).asResponse()
 
     @GetMapping("user-answers-by-question")
     fun getUserAnswerByQuestion(
         @RequestParam id: Long
-    ): ResponseEntity<Any> = answerRepository.getUserAnswersByQuestion(id).asResponse()
+    ): ResponseEntity<Any> = answerService.getUserAnswersByQuestion(id).asResponse()
 
     @GetMapping("all")
     fun getAllAnswers(): ResponseEntity<Any> {
-        val state = answerRepository.getAllAnswers()
+        val state = answerService.getAllAnswers()
         return state.asResponse()
     }
 
@@ -69,7 +69,7 @@ class AnswerController(
             answerText = answerParam.answerText,
             question = answerParam.question,
         )
-        val state = answerRepository.createAnswer(answer)
+        val state = answerService.createAnswer(answer)
         return state.asResponse()
     }
 
@@ -77,7 +77,7 @@ class AnswerController(
     fun deleteQuestion(
         @RequestParam id: Long
     ): ResponseEntity<Any> {
-        val state = answerRepository.deleteAnswer(id)
+        val state = answerService.deleteAnswer(id)
         return state.asResponse()
     }
 

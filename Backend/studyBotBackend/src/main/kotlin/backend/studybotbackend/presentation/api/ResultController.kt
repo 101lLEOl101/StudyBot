@@ -3,9 +3,8 @@ package backend.studybotbackend.presentation.api
 import backend.studybotbackend.core.config.Routes
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
-import backend.studybotbackend.domain.repository.ResultRepository
+import backend.studybotbackend.domain.service.ResultService
 import backend.studybotbackend.domain.request.result.StartTestRequest
-import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping(Routes.RESULT_API)
 class ResultController(
-    private val resultRepository: ResultRepository
+    private val resultService: ResultService
 ) {
     @ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
@@ -36,32 +35,32 @@ class ResultController(
     @GetMapping("by-id")
     fun getResultById(
         @RequestParam id: Long
-    ): ResponseEntity<Any> = resultRepository.getResultById(id).asResponse()
+    ): ResponseEntity<Any> = resultService.getResultById(id).asResponse()
 
 
     @GetMapping("by-student")
     fun getResultStudent(
         @RequestParam id: Long
-    ): ResponseEntity<Any> = resultRepository.getResultsByStudent(id).asResponse()
+    ): ResponseEntity<Any> = resultService.getResultsByStudent(id).asResponse()
 
 
     @GetMapping("by-test")
     fun getResultTest(
         @RequestParam id: Long
-    ): ResponseEntity<Any> = resultRepository.getResultsByTest(id).asResponse()
+    ): ResponseEntity<Any> = resultService.getResultsByTest(id).asResponse()
 
     @GetMapping("by-student-and-test")
     fun getResultsStudentTest(
         @RequestParam chatId: Long,
         @RequestParam testId: Long,
     ): ResponseEntity<Any> {
-        val state = resultRepository.getResultsByStudentTest(chatId,testId)
+        val state = resultService.getResultsByStudentTest(chatId,testId)
         return state.asResponse()
     }
 
     @GetMapping("all")
     fun getAllResults(): ResponseEntity<Any> {
-        val state = resultRepository.getAllResults()
+        val state = resultService.getAllResults()
         return state.asResponse()
     }
 
@@ -69,7 +68,7 @@ class ResultController(
     fun startTest(
         @RequestBody req: StartTestRequest
     ): ResponseEntity<Any>{
-        val state = resultRepository.startTest(
+        val state = resultService.startTest(
             chatId = req.chatId,
             testId = req.testId,
         )
@@ -80,7 +79,7 @@ class ResultController(
     fun deleteResult(
         @RequestParam id: Long
     ): ResponseEntity<Any> {
-        val state = resultRepository.deleteResult(id)
+        val state = resultService.deleteResult(id)
         return state.asResponse()
     }
 }

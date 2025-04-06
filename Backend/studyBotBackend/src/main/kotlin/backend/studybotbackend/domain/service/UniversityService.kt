@@ -1,9 +1,9 @@
-package backend.studybotbackend.domain.repository
+package backend.studybotbackend.domain.service
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.model.univercity.University
 
-interface UniversityRepository {
+interface UniversityService {
 
     fun getUniversityById(id: Long): State<University>
 

@@ -1,10 +1,8 @@
 package backend.studybotbackend.presentation.api
 
 import backend.studybotbackend.core.config.Routes
-import backend.studybotbackend.domain.exceptions.BaseException
-import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.party.Party
-import backend.studybotbackend.domain.repository.PartyRepository
+import backend.studybotbackend.domain.service.PartyService
 import backend.studybotbackend.domain.request.party.AddWorkerRequest
 import backend.studybotbackend.domain.request.party.CreatePartyRequest
 import org.springframework.http.ResponseEntity
@@ -13,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping(Routes.PARTY_API)
 class PartyController(
-    private val partyRepository: PartyRepository
+    private val partyService: PartyService
 ) {
    /* @ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
@@ -33,7 +31,7 @@ class PartyController(
     fun getPartyById(
         @RequestParam id: Long,
     ): ResponseEntity<Any> {
-        val entity = partyRepository.getPartyById(id)
+        val entity = partyService.getPartyById(id)
         return entity.asResponse()
     }
 
@@ -41,7 +39,7 @@ class PartyController(
     fun getPartysByChatId(
         @RequestParam id: Long,
     ): ResponseEntity<Any> {
-        val entity = partyRepository.getPartysByStudent(id)
+        val entity = partyService.getPartysByStudent(id)
         return entity.asResponse()
     }
 
@@ -49,7 +47,7 @@ class PartyController(
     fun getPartysByWorkerId(
         @RequestParam id: Long,
     ): ResponseEntity<Any> {
-        val entity = partyRepository.getPartysByWorker(id)
+        val entity = partyService.getPartysByWorker(id)
         return entity.asResponse()
     }
 
@@ -57,20 +55,20 @@ class PartyController(
     fun getPartysByDisciplineId(
         @RequestParam id: Long,
     ): ResponseEntity<Any> {
-        val entity = partyRepository.getPartysByDiscipline(id)
+        val entity = partyService.getPartysByDiscipline(id)
         return entity.asResponse()
     }
 
     @GetMapping("all")
     fun getAllPartys(): ResponseEntity<Any> {
-        val state = partyRepository.getAllPartys()
+        val state = partyService.getAllPartys()
         return state.asResponse()
     }
 
     @GetMapping("party-info")
     fun getPartyInfo(
         @RequestParam id: Long
-    ): ResponseEntity<Any> = partyRepository.getPartyInfo(id).asResponse()
+    ): ResponseEntity<Any> = partyService.getPartyInfo(id).asResponse()
 
     @PostMapping("create")
     fun createParty(
@@ -81,7 +79,7 @@ class PartyController(
             workers = partyParam.workers,
             disciplines = partyParam.disciplines,
         )
-        val state = partyRepository.createParty(party)
+        val state = partyService.createParty(party)
         return state.asResponse()
     }
 
@@ -89,7 +87,7 @@ class PartyController(
     fun addWorker(
         @RequestBody req: AddWorkerRequest
     ): ResponseEntity<Any> {
-        val state = partyRepository.addWorker(req.partyId, req.workerId)
+        val state = partyService.addWorker(req.partyId, req.workerId)
         return state.asResponse()
     }
 
@@ -97,7 +95,7 @@ class PartyController(
     fun deleteParty(
         @RequestParam id: Long
     ): ResponseEntity<Any> {
-        val state = partyRepository.deleteParty(id)
+        val state = partyService.deleteParty(id)
         return state.asResponse()
     }
 

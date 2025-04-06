@@ -4,7 +4,7 @@ import backend.studybotbackend.core.config.Routes
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.worker.Worker
-import backend.studybotbackend.domain.repository.WorkerRepository
+import backend.studybotbackend.domain.service.WorkerService
 import backend.studybotbackend.domain.request.worker.CreateWorkerRequest
 import backend.studybotbackend.domain.request.worker.SignInRequest
 import backend.studybotbackend.domain.request.worker.UpdateWorkerRequest
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping(Routes.WORKER_API)
 class WorkerController(
-    private val workerRepository: WorkerRepository
+    private val workerService: WorkerService
 ) {
     @ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
@@ -33,21 +33,21 @@ class WorkerController(
     @GetMapping("by-id")
     fun getWorkerById(
         @RequestParam id: Long,
-    ): ResponseEntity<Any> = workerRepository.getWorkerById(id).asResponse()
+    ): ResponseEntity<Any> = workerService.getWorkerById(id).asResponse()
 
     @GetMapping("by-party")
     fun getWorkerByParty(
         @RequestParam id: Long,
-    ): ResponseEntity<Any> = workerRepository.getWorkersByParty(id).asResponse()
+    ): ResponseEntity<Any> = workerService.getWorkersByParty(id).asResponse()
 
     @GetMapping("all")
-    fun getAllWorkers(): ResponseEntity<Any> = workerRepository.getAllWorkers().asResponse()
+    fun getAllWorkers(): ResponseEntity<Any> = workerService.getAllWorkers().asResponse()
 
     @PostMapping("sign-in")
     fun signIn(
         @RequestBody req: SignInRequest
     ): ResponseEntity<Any> {
-        val state = workerRepository.signIn(
+        val state = workerService.signIn(
             nickname = req.nickname,
             password = req.password,
         )
@@ -58,7 +58,7 @@ class WorkerController(
     fun updateWorker(
         @RequestBody req: UpdateWorkerRequest
     ): ResponseEntity<Any> {
-        val state = workerRepository.updateWorker(
+        val state = workerService.updateWorker(
             workerId = req.workerId,
             firstName = req.firstName,
             lastName = req.lastName,
@@ -81,7 +81,7 @@ class WorkerController(
                 password = workerParams.password,
                 workerRole = workerParams.workerRole,
             )
-        val state = workerRepository.createWorker(worker)
+        val state = workerService.createWorker(worker)
         return state.asResponse()
     }
 
@@ -90,7 +90,7 @@ class WorkerController(
     fun deleteWorker(
         @RequestParam id: Long
     ): ResponseEntity<Any> {
-        val state = workerRepository.deleteWorker(id)
+        val state = workerService.deleteWorker(id)
         return state.asResponse()
     }
 

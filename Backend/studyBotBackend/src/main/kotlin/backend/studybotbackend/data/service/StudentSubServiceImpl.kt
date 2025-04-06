@@ -1,4 +1,4 @@
-package backend.studybotbackend.data.repository
+package backend.studybotbackend.data.service
 
 import backend.studybotbackend.core.util.State
 import backend.studybotbackend.data.dao.StudentDao
@@ -8,15 +8,15 @@ import backend.studybotbackend.domain.exceptions.InvalidRequestData
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.studentSub.Status
 import backend.studybotbackend.domain.model.studentSub.StudentSub
-import backend.studybotbackend.domain.repository.StudentSubRepository
-import org.springframework.stereotype.Repository
+import backend.studybotbackend.domain.service.StudentSubService
+import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrElse
 
-@Repository
-class StudentSubRepositoryImpl(
+@Service
+class StudentSubServiceImpl(
     private val studentSubDao: StudentSubDao,
     private val studentDao: StudentDao,
-) : StudentSubRepository, StudentSubDomainConverter() {
+) : StudentSubService, StudentSubDomainConverter() {
     override fun getStudentSubById(id: Long): State<StudentSub> {
         val entity = studentSubDao.findById(id).getOrElse { throw NotFoundException() }
         return State.Success(entity.asDomain())
