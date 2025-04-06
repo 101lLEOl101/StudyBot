@@ -1,6 +1,8 @@
 package backend.studybotbackend.presentation.api
 
 import backend.studybotbackend.core.config.Routes
+import backend.studybotbackend.domain.exceptions.BaseException
+import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.party.Party
 import backend.studybotbackend.domain.service.PartyService
 import backend.studybotbackend.domain.request.party.AddWorkerRequest
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 class PartyController(
     private val partyService: PartyService
 ) {
-   /* @ExceptionHandler(Exception::class, BaseException::class)
+    @ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
         return when (e) {
             is BaseException -> {
@@ -24,7 +26,7 @@ class PartyController(
                 ResponseEntity.status(500).body(ServerError(description = e.message))
             }
         }
-    }*/
+    }
 
 
     @GetMapping("by-id")

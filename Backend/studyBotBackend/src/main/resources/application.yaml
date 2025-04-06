@@ -11,6 +11,10 @@ spring:
       ddl-auto: validate
     show-sql: true
 
+jwt:
+  access-token-expiration-time: 86400
+  refresh-token-expiration-time: 432000
+
 logging:
   level:
     org.springframework.security.web.FilterChainProxy: DEBUG

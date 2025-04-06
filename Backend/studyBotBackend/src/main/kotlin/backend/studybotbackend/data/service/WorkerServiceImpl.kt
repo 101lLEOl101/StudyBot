@@ -7,13 +7,16 @@ import backend.studybotbackend.data.util.WorkerDomainConverter
 import backend.studybotbackend.domain.exceptions.InvalidCredentials
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.worker.Worker
+import backend.studybotbackend.domain.service.AuthService
 import backend.studybotbackend.domain.service.WorkerService
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrElse
 
 @Service
 class WorkerServiceImpl(
-    private val workerDao: WorkerDao
+    private val workerDao: WorkerDao,
+    private val passwordEncoder: PasswordEncoder,
 ) : WorkerService, WorkerDomainConverter() {
     override fun getWorkerById(id: Long): State<Worker> {
         val entity: WorkerEntity = workerDao.findById(id).getOrElse { throw NotFoundException() }
@@ -26,6 +29,7 @@ class WorkerServiceImpl(
     }
 
     override fun createWorker(worker: Worker): State<Worker> {
+        worker.password = passwordEncoder.encode(worker.password)
         val entity = workerDao.save(worker.asDatabaseEntity())
         return State.Success(entity.asDomain())
     }
@@ -56,7 +60,7 @@ class WorkerServiceImpl(
         entity.firstName = firstName ?: entity.firstName
         entity.lastName = lastName ?: entity.lastName
         entity.nickName = nickName ?: entity.nickName
-        entity.password = password ?: entity.password
+        entity.password = passwordEncoder.encode(password) ?: entity.password
         workerDao.save(entity)
         return State.Success(entity.asDomain())
     }

@@ -8,6 +8,8 @@ import java.util.Optional
 
 interface WorkerDao : JpaRepository<WorkerEntity, Long> {
 
+    fun findByNickName(nickname: String): Optional<WorkerEntity>
+
     @Query("select w from WorkerEntity w INNER JOIN w.partys p where p.partyId = :id ")
     fun findByParty(@Param("id") id: Long): List<WorkerEntity>
 

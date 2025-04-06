@@ -7,7 +7,7 @@ data class Worker(
     val firstName: String,
     val lastName: String,
     val nickName: String,
-    val password: String,
+    var password: String,
     val workerRole: Role,
     val partys: List<Long>,
 ) : Domain {
