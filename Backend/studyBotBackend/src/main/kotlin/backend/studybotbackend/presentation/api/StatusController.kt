@@ -1,6 +1,7 @@
 package backend.studybotbackend.presentation.api
 
 import backend.studybotbackend.core.config.Routes
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

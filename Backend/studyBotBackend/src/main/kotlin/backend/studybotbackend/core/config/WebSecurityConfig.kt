@@ -1,6 +1,10 @@
 package backend.studybotbackend.core.config
 
 import backend.studybotbackend.core.jwt.BotTokenAuthFilter
+import backend.studybotbackend.core.jwt.WorkerTokenAuthFilter
+import io.jsonwebtoken.JwtParser
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -16,10 +20,9 @@ import org.springframework.stereotype.Component
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig (
-    //private val jwtFilter: JwtAuthenticationFilter
+    private val botTokenAuthFilter: BotTokenAuthFilter,
+    private val workerTokenAuthFilter: WorkerTokenAuthFilter
 ){
-    @Value("\${BOT_API_TOKEN}")
-    private lateinit var botApiToken: String
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
@@ -28,15 +31,20 @@ class WebSecurityConfig (
             .authorizeHttpRequests {
                 it
                     .requestMatchers("${Routes.STATUS_API}/test-bot-req").hasRole("BOT")
+                    .requestMatchers("${Routes.WORKER_API}/self-info").hasRole("TEACHER")
                     .anyRequest().permitAll()
             }
             .addFilterBefore(
-                BotTokenAuthFilter(botApiToken),
+                botTokenAuthFilter,
+                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter::class.java
+            )
+            .addFilterBefore(
+                workerTokenAuthFilter,
                 org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter::class.java
             )
             .build()
     }
 
-    @Bean
-    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
+
+
 }

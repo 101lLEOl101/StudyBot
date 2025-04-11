@@ -12,9 +12,9 @@ spring:
     show-sql: true
 
 jwt:
-  access-token-expiration-time: 86400
-  refresh-token-expiration-time: 432000
-
+  access-token-expiration-time: 86400999
+  refresh-token-expiration-time: 432000999
+  bot-token-expiration-time: 2592000999
 logging:
   level:
     org.springframework.security.web.FilterChainProxy: DEBUG

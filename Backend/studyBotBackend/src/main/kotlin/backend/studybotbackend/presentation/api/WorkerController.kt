@@ -1,14 +1,17 @@
 package backend.studybotbackend.presentation.api
 
 import backend.studybotbackend.core.config.Routes
+import backend.studybotbackend.core.jwt.WorkerDetails
+import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.worker.Worker
-import backend.studybotbackend.domain.service.WorkerService
 import backend.studybotbackend.domain.request.worker.CreateWorkerRequest
 import backend.studybotbackend.domain.request.worker.SignInRequest
 import backend.studybotbackend.domain.request.worker.UpdateWorkerRequest
+import backend.studybotbackend.domain.service.WorkerService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -29,7 +32,6 @@ class WorkerController(
         }
     }
 
-
     @GetMapping("by-id")
     fun getWorkerById(
         @RequestParam id: Long,
@@ -42,6 +44,9 @@ class WorkerController(
 
     @GetMapping("all")
     fun getAllWorkers(): ResponseEntity<Any> = workerService.getAllWorkers().asResponse()
+
+    @GetMapping("self")
+    fun getSelf(@AuthenticationPrincipal workerDetails: WorkerDetails) = State.Success(workerDetails.worker).asResponse()
 
     @PostMapping("sign-in")
     fun signIn(
@@ -59,11 +64,7 @@ class WorkerController(
         @RequestBody req: UpdateWorkerRequest
     ): ResponseEntity<Any> {
         val state = workerService.updateWorker(
-            workerId = req.workerId,
-            firstName = req.firstName,
-            lastName = req.lastName,
-            nickName = req.nickName,
-            password = req.password,
+            req
         )
         return state.asResponse()
     }

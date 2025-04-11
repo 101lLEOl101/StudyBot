@@ -7,7 +7,7 @@ import backend.studybotbackend.data.util.WorkerDomainConverter
 import backend.studybotbackend.domain.exceptions.InvalidCredentials
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.worker.Worker
-import backend.studybotbackend.domain.service.AuthService
+import backend.studybotbackend.domain.request.worker.UpdateWorkerRequest
 import backend.studybotbackend.domain.service.WorkerService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -26,6 +26,12 @@ class WorkerServiceImpl(
     override fun getWorkersByParty(id: Long): State<List<Worker>> {
         val entities = workerDao.findByParty(id).map { it.asDomain() }
         return State.Success(entities)
+    }
+
+
+    override fun getWorkerByNickName(nickname: String): State<Worker> {
+        val entity = workerDao.findByNickName(nickname).getOrElse { throw InvalidCredentials() }
+        return State.Success(entity.asDomain())
     }
 
     override fun createWorker(worker: Worker): State<Worker> {
@@ -49,20 +55,16 @@ class WorkerServiceImpl(
         return State.Success(entity.asDomain())
     }
 
-    override fun updateWorker(
-        workerId: Long,
-        firstName: String?,
-        lastName: String?,
-        nickName: String?,
-        password: String?
-    ): State<Worker> {
-        val entity = workerDao.findById(workerId).getOrElse { throw NotFoundException() }
-        entity.firstName = firstName ?: entity.firstName
-        entity.lastName = lastName ?: entity.lastName
-        entity.nickName = nickName ?: entity.nickName
-        entity.password = passwordEncoder.encode(password) ?: entity.password
+    override fun updateWorker(req: UpdateWorkerRequest): State<Worker> {
+        val entity = workerDao.findById(req.workerId).getOrElse { throw NotFoundException() }
+        entity.firstName = req.firstName ?: entity.firstName
+        entity.lastName = req.lastName ?: entity.lastName
+        entity.nickName = req.nickName ?: entity.nickName
+        entity.password = passwordEncoder.encode(req.password) ?: entity.password
         workerDao.save(entity)
         return State.Success(entity.asDomain())
     }
+
+
 
 }
