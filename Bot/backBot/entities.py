@@ -59,11 +59,13 @@ class Student:
 
 
 class StudentSub:
-    def __init__(self, status: bool, student: int, party: int, subId: int):
+    def __init__(self, id: int, status: bool, student: int, studentFullName: str, party: int, partyName: str):
+        self.id = id
         self.status = status
         self.student = student
+        self.studentFullName = studentFullName
         self.party = party
-        self.subId = subId
+        self.partyName = partyName
 
 
 class Test:
