@@ -2,6 +2,7 @@ package backend.studybotbackend.presentation.api
 
 import backend.studybotbackend.core.config.Routes
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping(Routes.STATUS_API)
 class StatusController() {
+
+
 
     @GetMapping("test-req")
     fun testReq(): String {
@@ -25,6 +28,7 @@ class StatusController() {
         )[(9 * Math.random()).toInt()]
     }
 
+    @PreAuthorize("hasRole('BOT')")
     @GetMapping("test-bot-req")
     fun testBotReq(): String {
         return "Ты тупой бот, так и тебе надо.\n" +

@@ -32,19 +32,9 @@ class WebSecurityConfig (
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("${Routes.AUTH_PATH}/**").hasAnyRole("BOT","TEACHER", "ADMIN")
-                    .requestMatchers("${Routes.ANSWER_API}/**").hasAnyRole("BOT","TEACHER", "ADMIN")
-                    .requestMatchers("${Routes.DISCIPLINE_API}/**").hasAnyRole("BOT","TEACHER", "ADMIN")
-                    .requestMatchers("${Routes.PARTY_API}/**").hasAnyRole("BOT","TEACHER", "ADMIN")
-                    .requestMatchers("${Routes.QUESTION_API}/**").hasAnyRole("BOT","TEACHER", "ADMIN")
-                    .requestMatchers("${Routes.RESULT_API}/**").hasAnyRole("BOT","TEACHER", "ADMIN")
-                    .requestMatchers("${Routes.STUDENT_API}/**").hasAnyRole("BOT","TEACHER", "ADMIN")
-                    .requestMatchers("${Routes.STUDENT_SUB_API}/**").hasAnyRole("BOT","TEACHER", "ADMIN")
-                    .requestMatchers("${Routes.TEST_API}/**").hasAnyRole("BOT","TEACHER", "ADMIN")
-                    .requestMatchers("${Routes.UNIVERSITY_API}/**").hasAnyRole("BOT","TEACHER", "ADMIN")
-                    .requestMatchers("${Routes.WORKER_API}/**").hasAnyRole("BOT","TEACHER", "ADMIN")
-                    .requestMatchers("${Routes.STATUS_API}/**").hasAnyRole("BOT","TEACHER", "ADMIN")
-                    .anyRequest().permitAll()
+                    .requestMatchers("${Routes.AUTH_PATH}/**").permitAll()
+                    .requestMatchers("${Routes.STATUS_API}/**").permitAll()
+                    .anyRequest().hasAnyRole("BOT","TEACHER", "ADMIN")
             }
             .addFilterBefore(
                 botTokenAuthFilter,
