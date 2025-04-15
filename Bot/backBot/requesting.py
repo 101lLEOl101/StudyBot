@@ -228,19 +228,19 @@ def GetSubById(id):
 
 
 # === НЕ РАБОТАЕТ ===
-# def DeleteSubById(id):
-#     header = {
-#         "Authorization": f"Bearer {token}"
-#     }
-#     r = requests.get(f"{adress}api/student-sub/by-id", params={"id": id}, headers=header)
-#     if r.status_code != 403:
-#         r = r.json()
-#     else:
-#         return "ERR: 403"
-#     if r.get("message") != 'success':
-#         raise KeyError(f"{type} not found.")
-#     r = r.get("message")
-#     return r
+def DeleteSubById(id):
+    header = {
+        "Authorization": f"Bearer {token}"
+    }
+    r = requests.get(f"{adress}api/student-sub/by-id", params={"id": id}, headers=header)
+    if r.status_code != 403:
+        r = r.json()
+    else:
+        return "ERR: 403"
+    if r.get("message") != 'success':
+        raise KeyError(f"{type} not found.")
+    r = r.get("message")
+    return r
 
 def GetAllSubs():
     header = {
@@ -282,4 +282,4 @@ def SubByParty(id):
     return lst
 
 set_adress("http://localhost:8000/")
-print(SubByParty(1))
+print(DeleteSubById(7))
