@@ -10,51 +10,40 @@ import {
     Text,
     TextInput,
 } from '@mantine/core';
-import {useForm, UseFormReturnType} from '@mantine/form';
+import {useForm} from '@mantine/form';
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
-import {useMutation} from "@tanstack/react-query";
-import {axiosConfig} from "../../axios.ts";
+import {useDispatch, useSelector} from "react-redux";
+import store from "../redux/store.ts";
+import {useLoginMutation} from "../redux/slice/api/authApiSlice.ts";
+import {setCredentials} from "../redux/slice/authSlice.ts";
+import {useEffect} from "react";
 
+
+type RootState = ReturnType<typeof store.getState>
 
 export function LoginComponet(props: PaperProps) {
+    const {user} = useSelector((state: RootState) => state.user);
     const form = useForm({
         initialValues: {
-            login: '',
+            nickName: '',
             password: '',
         },
     });
-    const LoginFun = async (form: UseFormReturnType<{ login: string; password: string }>) => {
-        const body = {
-            nickname: form.values.login,
-            password: form.values.password,
-        };
-        return (await axiosConfig.post('/api/worker/sign-in', body)).data;
-    }
-    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
-    const [loadingMessage, setLoadingMessage] = useState(false)
+    const dispatch = useDispatch();
+    const [login, { isLoading, isError }] = useLoginMutation();
 
-    const {mutate} = useMutation(LoginFun, {
-        onSuccess: (data) => {
-            localStorage.setItem('userId', data.data.id);
-            localStorage.setItem('userRole', data.data.workerRole);
-            navigate('/active-tests');
-        },
-        onError: () => {
-            setLoadingMessage(false);
-            setErrorMessage("Неправильный логин или пароль");
-        },
-        onSettled: () => {
-            setLoadingMessage(false);
-        },
-    });
 
-    const handleLogin = () => {
-        setLoadingMessage(true);
-        setErrorMessage("");
-        mutate(form);
+    const handleLogin = async () => {
+        const res = await login(form).unwrap();
+        dispatch(setCredentials(res));
+        navigate("/tests");
     };
+    useEffect(() => {
+        if (user) {
+            navigate("/tests");
+        }
+    }, [user]);
     return (
         <Paper radius="md" p="xl" withBorder {...props}>
             <Text size="lg" ta={"center"} fw={500}>
@@ -68,8 +57,8 @@ export function LoginComponet(props: PaperProps) {
                     <TextInput
                         label="Логин"
                         placeholder="Твой Логин"
-                        value={form.values.login}
-                        onChange={(event) => form.setFieldValue('login', event.currentTarget.value)}
+                        value={form.values.nickName}
+                        onChange={(event) => form.setFieldValue('nickName', event.currentTarget.value)}
                         radius="md"
                     />
 
@@ -82,12 +71,12 @@ export function LoginComponet(props: PaperProps) {
                         radius="md"
                     />
                 </Stack>
-                {errorMessage && (
+                {isError && (
                     <Text color="red" size="sm" mt="sm">
-                        {errorMessage}
+                        Неправильный логин или пароль
                     </Text>
                 )}
-                {loadingMessage && (
+                {isLoading && (
                     <Box pt = {10} style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
                         <Loader size="lg"/>
                     </Box>

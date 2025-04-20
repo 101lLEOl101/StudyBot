@@ -14,13 +14,8 @@ import GroupStudentsPage from "./pages/GroupStudentsPage.tsx";
 import RequestsStudentsPage from "./pages/RequestsStudentsPage.tsx";
 import CreateTestPage from "./pages/CreateTestPage.tsx";
 import TestPage from "./pages/TestPage.tsx";
-import {useSelector} from "react-redux";
-import store from "./redux/store.ts";
-
-type RootState = ReturnType<typeof store.getState>
 
 export default function App() {
-    const {user} = useSelector((state: RootState) => state.user)
     return (
         <QueryClientProvider client={queryClient}>
             <Routes>
