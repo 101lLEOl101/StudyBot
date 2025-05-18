@@ -2,10 +2,10 @@ import {ActionIcon, Badge, Box, Button, Group, Loader, Notification, Table, Text
 import {IconTrash} from "@tabler/icons-react";
 import {stringToColour} from "../stringToColour.ts";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {fetchGroupInfo} from "../api/service.ts";
 import {Link, useParams} from "react-router-dom";
 import {axiosConfig} from "../../axios.ts";
 import {queryClient} from "../api/query-client.ts";
+import {fetchGroupInfo} from "../features/api/apiThunk.ts";
 
 
 export default function GroupStudentsComponent() {
@@ -38,8 +38,8 @@ export default function GroupStudentsComponent() {
         );
     }
 
-    const rows_tests = data.data.activeTests.length > 0 ?
-        data.data.activeTests.map((item) => (
+    const rows_tests = data.activeTests.length > 0 ?
+        data.activeTests.map((item) => (
             <Table.Tr key={item.testName}>
                 <Table.Td ta={"left"}>
                     <Group gap="sm">
@@ -67,8 +67,8 @@ export default function GroupStudentsComponent() {
             <Table.Td colSpan={3} ta={"center"}>Нет активных тестов для этой группы.</Table.Td>
         </Table.Tr>;
 
-    const rows_students = data.data.students.length > 0 ?
-        data.data.students.map((item) => (
+    const rows_students = data.students.length > 0 ?
+        data.students.map((item) => (
             <Table.Tr key={item.name}>
                 <Table.Td>
                     <Group gap="sm">

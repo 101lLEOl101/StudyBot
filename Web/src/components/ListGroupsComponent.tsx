@@ -1,7 +1,7 @@
 import {Box, Button, Loader, Notification, Table, Text} from '@mantine/core';
 import {Link} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
-import {fetchGroups} from "../api/service.ts";
+import { fetchGroups } from '../features/api/apiThunk';
 
 export default function ListGroupsComponent() {
     const {status, data, error } = useQuery(["groups"], fetchGroups);
@@ -18,7 +18,7 @@ export default function ListGroupsComponent() {
             </Notification>
         )
     }
-    const groups = data.data.filter((group) => {
+    const groups = data.filter((group) => {
         return group.workers && group.workers.length > 0 && group.workers[0].toString() === localStorage.getItem("userId");
     });
     const rows = groups.map((item) => (

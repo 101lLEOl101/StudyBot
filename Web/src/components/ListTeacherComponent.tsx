@@ -1,22 +1,13 @@
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import {ActionIcon, Group, Loader, Table, Text, Notification, Box} from '@mantine/core';
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {fetchTeachers} from "../api/service.ts";
-import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
 import {axiosConfig} from "../../axios.ts";
 import {queryClient} from "../api/query-client.ts";
+import {fetchTeachers} from "../features/api/apiThunk.ts";
 
 
 export default function ListTeacherComponent() {
     const {status, data, error } = useQuery(["teachers"], fetchTeachers);
-    const navigate = useNavigate();
-    useEffect(() => {
-        const userId = localStorage.getItem('userRole');
-        if (userId === "TEACHER") {
-            navigate('/active-tests');
-        }
-    }, [navigate]);
     const deleteTeacher = async (id: number) => {
         const params = {
             id: id
@@ -45,7 +36,7 @@ export default function ListTeacherComponent() {
         </Notification>
         )
     }
-    const teachers = data.data.filter((teacher) => teacher.workerRole === "TEACHER")
+    const teachers = data.filter((teacher) => teacher.workerRole === "TEACHER")
     const rows = teachers.map((item) => (
         <Table.Tr key={item.firstName + " " + item.lastName}>
             <Table.Td>

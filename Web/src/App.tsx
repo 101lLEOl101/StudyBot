@@ -1,6 +1,6 @@
 import {QueryClientProvider} from "@tanstack/react-query";
 import {queryClient} from "./api/query-client.ts";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import LoginPage from "./pages/LoginPage.tsx";
 import ActiveTestsPage from "./pages/ActiveTestsPage.tsx";
 import TeachersPage from "./pages/TeachersPage.tsx";
@@ -14,8 +14,20 @@ import GroupStudentsPage from "./pages/GroupStudentsPage.tsx";
 import RequestsStudentsPage from "./pages/RequestsStudentsPage.tsx";
 import CreateTestPage from "./pages/CreateTestPage.tsx";
 import TestPage from "./pages/TestPage.tsx";
+import {useSelector} from "react-redux";
+import type {RootState} from "./app/store.ts";
+import {useEffect} from "react";
 
 export default function App() {
+    const { accessToken } = useSelector(
+        (state: RootState) => state.user
+    );
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!accessToken) {
+            navigate('/');
+        }
+    }, [accessToken]);
     return (
         <QueryClientProvider client={queryClient}>
             <Routes>

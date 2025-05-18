@@ -1,8 +1,8 @@
 import {Badge, Box, Button, Group, Loader, Notification, Table, Text} from '@mantine/core';
 import {stringToColour} from "../stringToColour.ts";
 import {useQuery} from "@tanstack/react-query";
-import {fetchNonActiveTests} from "../api/service.ts";
 import {Link} from "react-router-dom";
+import {fetchNonActiveTests} from "../features/api/apiThunk.ts";
 
 export default function TestsComponent() {
     const {status, data, error } = useQuery(["non-active-tests"], fetchNonActiveTests);
@@ -19,7 +19,7 @@ export default function TestsComponent() {
             </Notification>
         )
     }
-    const rows = data.data.map((item) => (
+    const rows = data.map((item) => (
         <Table.Tr key={item.testName}>
             <Table.Td ta={"left"}>
                 <Group gap="sm">

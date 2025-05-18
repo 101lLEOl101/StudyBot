@@ -1,14 +1,3 @@
-export interface registerWorkerResponse{
-    data: Worker,
-    message:string,
-}
-
-export interface CreateWorker{
-    firstName: string,
-    lastName: string,
-    nickName: string,
-    password: string,
-}
 
 export interface LoginWorker{
     nickName: string,

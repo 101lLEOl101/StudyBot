@@ -2,8 +2,8 @@ import {ActionIcon, Badge, Box, Group, Loader, Notification, Table} from '@manti
 import {Link} from "react-router-dom";
 import {IconPlus} from "@tabler/icons-react";
 import {useQuery} from "@tanstack/react-query";
-import {fetchDisciplines} from "../api/service.ts";
 import {stringToColour} from "../stringToColour.ts";
+import {fetchDisciplines} from "../features/api/apiThunk.ts";
 
 export default function ListDisciplinesComponent() {
     const {status, data, error } = useQuery(["disciplines"], fetchDisciplines);
@@ -20,8 +20,7 @@ export default function ListDisciplinesComponent() {
             </Notification>
         )
     }
-    const disciplines = data.data
-    const rows = disciplines.map((item) => (
+    const rows = data.map((item) => (
         <Table.Tr key={item.disciplineName}>
             <Table.Td ta={"left"}>
                 <Group gap="sm">

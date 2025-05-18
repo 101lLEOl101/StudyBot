@@ -6,6 +6,7 @@ import {
 } from '@mantine/core';
 import classes from '../styles/HeaderComponent.module.css';
 import {Link} from "react-router-dom";
+import {logout} from "../features/auth/authSlice.ts";
 
 type HeaderComponentProps = {
     active_page: number;
@@ -13,8 +14,7 @@ type HeaderComponentProps = {
 
 export function HeaderComponent(props:HeaderComponentProps) {
     const removeUser = () => {
-        localStorage.removeItem('userId');
-        localStorage.removeItem('userRole');
+        logout();
     }
     return (
         <Box pb={40}>
@@ -26,11 +26,9 @@ export function HeaderComponent(props:HeaderComponentProps) {
                         <Link to={"/active-tests"}  className={props.active_page === 0 ? classes.activeLink + ' ' + classes.link : classes.link}>
                             Активные тесты
                         </Link>
-                        { localStorage.getItem('userRole') === "ADMIN" &&
                         <Link to={"/teachers"} className={props.active_page === 1 ? classes.activeLink + ' ' + classes.link : classes.link}>
                             Преподаватели
                         </Link>
-                        }
                         <Link to={"/group-students"} className={props.active_page === 2 ? classes.activeLink + ' ' + classes.link : classes.link}>
                             Группы студентов
                         </Link>

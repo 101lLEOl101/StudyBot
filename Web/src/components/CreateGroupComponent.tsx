@@ -15,7 +15,7 @@ import { IoCloseCircleOutline } from "react-icons/io5";
 import {axiosConfig} from "../../axios.ts";
 import {useState} from "react";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {fetchDisciplines} from "../api/service.ts";
+import {fetchDisciplines} from "../features/api/apiThunk.ts";
 
 export function CreateGroupComponent(props: PaperProps) {
     const navigate = useNavigate();
@@ -23,9 +23,9 @@ export function CreateGroupComponent(props: PaperProps) {
         const body = {
             partyName: form.values.name,
             workers: [parseInt(localStorage.getItem("userId") || "0")],
-            disciplines: [data.data.find((discipline) => discipline.disciplineName === form.values.discipline).id]
+            disciplines: [data.find((discipline) => discipline.disciplineName === form.values.discipline).id]
         };
-        console.log(form.values.name, [parseInt(localStorage.getItem("userId") || "0")], [data.data.find((discipline) => discipline.disciplineName === form.values.discipline).id], )
+        console.log(form.values.name, [parseInt(localStorage.getItem("userId") || "0")], [data.find((discipline) => discipline.disciplineName === form.values.discipline).id], )
         return (await axiosConfig.post('/api/party/create', body)).data;
     }
     const [errorMessage, setErrorMessage] = useState("");
@@ -61,7 +61,7 @@ export function CreateGroupComponent(props: PaperProps) {
             </Notification>
         )
     }
-    const disciplines = data.data.map((discipline) => {
+    const disciplines = data.map((discipline) => {
         return discipline.disciplineName
     });
     const handleCreate = () => {

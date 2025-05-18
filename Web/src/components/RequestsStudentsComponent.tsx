@@ -3,9 +3,9 @@ import {ActionIcon, Box, Group, Loader, Notification, Table, Text} from '@mantin
 import {Link, useParams} from "react-router-dom";
 import {IoCloseCircleOutline} from "react-icons/io5";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {fetchAccessStudent} from "../api/service.ts";
 import {axiosConfig} from "../../axios.ts";
 import {queryClient} from "../api/query-client.ts";
+import {fetchAccessStudents} from "../features/api/apiThunk.ts";
 
 export default function RequestsStudentsComponent() {
     const {id} = useParams();
@@ -25,7 +25,7 @@ export default function RequestsStudentsComponent() {
         mutate({ action, studentId });
     };
 
-    const { status, data, error } = useQuery(["students-sub", id], () => fetchAccessStudent(Number(id)));
+    const { status, data, error } = useQuery(["students-sub", id], () => fetchAccessStudents(Number(id)));
 
     if (status === "loading") {
         return (
@@ -40,7 +40,7 @@ export default function RequestsStudentsComponent() {
             </Notification>
         );
     }
-    const filteredData = data.data.filter((item) => item.status === "NOT_CONSIDERED") || [];
+    const filteredData = data.filter((item) => item.status === "NOT_CONSIDERED") || [];
     if (filteredData.length === 0) {
         return (
             <Box style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
