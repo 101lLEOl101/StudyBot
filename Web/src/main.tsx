@@ -7,7 +7,7 @@ import '@mantine/dates/styles.css';
 import { createTheme, MantineProvider } from "@mantine/core";
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
-import store from "./redux/store.ts";
+import store from "./app/store.ts";
 
 
 const theme = createTheme({
