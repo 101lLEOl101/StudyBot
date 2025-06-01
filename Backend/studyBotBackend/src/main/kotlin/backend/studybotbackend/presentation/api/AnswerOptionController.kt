@@ -3,9 +3,9 @@ package backend.studybotbackend.presentation.api
 import backend.studybotbackend.core.config.Routes
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
-import backend.studybotbackend.domain.model.answer.Answer
-import backend.studybotbackend.domain.service.AnswerService
-import backend.studybotbackend.domain.request.answer.CreateAnswerRequest
+import backend.studybotbackend.domain.model.answerOption.AnswerOption
+import backend.studybotbackend.domain.service.AnswerOptionService
+import backend.studybotbackend.domain.request.answer.CreateAnswerOptionRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping(Routes.ANSWER_API)
-class AnswerController(
-    private val answerService: AnswerService
+@RequestMapping(Routes.ANSWER_OPTION_API)
+class AnswerOptionController(
+    private val answerOptionService: AnswerOptionService
 ) {
     @ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
@@ -36,40 +36,32 @@ class AnswerController(
     @GetMapping("by-id")
     fun getAnswerById(
         @RequestParam id: Long
-    ): ResponseEntity<Any> = answerService.getAnswerById(id).asResponse()
+    ): ResponseEntity<Any> = answerOptionService.getOptionById(id).asResponse()
 
-    @GetMapping("by-result")
-    fun getAnswerByResult(
-        @RequestParam id: Long
-    ): ResponseEntity<Any> = answerService.getAnswersByResult(id).asResponse()
 
-    @GetMapping("right-by-question")
-    fun getRightAnswerByQuestion(
-        @RequestParam id: Long
-    ): ResponseEntity<Any> = answerService.getRightAnswersByQuestion(id).asResponse()
 
-    @GetMapping("user-answers-by-question")
-    fun getUserAnswerByQuestion(
+
+    @GetMapping("by-question")
+    fun getAnswersByQuestion(
         @RequestParam id: Long
-    ): ResponseEntity<Any> = answerService.getUserAnswersByQuestion(id).asResponse()
+    ): ResponseEntity<Any> = answerOptionService.getOptionsByQuestion(id).asResponse()
 
     @GetMapping("all")
     fun getAllAnswers(): ResponseEntity<Any> {
-        val state = answerService.getAllAnswers()
+        val state = answerOptionService.getAllOptions()
         return state.asResponse()
     }
 
     @PostMapping("create")
     fun createQuestion(
-        @RequestBody answerParam: CreateAnswerRequest
+        @RequestBody answerParam: CreateAnswerOptionRequest
     ): ResponseEntity<Any> {
-        val answer = Answer.new(
-            isStudentAnswer = answerParam.isStudentAnswer,
+        val answerOption = AnswerOption.new(
             correct = answerParam.correct,
             answerText = answerParam.answerText,
             question = answerParam.question,
         )
-        val state = answerService.createAnswer(answer)
+        val state = answerOptionService.createOption(answerOption)
         return state.asResponse()
     }
 
@@ -77,7 +69,7 @@ class AnswerController(
     fun deleteQuestion(
         @RequestParam id: Long
     ): ResponseEntity<Any> {
-        val state = answerService.deleteAnswer(id)
+        val state = answerOptionService.deleteOption(id)
         return state.asResponse()
     }
 

@@ -10,7 +10,7 @@ data class University(
     companion object {
         fun new(
             universityName: String,
-            students: List<Long> = listOf(),
+            students: List<Long> = mutableListOf(),
         ) = University(
             0,
             universityName,

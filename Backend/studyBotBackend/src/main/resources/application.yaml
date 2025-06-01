@@ -21,4 +21,4 @@ logging:
 
 server:
   port: 8000
-debug: false
+debug: true

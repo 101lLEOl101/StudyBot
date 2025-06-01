@@ -18,7 +18,10 @@ data class QuestionEntity(
     val tests: MutableList<TestEntity>,
 
     @OneToMany(mappedBy = "question")
-    var answers: MutableList<AnswerEntity>,
+    var studentAnswers: MutableList<StudentAnswerEntity>,
+
+    @OneToMany(mappedBy = "question")
+    val options: MutableList<AnswerOptionEntity>
 
 
     ) : DatabaseEntity {

@@ -18,7 +18,7 @@ data class Worker(
             nickName: String,
             password: String,
             workerRole: Role = Role.TEACHER,
-            partys: List<Long> = listOf(),
+            partys: List<Long> = mutableListOf(),
         ) = Worker(
             0,
             firstName,

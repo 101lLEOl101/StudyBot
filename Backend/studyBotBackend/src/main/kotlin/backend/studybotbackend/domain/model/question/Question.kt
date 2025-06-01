@@ -7,20 +7,23 @@ data class Question(
     val questionText: String,
     val questionType: QuestionType,
     val tests: List<Long>,
-    val answers: List<Long>,
+    val studentAnswers: List<Long>,
+    val options: List<Long>,
 ) : Domain {
     companion object {
         fun new(
             questionText: String,
             questionType: QuestionType,
-            tests: List<Long> = listOf(),
-            answers: List<Long> = listOf(),
+            tests: List<Long> = mutableListOf(),
+            answers: List<Long> = mutableListOf(),
+            options: List<Long> = mutableListOf()
         ) = Question(
             0,
             questionText,
             questionType,
             tests,
             answers,
+            options,
         )
     }
 }

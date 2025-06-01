@@ -1,7 +1,7 @@
 package backend.studybotbackend.data.util
 
-import backend.studybotbackend.data.dao.AnswerDao
-import backend.studybotbackend.data.dao.ResultDao
+import backend.studybotbackend.data.dao.AnswerOptionDao
+import backend.studybotbackend.data.dao.StudentAnswerDao
 import backend.studybotbackend.data.dao.TestDao
 import backend.studybotbackend.data.entity.QuestionEntity
 import backend.studybotbackend.domain.model.question.Question
@@ -15,14 +15,18 @@ class QuestionDomainConverter : DomainConverter<QuestionEntity, Question> {
     private lateinit var testDao: TestDao
 
     @Autowired
-    private lateinit var answerDao: AnswerDao
+    private lateinit var answerOptionDao: AnswerOptionDao
+
+    @Autowired
+    private lateinit var studentAnswerDao: StudentAnswerDao
 
     override fun Question.asDatabaseEntity(): QuestionEntity =
         QuestionEntity(
             questionText,
             questionType,
             testDao.findAllById(tests),
-            answerDao.findAllById(answers),
+            studentAnswerDao.findAllById(studentAnswers),
+            answerOptionDao.findAllById(options),
         )
 
     override fun QuestionEntity.asDomain(): Question =
@@ -31,6 +35,7 @@ class QuestionDomainConverter : DomainConverter<QuestionEntity, Question> {
             questionText,
             questionType,
             tests.map { it.testId },
-            answers.map { it.answerId },
+            studentAnswers.map { it.studentAnswerId },
+            options.map { it.answerOptionId }
         )
 }

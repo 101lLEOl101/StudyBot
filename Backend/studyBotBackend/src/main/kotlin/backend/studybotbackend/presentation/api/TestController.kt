@@ -16,8 +16,9 @@ import java.time.LocalDateTime
 class TestController(
     private val testService: TestService
 ) {
-    @ExceptionHandler(Exception::class, BaseException::class)
+    /*@ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
+        println(e.stackTrace)
         return when (e) {
             is BaseException -> {
                 ResponseEntity.status(e.statusCode).body(e)
@@ -27,7 +28,7 @@ class TestController(
             }
         }
     }
-
+*/
     @GetMapping("by-id")
     fun getTestById(
         @RequestParam id: Long,

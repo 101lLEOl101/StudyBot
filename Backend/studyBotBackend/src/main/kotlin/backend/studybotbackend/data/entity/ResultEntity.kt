@@ -20,7 +20,8 @@ data class ResultEntity(
     val test: TestEntity,
 
     @OneToMany(mappedBy = "result")
-    val answers: List<AnswerEntity>,
+    val studentAnswers: MutableList<StudentAnswerEntity>
+
 
 
     ) : DatabaseEntity {

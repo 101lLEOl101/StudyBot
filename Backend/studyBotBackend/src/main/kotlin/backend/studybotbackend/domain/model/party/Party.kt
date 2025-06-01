@@ -13,9 +13,9 @@ data class Party(
     companion object {
         fun new(
             partyName: String,
-            workers: List<Long> = listOf(),
-            disciplines: List<Long> = listOf(),
-            subs: List<Long> = listOf(),
+            workers: List<Long> = mutableListOf(),
+            disciplines: List<Long> = mutableListOf(),
+            subs: List<Long> = mutableListOf(),
         ) = Party(
             0,
             0,

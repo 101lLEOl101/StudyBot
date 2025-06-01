@@ -2,11 +2,12 @@ package backend.studybotbackend.core.config
 
 object Routes {
     const val AUTH_PATH = "/api/auth"
-    const val ANSWER_API = "/api/answer"
+    const val ANSWER_OPTION_API = "/api/answer-option"
     const val DISCIPLINE_API = "/api/discipline"
     const val PARTY_API = "/api/party"
     const val QUESTION_API = "/api/question"
     const val RESULT_API = "/api/result"
+    const val STUDENT_ANSWER_API = "/api/student-answer"
     const val STUDENT_API = "/api/student"
     const val STUDENT_SUB_API = "/api/student-sub"
     const val TEST_API = "/api/test"

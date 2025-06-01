@@ -15,7 +15,7 @@ class StatusController() {
 
     @GetMapping("test-req")
     fun testReq(): String {
-        return listOf(
+        return mutableListOf(
             "Это сервак",
             "Чё каво",
             "Туда сюда",

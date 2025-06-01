@@ -24,8 +24,8 @@ data class Test(
             discipline: Long,
             disciplineName: String = "",
             testName: String,
-            questions: List<Long> = listOf(),
-            results: List<Long> = listOf(),
+            questions: List<Long> = mutableListOf(),
+            results: List<Long> = mutableListOf(),
         ) = Test(
             0,
             createTime,

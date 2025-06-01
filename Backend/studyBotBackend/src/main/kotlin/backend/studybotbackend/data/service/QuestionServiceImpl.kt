@@ -1,8 +1,9 @@
 package backend.studybotbackend.data.service
 
 import backend.studybotbackend.core.util.State
-import backend.studybotbackend.data.dao.AnswerDao
+import backend.studybotbackend.data.dao.AnswerOptionDao
 import backend.studybotbackend.data.dao.QuestionDao
+import backend.studybotbackend.data.dao.StudentAnswerDao
 import backend.studybotbackend.data.dao.TestDao
 import backend.studybotbackend.data.util.QuestionDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
@@ -14,7 +15,8 @@ import kotlin.jvm.optionals.getOrElse
 @Service
 class QuestionServiceImpl(
     private val questionDao: QuestionDao,
-    private val answerDao: AnswerDao,
+    private val answerOptionDao: AnswerOptionDao,
+    private val studentAnswerDao: StudentAnswerDao,
     private val testDao: TestDao,
 ) : QuestionService, QuestionDomainConverter() {
     override fun getQuestionById(id: Long): State<Question> {
@@ -32,7 +34,9 @@ class QuestionServiceImpl(
         val entity = questionDao.save(question.asDatabaseEntity())
         entity.tests.forEach {
             val testEntity = testDao.findById(it.testId).getOrElse { throw NotFoundException() }
-            testEntity.questions = (testEntity.questions + entity).toMutableList()
+            val questions = testEntity.questions.toMutableList()
+            questions.add(entity)
+            testEntity.questions = questions
             testDao.save(testEntity)
         }
         return State.Success(entity.asDomain())
@@ -45,7 +49,8 @@ class QuestionServiceImpl(
 
     override fun deleteQuestion(id: Long): State<Unit> {
         val entity = questionDao.findById(id).getOrElse { throw NotFoundException() }
-        answerDao.deleteAll(entity.answers)
+        answerOptionDao.deleteAll(entity.options)
+        studentAnswerDao.deleteAll(entity.studentAnswers)
         questionDao.delete(entity)
         return State.Success(Unit)
     }

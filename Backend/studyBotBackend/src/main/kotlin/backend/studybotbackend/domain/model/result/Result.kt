@@ -12,7 +12,7 @@ data class Result(
     val finishTime: LocalDateTime?,
     val student: Long,
     val test: Long,
-    val answers: List<Long>,
+    val studentAnswers: List<Long>,
 ) : Domain {
     val isFinished: Boolean = finishTime != null
 
@@ -22,14 +22,14 @@ data class Result(
             finishTime: LocalDateTime?,
             student: Long,
             test: Long,
-            answers: List<Long> = listOf(),
+            answers: List<Long> = mutableListOf(),
         ) = Result(
             0,
             createTime,
             finishTime,
             student,
             test,
-            answers,
+            mutableListOf()
         )
     }
 }

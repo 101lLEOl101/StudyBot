@@ -11,8 +11,8 @@ data class Discipline(
     companion object {
         fun new(
             disciplineName: String,
-            tests: List<Long> = listOf(),
-            partys: List<Long> = listOf(),
+            tests: List<Long> = mutableListOf(),
+            partys: List<Long> = mutableListOf(),
         ) = Discipline(
             0,
             disciplineName,

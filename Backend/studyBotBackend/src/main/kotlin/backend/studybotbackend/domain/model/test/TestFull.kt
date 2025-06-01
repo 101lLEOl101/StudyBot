@@ -10,7 +10,7 @@ class TestFull(
     val discipline: DisciplineFull,
     val testName: String,
     val questions: List<QuestionFull>,
-    val results: List<Long> = listOf(),
+    val results: List<Long> = mutableListOf(),
 )
 
 class DisciplineFull(
@@ -22,12 +22,11 @@ class QuestionFull(
     val id: Long = 0,
     val questionText: String,
     val questionType: QuestionType,
-    val answers: List<AnswerFull> = listOf(),
+    val options: List<AnswerOptionFull> = mutableListOf(),
 )
 
-class AnswerFull(
+class AnswerOptionFull(
     val id: Long = 0,
-    val isStudentAnswer: Boolean,
-    val correct: String,
+    val correct: Boolean,
     val answerText: String,
 )

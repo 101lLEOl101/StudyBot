@@ -9,9 +9,10 @@ import backend.studybotbackend.data.util.FullDomainConverter
 import backend.studybotbackend.domain.exceptions.NotFoundException
 import backend.studybotbackend.domain.model.test.Test
 import backend.studybotbackend.domain.model.test.TestFull
-import backend.studybotbackend.domain.service.AnswerService
+import backend.studybotbackend.domain.service.AnswerOptionService
 import backend.studybotbackend.domain.service.QuestionService
 import backend.studybotbackend.domain.service.TestService
+import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -29,7 +30,7 @@ class TestServiceImpl : TestService, TestDomainConverter(), FullDomainConverter 
     private lateinit var questionService: QuestionService
 
     @Autowired
-    private lateinit var answerService: AnswerService
+    private lateinit var answerOptionService: AnswerOptionService
 
     companion object {
         fun filterTest(test: TestEntity, isAvailable: Boolean): Boolean {
@@ -75,14 +76,15 @@ class TestServiceImpl : TestService, TestDomainConverter(), FullDomainConverter 
         return State.Success(entity.toFull())
     }
 
+    @Transactional
     override fun createFullTest(test: TestFull): State<TestFull> {
         val testEntity = createTest(test.toDomain()).data
         val testId = testEntity!!.id
 
         test.questions.forEach { questionTree ->
-            val question = questionService.createQuestion(questionTree.toDomain(listOf(testId))).data
-            questionTree.answers.forEach{answerTree ->
-                answerService.createAnswer(answerTree.toDomain(question!!.id))
+            val question = questionService.createQuestion(questionTree.toDomain(mutableListOf(testId))).data
+            questionTree.options.forEach{ answerTree ->
+                answerOptionService.createOption(answerTree.toDomain(question!!.id))
             }
         }
 

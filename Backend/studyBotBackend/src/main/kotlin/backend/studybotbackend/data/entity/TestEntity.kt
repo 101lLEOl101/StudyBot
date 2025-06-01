@@ -30,7 +30,7 @@ data class TestEntity(
     val testName: String,
 
     @ManyToMany
-    var questions: MutableList<QuestionEntity>,
+    var questions: MutableList<QuestionEntity> = mutableListOf(),
 
     @OneToMany(mappedBy = "test")
     val results: List<ResultEntity>,

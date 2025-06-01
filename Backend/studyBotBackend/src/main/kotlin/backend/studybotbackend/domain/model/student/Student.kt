@@ -18,8 +18,8 @@ data class Student(
             lastName: String,
             nickname: String,
             university: Long,
-            results: List<Long> = listOf(),
-            subs: List<Long> = listOf(),
+            results: List<Long> = mutableListOf(),
+            subs: List<Long> = mutableListOf(),
         ) = Student(
             chatId,
             firstName,
