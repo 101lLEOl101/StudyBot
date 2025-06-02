@@ -22,7 +22,6 @@ const authSlice = createSlice({
             initialState.error = null;
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
-            console.log(localStorage.getItem('accessToken'));
         },
     }
 });

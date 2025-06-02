@@ -17,6 +17,7 @@ export function HeaderComponent(props:HeaderComponentProps) {
     const removeUser = () => {
         logout();
     }
+    const userRole = JSON.parse(atob((localStorage.getItem("accessToken") || "").split('.')[1])).role;
     return (
         <Box pb={40}>
             <header className={classes.header}>
@@ -27,9 +28,11 @@ export function HeaderComponent(props:HeaderComponentProps) {
                         <Link to={"/active-tests"}  className={props.active_page === 0 ? classes.activeLink + ' ' + classes.link : classes.link}>
                             Активные тесты
                         </Link>
+                        { userRole === "ADMIN" &&
                         <Link to={"/teachers"} className={props.active_page === 1 ? classes.activeLink + ' ' + classes.link : classes.link}>
                             Преподаватели
                         </Link>
+                        }
                         <Link to={"/group-students"} className={props.active_page === 2 ? classes.activeLink + ' ' + classes.link : classes.link}>
                             Группы студентов
                         </Link>

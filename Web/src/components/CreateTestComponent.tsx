@@ -47,8 +47,7 @@ export function CreateTestComponent() {
             questions: form.questions.map((question) => ({
                 questionText: question.question_text,
                 questionType: "SINGLE_CHOICE",
-                answers: question.answers.map((answer) => ({
-                    isStudentAnswer: false,
+                options: question.answers.map((answer) => ({
                     correct: answer.correct.toString(),
                     answerText: answer.answer_text,
                 })),

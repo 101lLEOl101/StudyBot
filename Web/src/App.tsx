@@ -41,6 +41,7 @@ export default function App() {
                 </Route>
                 <Route path={"/"} element={<LoginPage/>}/>
                 <Route path={"/create-teacher"} element={<CreateTeacherPage/>}/>
+                <Route path="/create-teacher/:id" element={<CreateTeacherPage/>}/>
                 <Route path={"/create-discipline"} element={<CreateDisciplinePage/>}/>
                 <Route path={"/create-group"} element={<CreateGroupPage/>}/>
                 <Route path={"/create-test"}>

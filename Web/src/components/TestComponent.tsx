@@ -1,6 +1,7 @@
 import {ActionIcon, Group, Paper, Table, Text} from '@mantine/core';
 import {IconCheck} from "@tabler/icons-react";
 import {IoCloseCircleOutline} from "react-icons/io5";
+import {Test} from "../Interfaces.ts";
 
 const data_students = [
     {
@@ -37,6 +38,7 @@ const data_students = [
 
 
 export default function TestComponent() {
+
     const rows_students = data_students.map((item) => (
         <Table.Tr key={item.name}>
             <Table.Td>

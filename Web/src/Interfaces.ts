@@ -56,3 +56,32 @@ export interface TestInfo{
     activeTests: Test[],
     students: string[],
 }
+
+export interface Question{
+    id: number,
+    type: number,
+    text: string,
+}
+
+export interface AnswerOption{
+    id: number,
+    correct: number,
+    question: number,
+    text: string,
+}
+
+export interface StudentAnswer{
+    id: number,
+    percentage: number,
+    question: number,
+    result: number,
+}
+
+export interface Result{
+    id: number,
+    finishTime: string,
+    startTime: string,
+    student: number,
+    test: number,
+}
+
