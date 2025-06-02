@@ -38,5 +38,7 @@ class ResultDomainConverter : DomainConverter<ResultEntity, Result> {
             student.chatId,
             test.testId,
             studentAnswers.map { it.studentAnswerId },
+            student.firstName,
+            student.lastName
         )
 }

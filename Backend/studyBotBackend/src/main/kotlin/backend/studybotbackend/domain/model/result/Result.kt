@@ -13,6 +13,8 @@ data class Result(
     val student: Long,
     val test: Long,
     val studentAnswers: List<Long>,
+    val firstName: String = "",
+    val LastName: String = "",
 ) : Domain {
     val isFinished: Boolean = finishTime != null
 
