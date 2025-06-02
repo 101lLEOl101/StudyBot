@@ -1,6 +1,8 @@
 package backend.studybotbackend.presentation.api
 
 import backend.studybotbackend.core.config.Routes
+import backend.studybotbackend.core.jwt.JwtService
+import backend.studybotbackend.core.util.State
 import backend.studybotbackend.domain.exceptions.BaseException
 import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.party.Party
@@ -13,7 +15,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping(Routes.PARTY_API)
 class PartyController(
-    private val partyService: PartyService
+    private val partyService: PartyService,
+    private val jwtService: JwtService,
 ) {
     @ExceptionHandler(Exception::class, BaseException::class)
     fun exceptionHandler(e: Exception): ResponseEntity<Any> {
@@ -71,6 +74,17 @@ class PartyController(
     fun getPartyInfo(
         @RequestParam id: Long
     ): ResponseEntity<Any> = partyService.getPartyInfo(id).asResponse()
+
+    @GetMapping("invite_link")
+    fun getInviteLink(
+        @RequestParam party: Long
+    ): ResponseEntity<Any> = State.Success(jwtService.generateInviteLink(party)).asResponse()
+
+    @PutMapping("invite-link")
+    fun solvInviteLink(
+        @RequestParam token: String,
+        @RequestParam chatId: Long,
+    ): ResponseEntity<Any> = partyService.addStudent(jwtService.parseInviteLink(token),chatId).asResponse()
 
     @PostMapping("create")
     fun createParty(

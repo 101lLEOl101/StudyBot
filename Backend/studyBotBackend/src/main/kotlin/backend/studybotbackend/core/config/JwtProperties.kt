@@ -16,6 +16,9 @@ class JwtProperties {
     var accessTokenExpirationTime: Long = 0
     var refreshTokenExpirationTime: Long = 0
     var botTokenExpirationTime: Long = 0
+    var inviteLinkExpirationTime: Long = 0
+    var codeNumber: Long = 0
+    var botTag: String = ""
     @Value("\${SECRET_JWT}")
     private lateinit var jwtSecret: String
 

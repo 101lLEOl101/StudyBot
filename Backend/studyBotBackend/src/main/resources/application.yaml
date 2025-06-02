@@ -15,10 +15,14 @@ jwt:
   access-token-expiration-time: 86400999
   refresh-token-expiration-time: 432000999
   bot-token-expiration-time: 2592000999
+  invite-link-expiration-time: 2592000999
+  code-number: 51971
+  bot-tag: test_study_534_bot
+
 logging:
   level:
     org.springframework.security.web.FilterChainProxy: DEBUG
 
 server:
   port: 8000
-debug: true
+debug: false

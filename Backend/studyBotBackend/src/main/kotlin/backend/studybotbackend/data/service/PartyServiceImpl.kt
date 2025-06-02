@@ -6,10 +6,12 @@ import backend.studybotbackend.data.entity.PartyEntity
 import backend.studybotbackend.data.util.PartyDomainConverter
 import backend.studybotbackend.domain.exceptions.InvalidRequestData
 import backend.studybotbackend.domain.exceptions.NotFoundException
+import backend.studybotbackend.domain.exceptions.ServerError
 import backend.studybotbackend.domain.model.party.Party
 import backend.studybotbackend.domain.model.party.PartyInfo
 import backend.studybotbackend.domain.service.PartyService
 import backend.studybotbackend.domain.service.StudentService
+import backend.studybotbackend.domain.service.StudentSubService
 import backend.studybotbackend.domain.service.TestService
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -20,6 +22,7 @@ class PartyServiceImpl(
     private val partyDao: PartyDao,
     private val workerDao: WorkerDao,
     private val studentSubDao: StudentSubDao,
+    private val studentSubService: StudentSubService,
     private val studentService: StudentService,
     private val testService: TestService,
 ) : PartyService, PartyDomainConverter() {
@@ -78,6 +81,25 @@ class PartyServiceImpl(
         val tests = testService.getTestsByParty(id, true).data!!
         val partyInfo = PartyInfo(id,partyName,tests,students)
         return State.Success(partyInfo)
+    }
+
+    override fun addStudent(partyId: Long, chatId: Long): State<Unit> {
+        val entity = partyDao.findById(partyId).getOrElse { throw NotFoundException() }
+        if (entity.subs.any {
+                it.student.chatId == chatId
+            }) {
+            throw InvalidRequestData("student already in a group ")
+            //TODO("Сделать одтельную проверку на aproved и notConsedered")
+        }
+        val res = studentSubService.createSubscribe(chatId,partyId)
+
+            if (res.data != null) {
+                studentSubService.acceptSub(res.data!!.id)
+            }else{
+                throw ServerError()
+            }
+
+        return State.Success(Unit)
     }
 
 

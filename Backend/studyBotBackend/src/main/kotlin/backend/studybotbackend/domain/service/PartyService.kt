@@ -20,5 +20,5 @@ interface PartyService {
     fun getAllPartys(): State<List<Party>>
     fun deleteParty(id: Long): State<Unit>
     fun getPartyInfo(id: Long): State<PartyInfo>
-
+    fun addStudent(partyId: Long, chatId: Long): State<Unit>
 }

@@ -41,7 +41,8 @@ class JwtService(
             .addClaims(
                 mapOf(
                     "role" to worker.workerRole,
-                    "full-name" to "${worker.firstName} ${worker.lastName}"
+                    "full-name" to "${worker.firstName} ${worker.lastName}",
+                    "worker-id" to worker.id
                 )
             )
             .signWith(SignatureAlgorithm.HS256, jwtSecret.toByteArray())
@@ -67,7 +68,8 @@ class JwtService(
             .addClaims(
                 mapOf(
                     "role" to worker.workerRole,
-                    "full-name" to "${worker.firstName} ${worker.lastName}"
+                    "full-name" to "${worker.firstName} ${worker.lastName}",
+                    "worker-id" to worker.id
                 )
             )
             .signWith(SignatureAlgorithm.HS256, jwtSecret.toByteArray())
@@ -98,6 +100,11 @@ class JwtService(
             .compact()
     }
 
+    fun generateInviteLink(partyId: Long): String {
+       return "t.me/${jwtProperties.botTag}?start=${jwtProperties.codeNumber*partyId}"
+    }
+
+
     fun isTokenValid(token: String): Boolean {
         return try {
             val claimsJws = jwtParser.parseClaimsJws(token)
@@ -118,6 +125,10 @@ class JwtService(
 
     fun parseTokenType(token: String): String =
         jwtParser.parse(token).header["token-type"] as String
+
+    fun parseInviteLink(token: String): Long {
+        return token.toLong()/jwtProperties.codeNumber
+    }
 
 
 }
