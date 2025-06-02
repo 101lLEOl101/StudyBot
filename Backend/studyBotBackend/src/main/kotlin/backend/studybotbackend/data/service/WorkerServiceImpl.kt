@@ -60,11 +60,12 @@ class WorkerServiceImpl(
         entity.firstName = req.firstName ?: entity.firstName
         entity.lastName = req.lastName ?: entity.lastName
         entity.nickName = req.nickName ?: entity.nickName
-        entity.password = passwordEncoder.encode(req.password) ?: entity.password
+        if (req.password != null) {
+            entity.password = passwordEncoder.encode(req.password)
+        }
         workerDao.save(entity)
         return State.Success(entity.asDomain())
     }
-
 
 
 }
