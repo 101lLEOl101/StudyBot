@@ -44,6 +44,12 @@ class StudentController (
         @RequestParam id: Long,
     ): ResponseEntity<Any> = studentService.getStudentsByUnivercity(id).asResponse()
 
+    @GetMapping("by-test")
+    fun getStudentsByTest(
+        @RequestParam id: Long,
+    ): ResponseEntity<Any> = studentService.getStudentsByTest(id).asResponse()
+
+
     @GetMapping("by-party")
     fun getStudentsByParty(
         @RequestParam id: Long,

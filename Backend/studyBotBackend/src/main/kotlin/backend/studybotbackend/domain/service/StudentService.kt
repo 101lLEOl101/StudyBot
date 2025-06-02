@@ -14,4 +14,5 @@ interface StudentService {
     fun deleteStudent(id: Long): State<Unit>
 
     fun getAllStudents(): State<List<Student>>
+    fun getStudentsByTest(id: Long): State<List<Student>>
 }

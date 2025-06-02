@@ -22,5 +22,8 @@ interface StudentDao: JpaRepository<StudentEntity, Long> {
     fun getIdByChatId(@Param("id") chatId: Long): Long
 
 
+    @Query("SELECT distinct st from StudentEntity st INNER JOIN st.subs su INNER JOIN su.party pa INNER JOIN pa.disciplines di INNER JOIN di.tests te where  te.testId = :id")
+    fun findByTest(@Param("id") testId: Long): List<StudentEntity>
+
 
 }

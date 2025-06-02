@@ -49,4 +49,9 @@ class StudentServiceImpl(
     override fun getAllStudents(): State<List<Student>> {
         return State.Success(studentDao.findAll().map { it.asDomain() })
     }
+
+    override fun getStudentsByTest(id: Long): State<List<Student>> {
+        val entities = studentDao.findByTest(id)
+        return State.Success(entities.map{it.asDomain()})
+    }
 }
