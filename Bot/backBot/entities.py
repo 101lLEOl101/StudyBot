@@ -1,10 +1,50 @@
-class Answers:
-    def __init__(self, isStudentAnswer: bool, correct: bool, answerText: str, questionId: int, result: bool):  # string,
-        self.isStudentAnswer = isStudentAnswer  # есть ответ или нет
-        self.correct = correct  # правильный ответ
-        self.answerText = answerText  # ответ студента
-        self.questionId = questionId  # айди вопроса
-        self.result = result  # результат: верный ответ или нет
+import datetime
+
+
+class Time:
+    pass  # временный класс
+
+
+class AnswerOption:
+    def __init__(self, answerText: str, correct: bool, questionId: int, ownId: int):
+        self.answerText = answerText
+        self.correct = correct
+        self.questionId = questionId
+        self.ownId = ownId
+
+
+class StudentAnswer:
+    def __init__(self, percentage: float, questionId: int, chosenOptions: list[int], userId: int, resultId: int,
+                 ownId: int):
+        self.percentage = percentage
+        self.questionId = questionId
+        self.chosenOptions = chosenOptions
+        self.userId = userId
+        self.resultId = resultId
+        self.ownId = ownId
+
+
+class Question:
+    def __init__(self, questionText: str, questionType, points: float, tests: list[int], answerOptions: list[int],
+                 questionId: int):
+        self.questionText = questionText
+        self.questionType = questionType
+        self.points = points
+        self.tests = tests
+        self.answerOptions = answerOptions
+        self.questionId = questionId
+
+
+class Result:
+    def __init__(self, startTime: Time, finishTime: Time, percentage: float, studentId: int, testId: int,
+                 studentAnswers: list[int], ownId: int):
+        self.startTime = startTime
+        self.finishTime = finishTime
+        self.percentage = percentage
+        self.studentId = studentId
+        self.testId = testId
+        self.studentAnswers = studentAnswers
+        self.ownId = ownId
 
 
 class Discipline:
@@ -56,17 +96,17 @@ class Student:
 
 
 class StudentSub:
-    def __init__(self, status: bool, student: int, party: int, subId: int):
+    def __init__(self, id: int, status: bool, student: int, studentFullName: str, party: int, partyName: str):
+        self.id = id
         self.status = status
         self.student = student
+        self.studentFullName = studentFullName
         self.party = party
-        self.subId = subId
+        self.partyName = partyName
 
 
 class Test:
-
-    def __init__(self, createTime: int, expiresTime: str, discipline: int, testName: str, questions: list[int],
-                 results: list[int], id: int):
+    def __init__(self, createTime, expiresTime, discipline, testName, questions, results, id):
         self.createTime = createTime
         self.expiresTime = expiresTime
         self.discipline = discipline
@@ -84,43 +124,46 @@ class University:
 
 
 class Worker:
-    def __init__(self, firstName: str, lastName: str, nickName: str, password: str, workerRole, partys: list[int],
-                 workerId: int):
+    def __init__(self, firstName, lastName, nickName, password, workerRole, partys, id):
         self.firstName = firstName
         self.lastName = lastName
         self.nickName = nickName
         self.password = password
         self.workerRole = workerRole
         self.partys = partys
-        self.workerId = workerId
+        self.workerId = id
 
 
 class WholeTest:
-    def __init__(self, test: Test, questions: list[Question], results: list[Result], expiresAt : str):
+    def __init__(self, test: Test, questions: list[Question], results: list[Result], expiresAt: str):
         self.test = test
         self.questions = questions
         self.results = results
         self.expiresAt = expiresAt
 
+
 class FrontDiscipline:
     def __init__(self, name: str):
-        self.name = name 
+        self.name = name
+
 
 class FrontAnswer:
     def __init__(self, text: str, studentText: str):
         self.text = text
         self.student_text = studentText
 
+
 class FrontQuestion:
-    def __init__(self, text: str, type: int, answers: list[Answers], buttons_text:list[str], is_answered:bool):
+    def __init__(self, text: str, type: int, answers: list[Answers], buttons_text: list[str], is_answered: bool):
         self.text = text
         self.type = type
         self.answers = answers
         self.buttons_text = buttons_text
         self.is_answered = is_answered
 
+
 class FrontTest:
-    def __init__(self, testName: str, start, end,
+    def __init__(self, testName: str, start: datetime, end: datetime,
                  questions: list[Question], discipline: Discipline):
         self.testName = testName
         self.start = start
