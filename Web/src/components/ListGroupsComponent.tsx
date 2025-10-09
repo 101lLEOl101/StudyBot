@@ -19,7 +19,7 @@ export default function ListGroupsComponent() {
         )
     }
     const groups = data.filter((group) => {
-        return group.workers && group.workers.length > 0 && group.workers[0].toString() === localStorage.getItem("userId");
+        return group.workers && group.workers.length > 0 && group.workers[0] === JSON.parse(atob((localStorage.getItem("accessToken") || "").split('.')[1]))["worker-id"];
     });
     const rows = groups.map((item) => (
         <Table.Tr key={item.partyName}>

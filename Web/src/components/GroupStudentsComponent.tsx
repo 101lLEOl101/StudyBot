@@ -99,7 +99,7 @@ export default function GroupStudentsComponent() {
 
     return (
         <>
-            <Text size="lg" c={"blue"} ta={"center"} p={10}>Активные Тесты группы {data.data.name}</Text>
+            <Text size="lg" c={"blue"} ta={"center"} p={10}>Активные Тесты группы {data.name}</Text>
             <Table.ScrollContainer minWidth={800}>
                 <Table verticalSpacing="sm">
                     <Table.Thead>
@@ -111,7 +111,7 @@ export default function GroupStudentsComponent() {
                     </Table.Thead>
                     <Table.Tbody>{rows_tests}</Table.Tbody>
                 </Table>
-                <Text size="lg" c={"blue"} ta={"center"} p={10}>Студенты группы {data.data.name}</Text>
+                <Text size="lg" c={"blue"} ta={"center"} p={10}>Студенты группы {data.name}</Text>
                 <Table verticalSpacing="sm">
                     <Table.Thead>
                         <Table.Tr>

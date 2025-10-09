@@ -22,10 +22,9 @@ export function CreateGroupComponent(props: PaperProps) {
     const CreateDisciplineFun = async (form: UseFormReturnType<{ name: string; discipline: string }>) => {
         const body = {
             partyName: form.values.name,
-            workers: [parseInt(localStorage.getItem("userId") || "0")],
-            disciplines: [data.find((discipline) => discipline.disciplineName === form.values.discipline).id]
+            workers: [JSON.parse(atob((localStorage.getItem("accessToken") || "").split('.')[1]))["worker-id"]],
+            disciplines: [(data.find((discipline) => discipline.disciplineName === form.values.discipline) || {id:0}).id]
         };
-        console.log(form.values.name, [parseInt(localStorage.getItem("userId") || "0")], [data.find((discipline) => discipline.disciplineName === form.values.discipline).id], )
         return (await axiosConfig.post('/api/party/create', body)).data;
     }
     const [errorMessage, setErrorMessage] = useState("");
