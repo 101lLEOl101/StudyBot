@@ -1,0 +1,24 @@
+package backend.studybotbackend.domain.service
+
+import backend.studybotbackend.core.util.State
+import backend.studybotbackend.domain.model.party.Party
+import backend.studybotbackend.domain.model.party.PartyInfo
+
+interface PartyService {
+    fun getPartyById(id: Long): State<Party>
+
+    fun getPartysByStudent(id: Long): State<List<Party>>
+
+    fun getPartysByWorker(id: Long): State<List<Party>>
+
+    fun getPartysByDiscipline(id: Long): State<List<Party>>
+
+    fun createParty(party: Party): State<Party>
+
+    fun addWorker(partyId: Long, workerId: Long): State<Any>
+
+    fun getAllPartys(): State<List<Party>>
+    fun deleteParty(id: Long): State<Unit>
+    fun getPartyInfo(id: Long): State<PartyInfo>
+    fun addStudent(partyId: Long, chatId: Long): State<Unit>
+}

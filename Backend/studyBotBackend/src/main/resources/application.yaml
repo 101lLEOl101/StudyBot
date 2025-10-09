@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: studyBotBackend
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/server
+    username: root
+    password: JUHUEu21uhduiHDDSie92UIJIOr39fsd9asdkJS
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+jwt:
+  access-token-expiration-time: 86400999
+  refresh-token-expiration-time: 432000999
+  bot-token-expiration-time: 2592000999
+  invite-link-expiration-time: 2592000999
+  code-number: 51971
+  bot-tag: test_study_534_bot
+
+logging:
+  level:
+    org.springframework.security.web.FilterChainProxy: DEBUG
+
+server:
+  port: 8000
+debug: false

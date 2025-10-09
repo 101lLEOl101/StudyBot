@@ -1,0 +1,69 @@
+package backend.studybotbackend.data.service
+
+import backend.studybotbackend.core.util.State
+import backend.studybotbackend.data.dao.ResultDao
+import backend.studybotbackend.data.dao.StudentDao
+import backend.studybotbackend.data.util.ResultDomainConverter
+import backend.studybotbackend.domain.exceptions.InvalidRequestData
+import backend.studybotbackend.domain.exceptions.NotFoundException
+import backend.studybotbackend.domain.model.result.Result
+import backend.studybotbackend.domain.service.ResultService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import java.time.LocalDateTime
+import kotlin.jvm.optionals.getOrElse
+
+@Service
+class ResultServiceImpl : ResultService, ResultDomainConverter() {
+    @Autowired
+    private lateinit var resultDao: ResultDao
+    @Autowired
+    private lateinit var studentDao: StudentDao
+
+
+    override fun getResultById(id: Long): State<Result> {
+        val entity = resultDao.findById(id).getOrElse { throw NotFoundException()}
+        return State.Success(entity.asDomain())
+    }
+
+    override fun getResultsByStudent(id: Long): State<List<Result>> {
+        val entities = resultDao.findByStudent(id).map { it.asDomain() }
+        return State.Success(entities)
+    }
+
+    override fun getResultsByTest(id: Long): State<List<Result>> {
+        val entities = resultDao.findByTest(id).map { it.asDomain() }
+        return State.Success(entities)
+    }
+
+    override fun startTest(chatId: Long, testId: Long): State<Result> {
+        val entities = resultDao.findByTestAndStudent(chatId,testId)
+        if(entities.any { it.finishTime == null}){
+            throw InvalidRequestData("test have already started")
+        }
+        val domain = Result.new(
+            LocalDateTime.now(),
+            null,
+            studentDao.getIdByChatId(chatId),
+            testId,
+        )
+        return State.Success(resultDao.save(domain.asDatabaseEntity()).asDomain())
+
+    }
+
+    override fun getAllResults(): State<List<Result>> {
+        val entities = resultDao.findAll()
+        return State.Success(entities.map { it.asDomain() })
+    }
+
+    override fun getResultsByStudentTest(chatId: Long, testId: Long): State<List<Result>> {
+        val entities = resultDao.findByStudentAndTest(chatId,testId)
+        return State.Success(entities.map { it.asDomain() })
+    }
+
+    override fun deleteResult(id: Long): State<Unit> {
+        val entity = resultDao.findById(id).getOrElse { throw NotFoundException() }
+        resultDao.delete(entity)
+        return State.Success(Unit)
+    }
+}

@@ -1,0 +1,22 @@
+package backend.studybotbackend.domain.service
+
+import backend.studybotbackend.core.util.State
+import backend.studybotbackend.domain.model.studentSub.StudentSub
+
+interface StudentSubService {
+
+    fun getStudentSubById(id: Long): State<StudentSub>
+
+    fun getStudentSubsByParty(id: Long): State<List<StudentSub>>
+
+    fun getStudentSubsByStudent(id: Long): State<List<StudentSub>>
+
+    fun createSubscribe(chatId: Long, partyId: Long): State<StudentSub>
+
+    fun acceptSub(subId: Long): State<Boolean>
+
+    fun rejectSub(subId: Long): State<Boolean>
+    fun getAllSubs(): State<List<StudentSub>>
+    fun deleteSub(id: Long): State<Unit>
+
+}
